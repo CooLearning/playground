@@ -1,0 +1,40 @@
+name: publish-and-deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  publish-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+
+      - name: Setup Node.js
+        uses: actions/setup-node@master
+        with:
+          node-version: '14'
+
+      - name: Prepare for publishing
+        run: |
+          npm install -g \
+            semantic-release \
+            @semantic-release/github \
+            @semantic-release/git \
+            @semantic-release/exec \
+            @semantic-release/changelog \
+            @semantic-release/npm \
+            @qiwi/semantic-release-gh-pages-plugin
+
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Publish
+        run: semantic-release
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
