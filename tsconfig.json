@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "removeComments": true,
+    "preserveConstEnums": true,
+    "target": "ES2015"
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
