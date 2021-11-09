@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 interface HTMLElement {
   MaterialSnackbar: {
     showSnackbar (options: {
@@ -7,10 +9,6 @@ interface HTMLElement {
       timeout: number;
     }): void;
   };
-
-  appendTo (parent: HTMLElement): void;
-
-  prependTo (parent: HTMLElement): void;
 }
 
 interface Window {
