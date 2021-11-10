@@ -1,8 +1,9 @@
 import { dialogUi } from './dialog.ui';
-import { modalUi } from './modal.ui';
+import { mappingsUi } from './mappings.ui';
 import { buttonsUi } from './buttons.ui';
 import { notificationsUi } from './notifications.ui';
 import { neuronCardUi } from './neuron-card.ui';
+import { devicesUi } from './devices.ui';
 
 export const ui = Object.create (null);
 
@@ -13,10 +14,11 @@ ui.init = async function () {
   this.addMaterialScript ();
 
   await notificationsUi.init ();
-  modalUi.init ();
+  mappingsUi.init ();
   buttonsUi.init ();
   dialogUi.init ();
   neuronCardUi.init ();
+  devicesUi.init ();
 
   notificationsUi.notify ('test');
 };

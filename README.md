@@ -1,23 +1,84 @@
-# Deep playground
+# CooLearning: playground
 
-Deep playground is an interactive visualization of neural networks, written in
-TypeScript using d3.js. We use GitHub issues for tracking new requests and bugs.
-Your feedback is highly appreciated!
+## 📖 Context
 
-**If you'd like to contribute, be sure to review the [contribution guidelines](CONTRIBUTING.md).**
+This project is an evolution based on [tensorflow/playground](https://github.com/tensorflow/playground).
 
-## Development
+It aims to bring interactivity to the user interface with USB controllers by using WebMIDI.
 
-To run the visualization locally, run:
-- `npm i` to install dependencies
-- `npm run build` to compile the app and place it in the `dist/` directory
-- `npm run serve` to serve from the `dist/` directory and open a page on your browser.
+It has been authored at [CREATIS Laboratory](https://www.creatis.insa-lyon.fr/site7/fr) (Lyon, France).
 
-For a fast edit-refresh cycle when developing run `npm run serve-watch`.
-This will start an http server and automatically re-compile the TypeScript,
-HTML and CSS files whenever they change.
+## 🚀 Features
 
-## For owners
-To push to production: `git subtree push --prefix dist origin gh-pages`.
+There are two main categories of devices you can attach.
 
-This is not an official Google product.
+### 🖱️ Selector
+
+This usually provides a grid of colored backlit pads.
+
+- Use the grid to display the inputs, neurons and output of the current neural network
+    - Color code:
+        - `gray` disabled node
+        - `yellow` input (enabled)
+        - `green` neuron (enabled)
+        - `blue` neuron (selected)
+        - `purple` output's input link / weight
+    - Short press action:
+        - `enable` or `disable` inputs or output input weights
+        - `select` or `unselect` neurons
+    - Long press action:
+        - `enable` or `disable` neurons
+
+### 🎛️ Controller
+
+This device usually provides faders, potentiometers and buttons.
+
+- Use faders to control **input weights** of selected **neurons**
+- Use potentiometers to control **activation curves**, etc. of selected **neurons**
+- Use buttons to play, pause or reset the neural network iterations.
+
+## 🧮 Constraints
+
+### 🧵 Short term
+
+- Locked base playground state until later rewrite and merge.
+- No compatibility with unknown devices until creation of a mapping manager.
+
+### 🧶 Long term
+
+- `chrome` only compatibility
+- `selector` at least 64 pads
+- `controller` at least 8 faders
+- `d3` version 3 dependency
+
+## 💫 More
+
+Publishing and versioning is automatic upon any changes done to the `master` branch.
+
+### 🌐 Online version
+
+Available [here](https://coolearning.github.io/playground).
+
+### ⚡ Offline version
+
+> TBD
+
+### 🔨 Development environment
+
+```shell
+git clone https://github.com/bamdadsabbagh/playground.git
+cd playground
+yarn
+yarn start
+# navigate to http://localhost:5000
+```
+
+## 📚 Supported Devices
+
+### [Novation Launchpad X](https://novationmusic.com/en/launch/launchpad-x)
+
+<img alt="novation launchpad x" width="200px" src="https://novationmusic.com/sites/novation/files/lpx-overhead-391-390.png">
+
+### [Novation Launch Control XL](https://novationmusic.com/en/launch/launch-control-xl)
+
+<img alt="novation launch control xl" width="200px" src="https://novationmusic.com/sites/novation/files/LCXL-overhead-1067-1062.png">

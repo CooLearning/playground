@@ -1,4 +1,4 @@
-import { mappingState } from './mapping.state';
+import { mappingsState } from './mappings.state';
 
 /**
  * Object to store the state of the application.
@@ -81,7 +81,7 @@ storageState.reloadWindow = function () {
 
 storageState.fetchStates = function () {
   return {
-    mapping: mappingState.state,
+    mapping: mappingsState.state,
   };
 };
 

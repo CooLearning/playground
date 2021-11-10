@@ -1,17 +1,17 @@
 import { notificationsUi } from '../ui/notifications.ui';
-import { modalUi } from '../ui/modal.ui';
+import { mappingsUi } from '../ui/mappings.ui';
 
 /**
  * State object for the mappings.
  */
-export const mappingState = Object.create (null);
+export const mappingsState = Object.create (null);
 
-mappingState.isLearning = false;
-mappingState.learningParameter = null;
-mappingState.controlByParameter = {};
-mappingState.parametersByControl = {};
+mappingsState.isLearning = false;
+mappingsState.learningParameter = null;
+mappingsState.controlByParameter = {};
+mappingsState.parametersByControl = {};
 
-mappingState.state = {
+mappingsState.state = {
   get state () {
     return {
       isLearning: this.isLearning,
@@ -33,7 +33,7 @@ type LearnOptions = {
  *
  * @param {LearnOptions} options - The options for learning.
  */
-mappingState.learn = function ({
+mappingsState.learn = function ({
   parameter,
   control,
   type,
@@ -44,7 +44,7 @@ mappingState.learn = function ({
 
   this.setParameterMaps ({ parameter, control, type });
   this.disableLearningMode ();
-  modalUi.updateMapping (parameter, control, type);
+  mappingsUi.updateMapping (parameter, control, type);
   notificationsUi.notify (
     `Learn: control ${control} for ${parameter} (${type})`,
   );
@@ -55,12 +55,12 @@ mappingState.learn = function ({
  *
  * @param {string} parameter - The parameter to unlearn.
  */
-mappingState.unlearn = function (parameter: string) {
+mappingsState.unlearn = function (parameter: string) {
   if (!this.isMapped (parameter)) {
     return;
   }
   this.unsetParameterMaps (parameter);
-  modalUi.updateMapping (parameter);
+  mappingsUi.updateMapping (parameter);
   notificationsUi.notify (`${parameter} unlearned`);
 
   // saveState ();
@@ -71,7 +71,7 @@ mappingState.unlearn = function (parameter: string) {
  *
  * @param {string} learningParameter - The parameter to learn.
  */
-mappingState.enableLearningMode = function (learningParameter: string) {
+mappingsState.enableLearningMode = function (learningParameter: string) {
   this.isLearning = true;
   this.learningParameter = learningParameter;
 };
@@ -79,7 +79,7 @@ mappingState.enableLearningMode = function (learningParameter: string) {
 /**
  * Disable learning mode.
  */
-mappingState.disableLearningMode = function () {
+mappingsState.disableLearningMode = function () {
   this.isLearning = false;
   this.learningParameter = null;
 };
@@ -89,7 +89,7 @@ mappingState.disableLearningMode = function () {
  *
  * @param {LearnOptions} options - The options for learning.
  */
-mappingState.setParameterMaps = function ({
+mappingsState.setParameterMaps = function ({
   parameter,
   control,
   type,
@@ -115,7 +115,7 @@ mappingState.setParameterMaps = function ({
  *
  * @param {string} parameter - The parameter to unset.
  */
-mappingState.unsetParameterMaps = function (parameter: string) {
+mappingsState.unsetParameterMaps = function (parameter: string) {
   // reverse unmap
   const { control } = this.controlByParameter[parameter];
   const parameters = this.getParametersByControl (control);
@@ -139,11 +139,11 @@ mappingState.unsetParameterMaps = function (parameter: string) {
  * @param {string} parameter - The parameter to check.
  * @returns {boolean} - True if the parameter is mapped.
  */
-mappingState.isMapped = function (parameter: string): boolean {
+mappingsState.isMapped = function (parameter: string): boolean {
   return this.controlByParameter[parameter] !== undefined;
 };
 
-mappingState.getParametersByControl = function (control: number) {
+mappingsState.getParametersByControl = function (control: number) {
   if (!this.parametersByControl[control]) {
     return [];
   }

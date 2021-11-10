@@ -1,4 +1,4 @@
-import { mappingState } from './mapping.state';
+import { mappingsState } from './mappings.state';
 import { storageState } from './storage.state';
 
 /**
@@ -6,7 +6,7 @@ import { storageState } from './storage.state';
  */
 export const state = Object.create (null);
 
-state.mappings = mappingState;
+state.mappings = mappingsState;
 state.store = storageState;
 
 state.reset = function () {

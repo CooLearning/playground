@@ -4,7 +4,7 @@ import { isTabActive } from '../../coolearning/utils/is-tab-active';
 import { getSetting } from '../../coolearning/utils/get-setting';
 import { SettingsActions, SettingsPositions } from '../../coolearning/enums';
 import { createSettingsActionButton } from '../../coolearning/utils/create-settings-action-button';
-import { mappingState } from '../state/mapping.state';
+import { mappingsState } from '../state/mappings.state';
 import { notificationsUi } from './notifications.ui';
 import { rangeMap } from '../utils/range-map';
 
@@ -12,11 +12,11 @@ import { rangeMap } from '../utils/range-map';
  * View model for the modal component.
  * Contains the mappings.
  */
-export const modalUi = Object.create (null);
+export const mappingsUi = Object.create (null);
 
-modalUi.container = null;
-modalUi.content = null;
-modalUi.parameters = {
+mappingsUi.container = null;
+mappingsUi.content = null;
+mappingsUi.parameters = {
   playPauseButton: document.getElementById ('play-pause-button'),
   resetButton: document.getElementById ('reset-button'),
   learningRate: document.getElementById ('learningRate'),
@@ -33,7 +33,7 @@ modalUi.parameters = {
   discretize: document.getElementById ('discretize').parentNode,
 };
 
-modalUi.init = function () {
+mappingsUi.init = function () {
   const { container, content } = ModalComponent ();
   this.container = container;
   this.content = content;
@@ -41,18 +41,18 @@ modalUi.init = function () {
   this.buildMappings ();
 };
 
-modalUi.show = function () {
+mappingsUi.show = function () {
   this.container.style.display = 'block';
 };
 
-modalUi.hide = function () {
+mappingsUi.hide = function () {
   this.container.style.display = 'none';
 };
 
 /**
  * @todo split logic into separate functions
  */
-modalUi.buildMappings = function () {
+mappingsUi.buildMappings = function () {
   // styles
   this.content.style.display = 'flex';
   this.content.style.flexDirection = 'column';
@@ -78,7 +78,7 @@ modalUi.buildMappings = function () {
 
   // next rows with parameters and controls
   // skeleton only
-  Object.keys (modalUi.parameters).forEach ((parameter) => {
+  Object.keys (mappingsUi.parameters).forEach ((parameter) => {
     this.content.innerHTML += `
       <div class="${CLASSES.action}" style="
         display: grid;
@@ -96,11 +96,11 @@ modalUi.buildMappings = function () {
   const actions = document.getElementsByClassName (CLASSES.action);
   Array.from (actions).forEach ((action: any) => {
     const parameter: string = action.firstElementChild.innerText;
-    modalUi.updateMapping (parameter);
+    mappingsUi.updateMapping (parameter);
   });
 };
 
-modalUi.updateMapping = function (parameter, control = undefined, type = undefined): void {
+mappingsUi.updateMapping = function (parameter, control = undefined, type = undefined): void {
   if (!isTabActive ()) {
     return;
   }
@@ -143,7 +143,7 @@ modalUi.updateMapping = function (parameter, control = undefined, type = undefin
           if (learned) {
             this.unlearn (parameter);
           } else {
-            mappingState.enableLearningMode (parameter);
+            mappingsState.enableLearningMode (parameter);
           }
         };
         break;
@@ -164,17 +164,17 @@ type LearnOptions = {
  *
  * @param {LearnOptions} options - The options for learning.
  */
-modalUi.learn = function ({
+mappingsUi.learn = function ({
   parameter,
   control,
   type,
 }: LearnOptions) {
-  if (mappingState.isMapped (parameter)) {
+  if (mappingsState.isMapped (parameter)) {
     return;
   }
 
-  mappingState.setParameterMaps ({ parameter, control, type });
-  modalUi.updateMapping (parameter, control, type);
+  mappingsState.setParameterMaps ({ parameter, control, type });
+  mappingsUi.updateMapping (parameter, control, type);
   notificationsUi.notify (
     `Learn: control ${control} for ${parameter} (${type})`,
   );
@@ -185,12 +185,12 @@ modalUi.learn = function ({
  *
  * @param {string} parameter - The parameter to unlearn.
  */
-modalUi.unlearn = function (parameter: string) {
-  if (!mappingState.isMapped (parameter)) {
+mappingsUi.unlearn = function (parameter: string) {
+  if (!mappingsState.isMapped (parameter)) {
     return;
   }
-  mappingState.unsetParameterMaps (parameter);
-  modalUi.updateMapping (parameter);
+  mappingsState.unsetParameterMaps (parameter);
+  mappingsUi.updateMapping (parameter);
   notificationsUi.notify (`${parameter} unlearned`);
 
   // saveState ();
@@ -202,7 +202,7 @@ modalUi.unlearn = function (parameter: string) {
  * @param {string} name - The name of the parameter to render.
  * @param {number} value - The value of the parameter to render.
  */
-modalUi.renderParameter = function (name: string, value: number): void {
+mappingsUi.renderParameter = function (name: string, value: number): void {
   if (typeof name === 'undefined') {
     throw new Error ('parameter is not defined');
   }

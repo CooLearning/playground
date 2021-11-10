@@ -40,7 +40,7 @@ export type Device = {
   name: string;
   isController: boolean;
   isSelector: boolean;
-  isUsed: boolean;
+  isPicked: boolean;
   input: Input;
   output: Output;
   settings: DeviceSettings;

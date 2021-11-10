@@ -3,8 +3,8 @@ import { rangeMap } from '../utils/range-map';
 import { playgroundFacade } from '../facades/playground.facade';
 import { neuronCardUi } from '../ui/neuron-card.ui';
 import { networkState } from '../state/network.state';
-import { mappingState } from '../state/mapping.state';
-import { modalUi } from '../ui/modal.ui';
+import { mappingsState } from '../state/mappings.state';
+import { mappingsUi } from '../ui/mappings.ui';
 
 /**
  * Controller is a unique device that controls the playground.
@@ -23,7 +23,7 @@ export const controllerDevice = Object.create (devicePrototype);
  */
 controllerDevice.init = async function (device: any): Promise<void> {
   if (this.isInitialized) {
-    throw new Error ('controller is already initialized');
+    this.clearListeners ();
   }
 
   this.device = device;
@@ -78,15 +78,15 @@ controllerDevice.setMode = function () {
 controllerDevice.setDefaultMode = function () {
   this.onControl ((e) => {
     const note = parseInt (e.controller.number);
-    const { isLearning, learningParameter } = mappingState;
-    const parameters = mappingState.getParametersByControl (note);
+    const { isLearning, learningParameter } = mappingsState;
+    const parameters = mappingsState.getParametersByControl (note);
 
     parameters.forEach ((parameter) => {
-      modalUi.renderParameter (parameter, e.value);
+      mappingsUi.renderParameter (parameter, e.value);
     });
 
     if (isLearning && learningParameter) {
-      modalUi.learn ({
+      mappingsUi.learn ({
         parameter: learningParameter,
         control: note,
         type: 'range',
@@ -137,15 +137,15 @@ controllerDevice.attachButtons = function () {
     }
 
     const note = parseInt (e.note.number);
-    const { isLearning, learningParameter } = mappingState;
-    const parameters = mappingState.getParametersByControl (note);
+    const { isLearning, learningParameter } = mappingsState;
+    const parameters = mappingsState.getParametersByControl (note);
 
     parameters.forEach ((parameter) => {
-      modalUi.renderParameter (parameter, 1);
+      mappingsUi.renderParameter (parameter, 1);
     });
 
     if (isLearning && learningParameter) {
-      modalUi.learn ({
+      mappingsUi.learn ({
         parameter: learningParameter,
         control: note,
         type: 'button',

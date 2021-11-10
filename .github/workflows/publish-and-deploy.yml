@@ -17,7 +17,13 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Prepare for publishing
+      - name: Install dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
+
+      - name: Prepare for release
         run: |
           npm install -g \
             semantic-release \
@@ -28,13 +34,7 @@ jobs:
             @semantic-release/npm \
             @qiwi/semantic-release-gh-pages-plugin
 
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build
-        run: yarn build
-
-      - name: Publish
+      - name: Release
         run: semantic-release
         env:
           GH_TOKEN: ${{ secrets.PAT }}

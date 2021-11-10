@@ -1,5 +1,5 @@
 import { CLASSES } from '../../../coolearning/constants';
-import { modalUi } from '../modal.ui';
+import { mappingsUi } from '../mappings.ui';
 
 /**
  * Modal to display the settings.
@@ -34,7 +34,7 @@ export function ModalComponent (): { container: HTMLDivElement; content: HTMLDiv
     const classes = e.target.classList;
     const isOutside = Array.from (classes).includes (CLASSES.settings.container);
     if (isOutside) {
-      modalUi.hide ();
+      mappingsUi.hide ();
     }
   });
 

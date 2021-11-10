@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 module.exports = {
   'plugins':
     [
@@ -5,6 +6,9 @@ module.exports = {
       '@semantic-release/release-notes-generator',
       ['@semantic-release/changelog', {
         'changelogFile': 'CHANGELOG.md',
+      }],
+      ['@semantic-release/exec', {
+        'prepareCmd': 'yarn build:archive ${nextRelease.version}',
       }],
       ['@semantic-release/npm', {
         npmPublish: false,
@@ -17,8 +21,8 @@ module.exports = {
         'assets': [
           'CHANGELOG.md',
           'package.json',
+          'coolearning-playground-v${nextRelease.version}.zip',
         ],
-        // eslint-disable-next-line no-template-curly-in-string
         'message': 'chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}',
       }],
     ],
