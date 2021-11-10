@@ -1,6 +1,3 @@
-import { notificationsUi } from '../ui/notifications.ui';
-import { mappingsUi } from '../ui/mappings.ui';
-
 /**
  * State object for the mappings.
  */
@@ -27,44 +24,6 @@ type LearnOptions = {
   control: number;
   type: string;
 }
-
-/**
- * Learn a mapping between a parameter and a control.
- *
- * @param {LearnOptions} options - The options for learning.
- */
-mappingsState.learn = function ({
-  parameter,
-  control,
-  type,
-}: LearnOptions) {
-  if (this.isMapped (parameter)) {
-    return;
-  }
-
-  this.setParameterMaps ({ parameter, control, type });
-  this.disableLearningMode ();
-  mappingsUi.updateMapping (parameter, control, type);
-  notificationsUi.notify (
-    `Learn: control ${control} for ${parameter} (${type})`,
-  );
-};
-
-/**
- * Unlearn a mapping between a parameter and a control.
- *
- * @param {string} parameter - The parameter to unlearn.
- */
-mappingsState.unlearn = function (parameter: string) {
-  if (!this.isMapped (parameter)) {
-    return;
-  }
-  this.unsetParameterMaps (parameter);
-  mappingsUi.updateMapping (parameter);
-  notificationsUi.notify (`${parameter} unlearned`);
-
-  // saveState ();
-};
 
 /**
  * Enable learning mode.

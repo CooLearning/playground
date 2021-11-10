@@ -1,24 +1,23 @@
-import { ModalComponent } from './components/modal.component';
-import { CLASSES, SETTINGS } from '../../coolearning/constants';
-import { isTabActive } from '../../coolearning/utils/is-tab-active';
-import { getSetting } from '../../coolearning/utils/get-setting';
-import { SettingsActions, SettingsPositions } from '../../coolearning/enums';
-import { createSettingsActionButton } from '../../coolearning/utils/create-settings-action-button';
+import { dialogPrototype } from './prototypes/dialog.prototype';
 import { mappingsState } from '../state/mappings.state';
 import { notificationsUi } from './notifications.ui';
-import { rangeMap } from '../utils/range-map';
+import { MappingChipComponent } from './components/mapping-chip.component';
 
 /**
  * View model for the modal component.
  * Contains the mappings.
  */
-export const mappingsUi = Object.create (null);
+export const mappingsUi = Object.create (dialogPrototype);
 
-mappingsUi.container = null;
-mappingsUi.content = null;
-mappingsUi.parameters = {
+mappingsUi.nodeSelectors = {
+  node: '#mappings',
+  closeButton: '.close-button',
+  content: '.mdl-dialog__content',
+  tableContent: '.table-content',
+};
+
+mappingsUi.parameterQueries = {
   playPauseButton: document.getElementById ('play-pause-button'),
-  resetButton: document.getElementById ('reset-button'),
   learningRate: document.getElementById ('learningRate'),
   activation: document.getElementById ('activations'),
   regularizations: document.getElementById ('regularizations'),
@@ -33,124 +32,45 @@ mappingsUi.parameters = {
   discretize: document.getElementById ('discretize').parentNode,
 };
 
+mappingsUi.chips = {};
+
 mappingsUi.init = function () {
-  const { container, content } = ModalComponent ();
-  this.container = container;
-  this.content = content;
-  document.body.insertBefore (this.container, document.body.firstChild);
-  this.buildMappings ();
+  this.node = document.querySelector (this.nodeSelectors.node);
+  this.closeButton = this.node.querySelector (this.nodeSelectors.closeButton);
+  this.content = this.node.querySelector (this.nodeSelectors.content);
+  this.tableContent = this.node.querySelector (this.nodeSelectors.tableContent);
+  this.buildTableContent ();
+  this.attachEvents (this.closeButton);
 };
 
-mappingsUi.show = function () {
-  this.container.style.display = 'block';
-};
-
-mappingsUi.hide = function () {
-  this.container.style.display = 'none';
-};
-
-/**
- * @todo split logic into separate functions
- */
-mappingsUi.buildMappings = function () {
-  // styles
-  this.content.style.display = 'flex';
-  this.content.style.flexDirection = 'column';
-  this.content.style.justifyContent = 'center';
-  this.content.style.alignItems = 'center';
-  this.content.style.textAlign = 'center';
-  this.content.style.gridGap = '0.5em';
-
-  // first row
-  this.content.innerHTML = `
-    <div style="
-        display: grid;
-        grid-template-columns: repeat(4, 20vw);
-        font-weight: bold;
-        background: gainsboro;
-    ">
-      <div>Parameter</div>
-      <div>Control</div>
-      <div>Control Type</div>
-      <div>Actions</div>
-    </div>
-  `;
-
-  // next rows with parameters and controls
-  // skeleton only
-  Object.keys (mappingsUi.parameters).forEach ((parameter) => {
-    this.content.innerHTML += `
-      <div class="${CLASSES.action}" style="
-        display: grid;
-        grid-template-columns: repeat(4, 20vw);
-      ">
-        <div>${parameter}</div>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-    `;
-  });
-
-  // actions listeners
-  const actions = document.getElementsByClassName (CLASSES.action);
-  Array.from (actions).forEach ((action: any) => {
-    const parameter: string = action.firstElementChild.innerText;
-    mappingsUi.updateMapping (parameter);
+mappingsUi.buildTableContent = function () {
+  Object.keys (this.parameterQueries).forEach ((parameterName) => {
+    this.tableContent.appendChild (this.createContentRow (parameterName));
   });
 };
 
-mappingsUi.updateMapping = function (parameter, control = undefined, type = undefined): void {
-  if (!isTabActive ()) {
-    return;
-  }
-  if (!parameter) {
-    throw new Error ('parameter is not defined');
-  }
-  if (typeof parameter !== 'string') {
-    throw new Error ('parameter is not a string');
-  }
+mappingsUi.createContentCell = function () {
+  const cell = document.createElement ('td');
+  cell.classList.add ('mdl-data-table__cell--non-numeric');
+  return cell;
+};
 
-  const setting = getSetting (parameter);
+mappingsUi.createContentRow = function (parameterName: string) {
+  const row = document.createElement ('tr');
 
-  if (!setting) {
-    throw new Error ('error getting setting');
-  }
+  const parameterElement = this.createContentCell ();
+  parameterElement.innerText = parameterName;
 
-  const children = Array.from (setting.children);
-  const learned = control && type;
+  const chip = new MappingChipComponent ({ name: parameterName });
+  this.chips[parameterName] = chip;
 
-  children.forEach ((child: any, key) => {
-    switch (key) {
-      case SettingsPositions.Parameter:
-        break;
-      case SettingsPositions.Control:
-        child.innerText = learned
-          ? control
-          : SETTINGS.none;
-        break;
-      case SettingsPositions.Type:
-        child.innerText = learned
-          ? type
-          : SETTINGS.none;
-        break;
-      case SettingsPositions.Action:
-        child.innerHTML = createSettingsActionButton ({
-          action: learned ? SettingsActions.Unlearn : SettingsActions.Learn,
-          parameter,
-        });
-        child.onclick = () => {
-          if (learned) {
-            this.unlearn (parameter);
-          } else {
-            mappingsState.enableLearningMode (parameter);
-          }
-        };
-        break;
-      default:
-        break;
-    }
-  });
+  const mappingElement = this.createContentCell ();
+  mappingElement.appendChild (chip.getNode ());
+
+  row.appendChild (parameterElement);
+  row.appendChild (mappingElement);
+
+  return row;
 };
 
 type LearnOptions = {
@@ -174,7 +94,13 @@ mappingsUi.learn = function ({
   }
 
   mappingsState.setParameterMaps ({ parameter, control, type });
-  mappingsUi.updateMapping (parameter, control, type);
+
+  this.chips[parameter].update ({
+    icon: type,
+    content: control,
+    isLearned: true,
+  });
+
   notificationsUi.notify (
     `Learn: control ${control} for ${parameter} (${type})`,
   );
@@ -189,83 +115,10 @@ mappingsUi.unlearn = function (parameter: string) {
   if (!mappingsState.isMapped (parameter)) {
     return;
   }
+
   mappingsState.unsetParameterMaps (parameter);
-  mappingsUi.updateMapping (parameter);
+
+  this.chips[parameter].reset ();
+
   notificationsUi.notify (`${parameter} unlearned`);
-
-  // saveState ();
-};
-
-/**
- * Render the parameters UI.
- *
- * @param {string} name - The name of the parameter to render.
- * @param {number} value - The value of the parameter to render.
- */
-mappingsUi.renderParameter = function (name: string, value: number): void {
-  if (typeof name === 'undefined') {
-    throw new Error ('parameter is not defined');
-  }
-  if (typeof value === 'undefined') {
-    throw new Error ('value is not defined');
-  }
-  if (!isTabActive ()) {
-    return;
-  }
-
-  const parameter = this.parameters[name];
-  if (!parameter) {
-    throw new Error ('parameter name was not found in listed nodes');
-  }
-
-  // render the parameter depending on its HTML nature.
-  switch (parameter.tagName) {
-    case 'SELECT': {
-      const length = parameter.children.length - 1;
-      const scaledValue = rangeMap (value, 0, 127, 0, length);
-      const scaledInteger = parseInt (scaledValue.toString ());
-      const areDifferent = scaledInteger !== parameter.selectedIndex;
-
-      if (areDifferent) {
-        parameter.selectedIndex = scaledInteger;
-        parameter.dispatchEvent (new Event ('change'));
-      }
-
-      break;
-    }
-
-    case 'BUTTON': {
-      parameter.click ();
-      break;
-    }
-
-    case 'INPUT': {
-      const min = parseInt (parameter.min);
-      const max = parseInt (parameter.max);
-      const step = parseInt (parameter.step);
-
-      const v = rangeMap (value, 0, 127, min, max);
-      const n = parseInt (v.toString ());
-      const isStep = (n % step) === 0;
-      const areDifferent = n !== parseInt (parameter.value);
-
-      if (isStep && areDifferent) {
-        parameter.value = n.toString ();
-        parameter.dispatchEvent (new Event ('input'));
-      }
-
-      break;
-    }
-
-    case 'LABEL': {
-      if (value === 0) {
-        return;
-      }
-      parameter.click ();
-      break;
-    }
-
-    default:
-      throw new Error (`${parameter.tagName} target not handled`);
-  }
 };

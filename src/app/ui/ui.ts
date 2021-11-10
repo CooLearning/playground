@@ -1,4 +1,3 @@
-import { dialogUi } from './dialog.ui';
 import { mappingsUi } from './mappings.ui';
 import { buttonsUi } from './buttons.ui';
 import { notificationsUi } from './notifications.ui';
@@ -16,7 +15,6 @@ ui.init = async function () {
   await notificationsUi.init ();
   mappingsUi.init ();
   buttonsUi.init ();
-  dialogUi.init ();
   neuronCardUi.init ();
   devicesUi.init ();
 

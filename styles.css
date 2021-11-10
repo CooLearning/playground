@@ -1044,6 +1044,28 @@ App Buttons
   grid-gap: 6px;
 }
 
+/**
+Mappings
+ */
+
+#mappings {
+  width: 40vw;
+  min-width: 450px;
+}
+
+#mappings .mdl-dialog__content {
+  display: flex;
+  justify-content: center;
+}
+
+#mappings .parameter-column {
+  width: 200px;
+}
+
+#mappings table {
+  width: 100%;
+}
+
 /*
 Devices
  */

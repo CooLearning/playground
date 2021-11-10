@@ -5,6 +5,7 @@ import { neuronCardUi } from '../ui/neuron-card.ui';
 import { networkState } from '../state/network.state';
 import { mappingsState } from '../state/mappings.state';
 import { mappingsUi } from '../ui/mappings.ui';
+import { playgroundUi } from '../ui/playground.ui';
 
 /**
  * Controller is a unique device that controls the playground.
@@ -82,7 +83,7 @@ controllerDevice.setDefaultMode = function () {
     const parameters = mappingsState.getParametersByControl (note);
 
     parameters.forEach ((parameter) => {
-      mappingsUi.renderParameter (parameter, e.value);
+      playgroundUi.updateParameter (parameter, e.value);
     });
 
     if (isLearning && learningParameter) {
@@ -141,7 +142,7 @@ controllerDevice.attachButtons = function () {
     const parameters = mappingsState.getParametersByControl (note);
 
     parameters.forEach ((parameter) => {
-      mappingsUi.renderParameter (parameter, 1);
+      playgroundUi.updateParameter (parameter, 1);
     });
 
     if (isLearning && learningParameter) {
