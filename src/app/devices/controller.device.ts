@@ -191,7 +191,10 @@ controllerDevice.attachRangesToNeuron = function (selectedNode: number): void {
       && e.controller.number <= this.settings.rows.faders[7]
     ) {
       const index = e.controller.number - this.settings.rows.faders[0];
-      const { source } = links[index];
+      const source = links?.[index]?.source;
+      if (typeof source === 'undefined') {
+        return;
+      }
       const value = rangeMap (e.value, 0, 127, -1, 1);
 
       if (value.toFixed (1) === weights[index].weight.toFixed (1)) {
