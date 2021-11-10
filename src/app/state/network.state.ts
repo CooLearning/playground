@@ -115,11 +115,7 @@ networkState.toggleNeuron = function (nodeIndex: number): void {
 
   // input weights
   neuron.inputLinks.forEach ((link: Link) => {
-    // kill if source neuron is disabled
-    if (!link.source.isEnabled) {
-      link.isDead = true;
-      link.savedWeight = link.weight;
-      link.weight = 0;
+    if (link.source.isEnabled === false) {
       return;
     }
 
@@ -135,6 +131,10 @@ networkState.toggleNeuron = function (nodeIndex: number): void {
 
   // output weights
   neuron.outputs.forEach ((link: Link) => {
+    if (link.dest.isEnabled === false) {
+      return;
+    }
+
     if (neuron.isEnabled) {
       link.isDead = false;
       link.weight = link.savedWeight || Math.random () - 0.5;
