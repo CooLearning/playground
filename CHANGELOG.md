@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/CooLearning/playground/compare/v1.1.3...v1.2.0) (2021-11-10)
+
+
+### Features
+
+* Migrate old mapping UI to new dialog based UI + Use new `MappingChipComponent` to display mappings + Small improvements and dead code removal ([6d49897](https://github.com/CooLearning/playground/commit/6d498976de1c07c5cd1a283656a5dc406fb51e85))
+
 ## [1.1.3](https://github.com/CooLearning/playground/compare/v1.1.2...v1.1.3) (2021-11-10)
 
 
