@@ -84,8 +84,7 @@ midi.handleConnectedPort = function (port): void {
     settings,
   } = getKnownDeviceInfo (manufacturer, name);
 
-  port.isConnected = port.connection === 'open' || false;
-  port.isUsed = port.isUsed || false;
+  port.isPicked = false;
 
   if (isKnown) {
     port.isKnown = true;
@@ -103,7 +102,12 @@ midi.handleConnectedPort = function (port): void {
  * @param {*} port - The MIDI input or output
  */
 midi.handleDisconnectedPort = function (port) {
-  port.isConnected = false;
+  // clunky, port.connection is an async getter
+  setTimeout (() => {
+    if (port.isPicked && port.connection !== 'open') {
+      devicesState.unpickDevice (port);
+    }
+  }, 100);
 };
 
 /**

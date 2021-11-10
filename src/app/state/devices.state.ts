@@ -1,4 +1,8 @@
-import { knownDevices } from '../devices/known-devices/known-devices';
+import {
+  Controller,
+  knownDevices,
+  Selector,
+} from '../devices/known-devices/known-devices';
 import {
   Controllers,
   Devices,
@@ -15,10 +19,11 @@ enum Errors {
 export const devicesState = Object.create (null);
 
 devicesState.devices = null as Devices;
-devicesState.used = null as Devices;
 devicesState.controllers = null as Controllers;
 devicesState.selectors = null as Selectors;
 devicesState.knownDevices = knownDevices;
+devicesState.pickedSelector = null as Selector;
+devicesState.pickedController = null as Controller;
 
 /**
  * Initialize devices
@@ -43,21 +48,14 @@ devicesState.sortDevices = function (): void {
  * Set controllers devices
  */
 devicesState.setControllers = function (): void {
-  this.controllers = this.pickDevicesByProperty ('isController');
+  this.controllers = this.filterDevicesByProperty ('isController');
 };
 
 /**
  * Set selectors devices
  */
 devicesState.setSelectors = function (): void {
-  this.selectors = this.pickDevicesByProperty ('isSelector');
-};
-
-/**
- * Set used devices
- */
-devicesState.setUsed = function (): void {
-  this.used = this.pickDevicesByProperty ('isUsed');
+  this.selectors = this.filterDevicesByProperty ('isSelector');
 };
 
 /**
@@ -73,11 +71,13 @@ devicesState.pickController = function (name: string, isPicked = true): void {
   }
 
   const controller = this.controllers[controllerName];
-  controller.isUsed = isPicked;
-  controller.input.isUsed = isPicked;
-  controller.output.isUsed = isPicked;
-  this.setUsed ();
-  controllerDevice.init (controller);
+  if (isPicked) {
+    controller.isPicked = true;
+    controller.input.isPicked = true;
+    controller.output.isPicked = true;
+    this.pickedController = controller;
+    controllerDevice.init (controller);
+  }
 };
 
 /**
@@ -93,31 +93,34 @@ devicesState.pickSelector = function (name: string, isPicked = true): void {
   }
 
   const selector = this.selectors[selectorName];
-  selector.isUsed = isPicked;
-  selector.input.isUsed = isPicked;
-  selector.output.isUsed = isPicked;
-  this.setUsed ();
-  selectorDevice.init (selector);
+  if (isPicked) {
+    selector.isPicked = true;
+    selector.input.isPicked = true;
+    selector.output.isPicked = true;
+    this.pickedSelector = selector;
+    selectorDevice.init (selector);
+  }
 };
 
-type DeviceProperty = 'isController' | 'isSelector' | 'isUsed';
+type DeviceProperty = 'isController' | 'isSelector';
 
 /**
- * Utility function to pick devices by property
+ * Utility function to filter devices by property
  *
- * @param {string} property - property to pick
+ * @param {string} property - property to filter
  * @returns {*} devices for a given property
  */
-devicesState.pickDevicesByProperty = function (property: DeviceProperty): any {
+devicesState.filterDevicesByProperty = function (property: DeviceProperty): any {
   return Object.keys (this.devices).reduce ((acc, name) => {
     const device = this.devices[name];
     const settings = device.input.settings || device.output.settings || null;
+
     if (device[property]) {
       device.name = name;
       device.settings = settings;
-      device.isConnected = device.input.isConnected && device.output.isConnected;
       acc[name] = device;
     }
+
     return acc;
   }, {});
 };
@@ -135,4 +138,12 @@ devicesState.getSelectors = function () {
 
 devicesState.getControllers = function () {
   return this.controllers;
+};
+
+devicesState.unpickDevice = function (port) {
+  if (port.isSelector) {
+    this.pickedSelector = null;
+  } else if (port.isController) {
+    this.pickedController = null;
+  }
 };

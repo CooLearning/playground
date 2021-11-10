@@ -1,5 +1,6 @@
 import { dialogPrototype } from './prototypes/dialog.prototype';
 import { devicesState } from '../state/devices.state';
+import { Device } from '../devices/device/device.types';
 
 export const devicesUi = Object.create (dialogPrototype);
 
@@ -66,12 +67,15 @@ devicesUi.render = function () {
 devicesUi.renderOptions = function (target: string) {
   let targetNode;
   let options;
+  let pickedDevice: Device;
   if (target === 'selector') {
     targetNode = this.selectorOptions;
     options = devicesState.selectors;
+    pickedDevice = devicesState.pickedSelector;
   } else if (target === 'controller') {
     targetNode = this.controllerOptions;
     options = devicesState.controllers;
+    pickedDevice = devicesState.pickedController;
   } else {
     throw new Error ('target node is undefined while render options');
   }
@@ -85,9 +89,9 @@ devicesUi.renderOptions = function (target: string) {
   if (options) {
     // default 'none' option
     const none = document.createElement ('option');
-    none.innerText = 'none';
+    none.innerText = 'Select port';
     none.disabled = true;
-    none.selected = true;
+    none.selected = pickedDevice === null;
     targetNode.appendChild (none);
 
     // add passed options
@@ -95,6 +99,7 @@ devicesUi.renderOptions = function (target: string) {
       const option = document.createElement ('option');
       option.value = optionName;
       option.innerText = optionName;
+      option.selected = optionName === pickedDevice?.name;
       targetNode.appendChild (option);
     });
   }
