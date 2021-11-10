@@ -1,15 +1,27 @@
-import { ShowButtonComponent } from './components/show-button.component';
-import { ResetButtonComponent } from './components/reset-button.component';
+import { devicesUi } from './devices.ui';
+import { mappingsUi } from './mappings.ui';
 
 export const buttonsUi = Object.create (null);
 
-buttonsUi.show = null;
-buttonsUi.reset = null;
+buttonsUi.nodeSelectors = {
+  node: '#buttons',
+  settings: '.settings',
+  devices: '.devices',
+  mappings: '.mappings',
+  reset: '.reset',
+};
 
 buttonsUi.init = function () {
-  this.show = ShowButtonComponent ();
-  document.body.insertBefore (this.show, document.body.firstChild);
+  this.node = document.querySelector (this.nodeSelectors.node);
+  this.settings = this.node.querySelector (this.nodeSelectors.settings);
+  this.devices = this.node.querySelector (this.nodeSelectors.devices);
+  this.mappings = this.node.querySelector (this.nodeSelectors.mappings);
+  this.reset = this.node.querySelector (this.nodeSelectors.reset);
 
-  this.reset = ResetButtonComponent ();
-  document.body.insertBefore (this.reset, document.body.firstChild);
+  // eslint-disable-next-line no-console
+  this.settings.onclick = () => console.log ('settings');
+  this.devices.onclick = () => mappingsUi.show ();
+  this.mappings.onclick = () => devicesUi.show ();
+  // eslint-disable-next-line no-console
+  this.reset.onclick = () => console.log ('reset');
 };

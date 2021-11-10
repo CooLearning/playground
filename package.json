@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "clean": "rimraf dist",
-    "start": "npm run serve-watch",
+    "start": "yarn serve-watch",
     "prep": "copyfiles analytics.js dist && concat node_modules/material-design-lite/material.min.js node_modules/seedrandom/seedrandom.min.js > dist/lib.js",
     "build-css": "concat node_modules/material-design-lite/material.min.css styles.css > dist/bundle.css",
     "watch-css": "concat node_modules/material-design-lite/material.min.css styles.css -o dist/bundle.css",
@@ -13,10 +13,10 @@
     "watch-html": "concat index.html -o dist/index.html",
     "build-js": "browserify src/playground/playground.ts -p [tsify] | uglifyjs -c > dist/bundle.js",
     "watch-js": "watchify src/playground/playground.ts -p [tsify] -v --debug -o dist/bundle.js",
-    "build": "npm run prep && npm run build-js && npm run build-css && npm run build-html",
-    "watch": "npm run prep && concurrently \"npm run watch-js\" \"npm run watch-css\" \"npm run watch-html\"",
+    "build": "yarn prep && yarn build-js && yarn build-css && yarn build-html",
+    "watch": "yarn prep && concurrently \"yarn watch-js\" \"yarn watch-css\" \"yarn watch-html\"",
     "serve": "npx serve dist/",
-    "serve-watch": "concurrently \"npx serve dist/\" \"npm run watch\""
+    "serve-watch": "concurrently \"npx serve dist/\" \"yarn watch\""
   },
   "devDependencies": {
     "@bamdadsabbagh/eslint-config": "^1.17.2",

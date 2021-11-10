@@ -1,7 +1,9 @@
 import * as WebMidi from 'webmidi';
 import { Input, Output } from 'webmidi';
-import { getKnownDeviceInfo } from './utils/get-known-device-info';
-import { Device, Devices } from './device/device.types';
+import { getKnownDeviceInfo } from '../devices/utils/get-known-device-info';
+import { Device, Devices } from '../devices/device/device.types';
+import { devicesState } from '../state/devices.state';
+import { devicesUi } from '../ui/devices.ui';
 
 export const midi = Object.create (null);
 
@@ -19,9 +21,7 @@ midi.init = async function (): Promise<void> {
   if (this.isInitialized) {
     throw new Error ('midi is already initialized');
   }
-
   await this.enableService ();
-
   this.isInitialized = true;
 };
 
@@ -40,8 +40,8 @@ midi.enableService = function (): Promise<void> {
       this.inputs = this.service.inputs;
       this.outputs = this.service.outputs;
 
-      this.service.addListener ('connected', () => this.handleConnected ());
-      this.service.addListener ('disconnected', () => this.handleDisconnected ());
+      this.service.addListener ('connected', () => this.handleConnectedEvent ());
+      this.service.addListener ('disconnected', () => this.handleDisconnectedEvent ());
 
       resolve (null);
     }, this.sysexEnabled);
@@ -51,10 +51,23 @@ midi.enableService = function (): Promise<void> {
 /**
  * Handle connected MIDI device
  */
-midi.handleConnected = function (): void {
-  this.inputs.forEach ((input) => this.onConnect (input));
-  this.outputs.forEach ((output) => this.onConnect (output));
+midi.handleConnectedEvent = function (): void {
+  this.inputs.forEach ((input) => this.handleConnectedPort (input));
+  this.outputs.forEach ((output) => this.handleConnectedPort (output));
   this.setPorts ();
+  devicesState.init (this.ports);
+  devicesUi.render ();
+};
+
+/**
+ * Handle disconnected MIDI device
+ */
+midi.handleDisconnectedEvent = function (): void {
+  this.inputs.forEach ((input) => this.handleDisconnectedPort (input));
+  this.outputs.forEach ((output) => this.handleDisconnectedPort (output));
+  this.setPorts ();
+  devicesState.init (this.ports);
+  devicesUi.render ();
 };
 
 /**
@@ -62,7 +75,7 @@ midi.handleConnected = function (): void {
  *
  * @param {*} port - The MIDI input or output
  */
-midi.onConnect = function (port): void {
+midi.handleConnectedPort = function (port): void {
   const { manufacturer, name } = port;
   const {
     isKnown,
@@ -71,7 +84,7 @@ midi.onConnect = function (port): void {
     settings,
   } = getKnownDeviceInfo (manufacturer, name);
 
-  port.isConnected = port.isConnected || true;
+  port.isConnected = port.connection === 'open' || false;
   port.isUsed = port.isUsed || false;
 
   if (isKnown) {
@@ -85,23 +98,11 @@ midi.onConnect = function (port): void {
 };
 
 /**
- * Handle disconnected MIDI device
- */
-midi.handleDisconnected = function (): void {
-  // this.inputs.forEach (this.onDisconnect);
-  // this.outputs.forEach (this.onDisconnect);
-};
-
-/**
  * Utility function to handle input and output disconnections
  *
  * @param {*} port - The MIDI input or output
  */
-midi.onDisconnect = function (port) {
-  if (port.isUsed) {
-    // eslint-disable-next-line no-console
-    console.log (`${port.name} in used has been disconnected`);
-  }
+midi.handleDisconnectedPort = function (port) {
   port.isConnected = false;
 };
 
@@ -109,10 +110,10 @@ midi.onDisconnect = function (port) {
  * Set known devices
  */
 midi.setPorts = function () {
-  const knownInputs = this.inputs.filter ((input) => input.isKnown && input.isConnected);
+  const knownInputs = this.inputs.filter ((input) => input.isKnown);
   const knownInputsByName = this.sortPortsByName (knownInputs);
 
-  const knownOutputs = this.outputs.filter ((output) => output.isKnown && output.isConnected);
+  const knownOutputs = this.outputs.filter ((output) => output.isKnown);
   const knownOutputsByName = this.sortPortsByName (knownOutputs);
 
   this.ports = Object.keys (knownInputsByName).reduce ((acc, name) => {
@@ -120,6 +121,11 @@ midi.setPorts = function () {
     const knownOutput = knownOutputsByName[name]?.[0] || null;
     const isController = knownInput.isController || false;
     const isSelector = knownInput.isSelector || false;
+
+    // input or output can be null while connecting/disconnecting
+    if (!knownInput || !knownOutput) {
+      return acc;
+    }
 
     acc[name] = {
       isController,

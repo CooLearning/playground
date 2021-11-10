@@ -1,5 +1,5 @@
 import { Device, DeviceCategory } from '../device/device.types';
-import { devices } from '../devices';
+import { devicesState } from '../../state/devices.state';
 
 type GetKnownDeviceInfo = {
   isKnown: boolean;
@@ -16,7 +16,7 @@ type GetKnownDeviceInfo = {
  * @returns {GetKnownDeviceInfo} - The device info.
  */
 export function getKnownDeviceInfo (manufacturer: string, name: string): GetKnownDeviceInfo {
-  const device = devices.knownDevices
+  const device = devicesState.knownDevices
     .filter ((d) => d.manufacturer === manufacturer)
     // .filter (d => name === d.name)
     .filter ((d) => name.includes (d.name))

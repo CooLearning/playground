@@ -1175,4 +1175,3 @@ makeGUI ();
 generateData (true);
 reset (true);
 hideControls ();
-player.play ();

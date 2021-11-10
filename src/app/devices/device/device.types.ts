@@ -41,6 +41,7 @@ export type Device = {
   isController: boolean;
   isSelector: boolean;
   isUsed: boolean;
+  isConnected: boolean;
   input: Input;
   output: Output;
   settings: DeviceSettings;
