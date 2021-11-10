@@ -4,7 +4,6 @@ import { playgroundFacade } from '../facades/playground.facade';
 import { neuronCardUi } from '../ui/neuron-card.ui';
 import { networkState } from '../state/network.state';
 import { mappingState } from '../state/mapping.state';
-import { parametersUi } from '../ui/parameters.ui';
 import { modalUi } from '../ui/modal.ui';
 
 /**
@@ -83,7 +82,7 @@ controllerDevice.setDefaultMode = function () {
     const parameters = mappingState.getParametersByControl (note);
 
     parameters.forEach ((parameter) => {
-      parametersUi.render (parameter, e.value);
+      modalUi.renderParameter (parameter, e.value);
     });
 
     if (isLearning && learningParameter) {
@@ -142,7 +141,7 @@ controllerDevice.attachButtons = function () {
     const parameters = mappingState.getParametersByControl (note);
 
     parameters.forEach ((parameter) => {
-      parametersUi.render (parameter, 1);
+      modalUi.renderParameter (parameter, 1);
     });
 
     if (isLearning && learningParameter) {

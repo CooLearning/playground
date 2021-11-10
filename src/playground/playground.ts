@@ -29,7 +29,6 @@ import { Example2D, shuffle } from './dataset';
 import { AppendingLineChart } from './linechart';
 import * as d3 from 'd3';
 import { Coolearning } from '../coolearning/coolearning';
-import { playgroundFacade } from '../app/facades/playground.facade';
 import { networkUi } from '../app/ui/network.ui';
 
 Coolearning ();
@@ -541,9 +540,9 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
         return;
       } else {
         if (!div.classed ('selected')) {
-          playgroundFacade.toggleNodeSelection (parseInt (nodeId), true);
+          networkUi.toggleNodeSelection (parseInt (nodeId), true);
         } else {
-          playgroundFacade.toggleNodeSelection (parseInt (nodeId), false);
+          networkUi.toggleNodeSelection (parseInt (nodeId), false);
         }
       }
 
