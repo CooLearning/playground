@@ -7,15 +7,12 @@ module.exports = {
       ['@semantic-release/changelog', {
         changelogFile: 'CHANGELOG.md',
       }],
-      ['@semantic-release/exec', {
-        prepareCmd: 'yarn build:archive ${nextRelease.version}',
-      }],
       ['@semantic-release/npm', {
         npmPublish: false,
       }],
       ['@semantic-release/github', {
         assets: [
-          'coolearning-playground-v${nextRelease.version}.zip',
+          'dist',
         ],
       }],
       ['@qiwi/semantic-release-gh-pages-plugin', {

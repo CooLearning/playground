@@ -16,8 +16,7 @@
     "build": "yarn prep && yarn build-js && yarn build-css && yarn build-html",
     "watch": "yarn prep && concurrently \"yarn watch-js\" \"yarn watch-css\" \"yarn watch-html\"",
     "serve": "npx serve dist/",
-    "serve-watch": "concurrently \"npx serve dist/\" \"yarn watch\"",
-    "build:archive": "./bin/archive-release.sh"
+    "serve-watch": "concurrently \"npx serve dist/\" \"yarn watch\""
   },
   "devDependencies": {
     "@bamdadsabbagh/eslint-config": "^1.17.2",
