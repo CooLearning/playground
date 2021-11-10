@@ -1,3 +1,10 @@
+## [1.1.3](https://github.com/CooLearning/playground/compare/v1.1.2...v1.1.3) (2021-11-10)
+
+
+### Bug Fixes
+
+* **release:** Archive release before adding to released assets ([32b26a4](https://github.com/CooLearning/playground/commit/32b26a4a5cb091650c684a8c5706087e50249502))
+
 ## [1.1.2](https://github.com/CooLearning/playground/compare/v1.1.1...v1.1.2) (2021-11-10)
 
 
