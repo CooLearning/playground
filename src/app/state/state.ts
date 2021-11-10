@@ -8,3 +8,9 @@ export const state = Object.create (null);
 
 state.mappings = mappingState;
 state.store = storageState;
+
+state.reset = function () {
+  // todo implement after save, load, export, import
+  // eslint-disable-next-line no-console
+  console.log ('reset');
+};

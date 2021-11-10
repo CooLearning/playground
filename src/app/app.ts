@@ -2,18 +2,11 @@ import { midi } from './devices/midi';
 import { devices } from './devices/devices';
 import { selectorDevice } from './devices/selector.device';
 import { controllerDevice } from './devices/controller.device';
-import { playgroundFacade } from './facades/playground.facade';
 import { ui } from './ui/ui';
 
 export const app = Object.create (null);
 
 app.isInitialized = false;
-app.ui = ui;
-app.midi = midi;
-app.devices = devices;
-app.selector = selectorDevice;
-app.controller = controllerDevice;
-app.playground = playgroundFacade;
 
 /**
  * Initialize app

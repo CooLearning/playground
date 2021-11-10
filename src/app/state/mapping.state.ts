@@ -1,5 +1,5 @@
-import { renderSetting } from '../../coolearning/utils/render-setting';
 import { notificationsUi } from '../ui/notifications.ui';
+import { modalUi } from '../ui/modal.ui';
 
 /**
  * State object for the mappings.
@@ -42,20 +42,9 @@ mappingState.learn = function ({
     return;
   }
 
-  this.setParameterMaps ({
-    parameter,
-    control,
-    type,
-  });
-
+  this.setParameterMaps ({ parameter, control, type });
   this.disableLearningMode ();
-
-  renderSetting ({
-    parameter,
-    control,
-    type,
-  });
-
+  modalUi.updateMapping (parameter, control, type);
   notificationsUi.notify (
     `Learn: control ${control} for ${parameter} (${type})`,
   );
@@ -70,14 +59,9 @@ mappingState.unlearn = function (parameter: string) {
   if (!this.isMapped (parameter)) {
     return;
   }
-
   this.unsetParameterMaps (parameter);
-
-  renderSetting ({ parameter });
-
-  notificationsUi.notify (
-    `${parameter} unlearned`,
-  );
+  modalUi.updateMapping (parameter);
+  notificationsUi.notify (`${parameter} unlearned`);
 
   // saveState ();
 };
@@ -85,11 +69,11 @@ mappingState.unlearn = function (parameter: string) {
 /**
  * Enable learning mode.
  *
- * @param {string} newLearningParameter - The parameter to learn.
+ * @param {string} learningParameter - The parameter to learn.
  */
-mappingState.enableLearningMode = function (newLearningParameter: string) {
+mappingState.enableLearningMode = function (learningParameter: string) {
   this.isLearning = true;
-  this.learningParameter = newLearningParameter;
+  this.learningParameter = learningParameter;
 };
 
 /**
@@ -117,10 +101,10 @@ mappingState.setParameterMaps = function ({
   };
 
   // reverse map
-  if (this.controlByParameter[control] === undefined) {
-    this.controlByParameter[control] = [parameter];
+  if (this.parametersByControl[control] === undefined) {
+    this.parametersByControl[control] = [parameter];
   } else {
-    this.controlByParameter[control].push (parameter);
+    this.parametersByControl[control].push (parameter);
   }
 };
 
@@ -130,12 +114,9 @@ mappingState.setParameterMaps = function ({
  * @param {string} parameter - The parameter to unset.
  */
 mappingState.unsetParameterMaps = function (parameter: string) {
-  // unmap
-  delete this.controlByParameter[parameter];
-
   // reverse unmap
   const { control } = this.controlByParameter[parameter];
-  const parameters = this.parametersByControl[control];
+  const parameters = this.getParametersByControl (control);
 
   if (parameters.length === 1) {
     delete this.parametersByControl[control];
@@ -145,6 +126,9 @@ mappingState.unsetParameterMaps = function (parameter: string) {
       parameters.splice (index, 1);
     }
   }
+
+  // unmap
+  delete this.controlByParameter[parameter];
 };
 
 /**
@@ -155,4 +139,11 @@ mappingState.unsetParameterMaps = function (parameter: string) {
  */
 mappingState.isMapped = function (parameter: string): boolean {
   return this.controlByParameter[parameter] !== undefined;
+};
+
+mappingState.getParametersByControl = function (control: number) {
+  if (!this.parametersByControl[control]) {
+    return [];
+  }
+  return this.parametersByControl[control];
 };

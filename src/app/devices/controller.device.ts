@@ -1,10 +1,10 @@
 import { devicePrototype } from './device/device.prototype';
-import { state } from '../../coolearning/state';
 import { rangeMap } from '../utils/range-map';
 import { playgroundFacade } from '../facades/playground.facade';
 import { neuronCardUi } from '../ui/neuron-card.ui';
-import { networkUi } from '../ui/network.ui';
 import { networkState } from '../state/network.state';
+import { mappingState } from '../state/mapping.state';
+import { parametersUi } from '../ui/parameters.ui';
 
 /**
  * Controller is a unique device that controls the playground.
@@ -78,17 +78,15 @@ controllerDevice.setMode = function () {
 controllerDevice.setDefaultMode = function () {
   this.onControl ((e) => {
     const note = parseInt (e.controller.number);
-    const { isLearning, learningParameter } = state;
-    const parameters = state.getParametersByControl (note);
+    const { isLearning, learningParameter } = mappingState;
+    const parameters = mappingState.getParametersByControl (note);
 
-    if (parameters) {
-      parameters.forEach ((parameter) => {
-        networkUi.renderParameter (parameter, e.value);
-      });
-    }
+    parameters.forEach ((parameter) => {
+      parametersUi.render (parameter, e.value);
+    });
 
     if (isLearning && learningParameter) {
-      state.learn ({
+      mappingState.learn ({
         parameter: learningParameter,
         control: note,
         type: 'range',
@@ -139,17 +137,15 @@ controllerDevice.attachButtons = function () {
     }
 
     const note = parseInt (e.note.number);
-    const { isLearning, learningParameter } = state;
-    const parameters = state.getParametersByControl (note);
+    const { isLearning, learningParameter } = mappingState;
+    const parameters = mappingState.getParametersByControl (note);
 
-    if (parameters) {
-      parameters.forEach ((parameter) => {
-        networkUi.renderParameter (parameter, 1);
-      });
-    }
+    parameters.forEach ((parameter) => {
+      parametersUi.render (parameter, 1);
+    });
 
     if (isLearning && learningParameter) {
-      state.learn ({
+      mappingState.learn ({
         parameter: learningParameter,
         control: note,
         type: 'button',
