@@ -53,14 +53,15 @@ This device usually provides faders, potentiometers and buttons.
 
 ## 💫 More
 
-The project is under development and is prior to first release.
+Publishing and versioning is automatic upon any changes done to the `master` branch.
 
-Versioning will be decided after [current discussion](https://github.com/tensorflow/playground/issues/160) of potential
-contribution to [tensorflow/playground](https://github.com/tensorflow/playground).
+### 🌐 Online version
 
-### 👁️ Branch Previews
+Available [here](https://coolearning.github.io/playground).
 
-- [dev/playground](https://playground-git-dev-playground-bamdad.vercel.app)
+### ⚡ Offline version
+
+> TBD
 
 ### 🔨 Development environment
 
