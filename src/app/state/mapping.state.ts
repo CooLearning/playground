@@ -106,6 +106,8 @@ mappingState.setParameterMaps = function ({
   } else {
     this.parametersByControl[control].push (parameter);
   }
+
+  this.disableLearningMode ();
 };
 
 /**

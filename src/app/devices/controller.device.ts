@@ -5,6 +5,7 @@ import { neuronCardUi } from '../ui/neuron-card.ui';
 import { networkState } from '../state/network.state';
 import { mappingState } from '../state/mapping.state';
 import { parametersUi } from '../ui/parameters.ui';
+import { modalUi } from '../ui/modal.ui';
 
 /**
  * Controller is a unique device that controls the playground.
@@ -86,7 +87,7 @@ controllerDevice.setDefaultMode = function () {
     });
 
     if (isLearning && learningParameter) {
-      mappingState.learn ({
+      modalUi.learn ({
         parameter: learningParameter,
         control: note,
         type: 'range',
@@ -145,7 +146,7 @@ controllerDevice.attachButtons = function () {
     });
 
     if (isLearning && learningParameter) {
-      mappingState.learn ({
+      modalUi.learn ({
         parameter: learningParameter,
         control: note,
         type: 'button',

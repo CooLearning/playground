@@ -6,6 +6,7 @@ import { getSetting } from '../../coolearning/utils/get-setting';
 import { SettingsActions, SettingsPositions } from '../../coolearning/enums';
 import { createSettingsActionButton } from '../../coolearning/utils/create-settings-action-button';
 import { mappingState } from '../state/mapping.state';
+import { notificationsUi } from './notifications.ui';
 
 /**
  * View model for the modal component.
@@ -124,7 +125,7 @@ modalUi.updateMapping = function (parameter, control = undefined, type = undefin
         });
         child.onclick = () => {
           if (learned) {
-            mappingState.unlearn (parameter);
+            this.unlearn (parameter);
           } else {
             mappingState.enableLearningMode (parameter);
           }
@@ -134,4 +135,47 @@ modalUi.updateMapping = function (parameter, control = undefined, type = undefin
         break;
     }
   });
+};
+
+type LearnOptions = {
+  parameter: string;
+  control: number;
+  type: string;
+}
+
+/**
+ * Learn a mapping between a parameter and a control.
+ *
+ * @param {LearnOptions} options - The options for learning.
+ */
+modalUi.learn = function ({
+  parameter,
+  control,
+  type,
+}: LearnOptions) {
+  if (mappingState.isMapped (parameter)) {
+    return;
+  }
+
+  mappingState.setParameterMaps ({ parameter, control, type });
+  modalUi.updateMapping (parameter, control, type);
+  notificationsUi.notify (
+    `Learn: control ${control} for ${parameter} (${type})`,
+  );
+};
+
+/**
+ * Unlearn a mapping between a parameter and a control.
+ *
+ * @param {string} parameter - The parameter to unlearn.
+ */
+modalUi.unlearn = function (parameter: string) {
+  if (!mappingState.isMapped (parameter)) {
+    return;
+  }
+  mappingState.unsetParameterMaps (parameter);
+  modalUi.updateMapping (parameter);
+  notificationsUi.notify (`${parameter} unlearned`);
+
+  // saveState ();
 };
