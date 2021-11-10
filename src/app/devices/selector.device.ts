@@ -137,9 +137,9 @@ selectorDevice.attachNeurons = function (): void {
     // short click only if enabled
     if (isEnabled) {
       if (playgroundFacade.selectedNodes.indexOf (nodeIndex) === -1) {
-        playgroundFacade.toggleNodeSelection (nodeIndex, true);
+        networkUi.toggleNodeSelection (nodeIndex, true);
       } else {
-        playgroundFacade.toggleNodeSelection (nodeIndex, false);
+        networkUi.toggleNodeSelection (nodeIndex, false);
       }
     }
 
@@ -149,7 +149,7 @@ selectorDevice.attachNeurons = function (): void {
       clearTimeout (clickTimer);
       clickTimer = null;
       // payload
-      playgroundFacade.toggleNodeSelection (nodeIndex, false);
+      networkUi.toggleNodeSelection (nodeIndex, false);
       networkUi.toggleNeuron (nodeIndex);
     }, this.settings.time.longClick);
 

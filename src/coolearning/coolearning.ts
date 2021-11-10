@@ -1,5 +1,4 @@
 import './interfaces';
-import './prototypes';
 import { initializeKeyboardEvents } from './utils/initialize-keyboard-events';
 import { app } from '../app/app';
 import { notificationsUi } from '../app/ui/notifications.ui';

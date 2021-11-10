@@ -20,24 +20,24 @@ export function ListMaterialComponent (items: Array<(string | HTMLElement)>): HT
 
     const li = document.createElement ('li');
     li.classList.add ('mdl-list__item');
-    li.appendTo (ul);
+    ul.appendChild (li);
 
     const content = document.createElement ('span');
     content.classList.add ('mdl-list__item-primary-content');
-    content.appendTo (li);
+    li.appendChild (content);
 
     const icon = document.createElement ('i');
     icon.classList.add ('material-icons');
     icon.classList.add ('mdl-list__item-icon');
     icon.innerText = 'person';
-    icon.appendTo (content);
+    content.appendChild (icon);
 
     if (item instanceof HTMLElement) {
-      item.appendTo (content);
+      content.appendChild (item);
     } else if (typeof item === 'string') {
       const span = document.createElement ('span');
       span.innerText = item;
-      span.appendTo (content);
+      content.appendChild (span);
     }
   }
 

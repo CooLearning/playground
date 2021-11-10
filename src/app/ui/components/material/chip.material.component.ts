@@ -44,21 +44,21 @@ export function ChipMaterialComponent (
     throw new Error ('type not found');
   }
 
-  icon.appendTo (chip);
+  chip.appendChild (icon);
 
   // text
   const text = document.createElement ('span');
   text.classList.add ('mdl-chip__text');
   text.style.userSelect = 'none';
   text.innerHTML = content;
-  text.appendTo (chip);
+  chip.appendChild (text);
 
   // action
   const action = document.createElement ('a');
   action.classList.add ('mdl-chip__action');
   action.appendChild (IconMaterialComponent ('cancel'));
   action.onclick = handleClick;
-  action.appendTo (chip);
+  chip.appendChild (action);
 
   return chip;
 }

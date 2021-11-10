@@ -1,5 +1,3 @@
-export const STATE_ID = 'coolState';
-
 export const PARAMETERS = {
   playPauseButton: document.getElementById ('play-pause-button'),
   resetButton: document.getElementById ('reset-button'),
@@ -34,27 +32,3 @@ export const SETTINGS = {
   button: 'button',
   range: 'range',
 };
-
-export const INITIAL_STATE = Object.freeze ({
-  isLearning: false,
-  learningParameter: null,
-  devices: [],
-  controlByParameter: {},
-  parametersByControl: {},
-});
-
-export const TIMEOUT = 1000;
-
-export const SNACKBAR_ID = 'cool-snackbar';
-
-export const FEATURES_KEYS = [
-  'x',
-  'y', // x2
-  'xTimesY', // x1 * x2
-  'xSquared',
-  'ySquared',
-  'cosX',
-  'sinX',
-  'cosY',
-  'sinY',
-];

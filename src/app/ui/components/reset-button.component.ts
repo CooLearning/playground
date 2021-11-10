@@ -1,6 +1,6 @@
-import { state } from '../../../coolearning/state';
 import { IconMaterialComponent } from './material/icon.material.component';
 import { ButtonMaterialComponent } from './material/button.material.component';
+import { state } from '../../state/state';
 
 /**
  * Button to reset the settings.
