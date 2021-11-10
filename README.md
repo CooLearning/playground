@@ -2,11 +2,15 @@
 
 ## 📖 Context
 
-This project is an evolution based on [tensorflow/playground](https://github.com/tensorflow/playground).
+This project is an evolution based
+on [tensorflow/playground](https://github.com/tensorflow/playground).
 
-It aims to bring interactivity to the user interface with USB controllers by using WebMIDI.
+It aims to bring interactivity to the user interface with USB controllers by
+using WebMIDI.
 
-It has been authored at [CREATIS Laboratory](https://www.creatis.insa-lyon.fr/site7/fr) (Lyon, France).
+It has been authored
+at [CREATIS Laboratory](https://www.creatis.insa-lyon.fr/site7/fr) (Lyon,
+France).
 
 ## 🚀 Features
 
@@ -16,25 +20,27 @@ There are two main categories of devices you can attach.
 
 This usually provides a grid of colored backlit pads.
 
-- Use the grid to display the inputs, neurons and output of the current neural network
-    - Color code:
-        - `gray` disabled node
-        - `yellow` input (enabled)
-        - `green` neuron (enabled)
-        - `blue` neuron (selected)
-        - `purple` output's input link / weight
-    - Short press action:
-        - `enable` or `disable` inputs or output input weights
-        - `select` or `unselect` neurons
-    - Long press action:
-        - `enable` or `disable` neurons
+- Use the grid to display the inputs, neurons and output of the current neural
+  network
+  - Color code:
+    - `gray` disabled node
+    - `yellow` input (enabled)
+    - `green` neuron (enabled)
+    - `blue` neuron (selected)
+    - `purple` output's input link / weight
+  - Short press action:
+    - `enable` or `disable` inputs or output input weights
+    - `select` or `unselect` neurons
+  - Long press action:
+    - `enable` or `disable` neurons
 
 ### 🎛️ Controller
 
 This device usually provides faders, potentiometers and buttons.
 
 - Use faders to control **input weights** of selected **neurons**
-- Use potentiometers to control **activation curves**, etc. of selected **neurons**
+- Use potentiometers to control **activation curves**, etc. of selected **
+  neurons**
 - Use buttons to play, pause or reset the neural network iterations.
 
 ## 🧮 Constraints
@@ -53,7 +59,8 @@ This device usually provides faders, potentiometers and buttons.
 
 ## 💫 More
 
-Publishing and versioning is automatic upon any changes done to the `master` branch.
+Publishing and versioning is automatic upon any changes done to the `master`
+branch.
 
 ### 🌐 Online version
 
@@ -61,7 +68,10 @@ Available [here](https://coolearning.github.io/playground).
 
 ### ⚡ Offline version
 
-> TBD
+- Go to [releases](https://github.com/CooLearning/playground/releases)
+- Download the `coolearning-playground-v{version}.zip` asset
+- Unzip the archive
+- Open `index.html` with chrome
 
 ### 🔨 Development environment
 
