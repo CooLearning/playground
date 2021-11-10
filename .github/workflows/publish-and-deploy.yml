@@ -17,13 +17,7 @@ jobs:
         with:
           node-version: '14'
 
-      - name: Install dependencies
-        run: yarn
-
-      - name: Build
-        run: yarn build
-
-      - name: Prepare for release
+      - name: Install release dependencies
         run: |
           npm install -g \
             semantic-release \
@@ -33,6 +27,12 @@ jobs:
             @semantic-release/changelog \
             @semantic-release/npm \
             @qiwi/semantic-release-gh-pages-plugin
+
+      - name: Install project dependencies
+        run: yarn
+
+      - name: Build
+        run: yarn build
 
       - name: Release
         run: semantic-release
