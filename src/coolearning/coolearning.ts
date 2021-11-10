@@ -1,5 +1,4 @@
 import './interfaces';
-import { initializeKeyboardEvents } from './utils/initialize-keyboard-events';
 import { app } from '../app/app';
 import { notificationsUi } from '../app/ui/notifications.ui';
 
@@ -10,7 +9,6 @@ export function Coolearning (): void {
   window.addEventListener ('load', () => {
     try {
       app.init ();
-      initializeKeyboardEvents ();
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error (error);

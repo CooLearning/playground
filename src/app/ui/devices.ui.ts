@@ -6,10 +6,10 @@ export const devicesUi = Object.create (dialogPrototype);
 
 devicesUi.nodeSelectors = {
   node: '#devices',
-  closeButton: '#close-button',
+  closeButton: '.close-button',
   contentNode: '.mdl-dialog__content',
-  noSelector: '#no-selector',
-  noController: '#no-controller',
+  noSelector: '.no-selector',
+  noController: '.no-controller',
   selectorOptions: '[title=selectors-options]',
   controllerOptions: '[title=controllers-options]',
 };

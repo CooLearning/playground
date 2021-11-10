@@ -817,6 +817,32 @@ limitations under the License.
   </button>
 </div>
 
+<!-- Mappings Dialog -->
+
+<dialog class="mdl-dialog" id="mappings">
+  <h4 class="mdl-dialog__title">
+    Mappings
+  </h4>
+  <div class="mdl-dialog__content">
+    <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+      <thead>
+      <tr>
+        <th class="mdl-data-table__cell--non-numeric parameter-column">
+          Parameter
+        </th>
+        <th class="mdl-data-table__cell--non-numeric">Mapping</th>
+      </tr>
+      </thead>
+      <tbody class="table-content"></tbody>
+    </table>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button class="mdl-button close-button" type="button">
+      close
+    </button>
+  </div>
+</dialog>
+
 <!-- Devices Dialog -->
 
 <dialog class="mdl-dialog" id="devices">
@@ -828,16 +854,16 @@ limitations under the License.
       On successful connection, your device will flash red.
       <div>
         <h4>Selectors</h4>
-        <span id="no-selector">
-          No compatible selector have been detected.
+        <span class="no-selector">
+          No compatible selector has been detected.
         </span>
         <select title="selectors-options">
         </select>
       </div>
       <div>
         <h4>Controllers</h4>
-        <span id="no-controller">
-          No compatible controller have been detected.
+        <span class="no-controller">
+          No compatible controller has been detected.
         </span>
         <select title="controllers-options">
         </select>
@@ -845,7 +871,7 @@ limitations under the License.
     </div>
   </div>
   <div class="mdl-dialog__actions">
-    <button class="mdl-button" id="close-button" type="button">
+    <button class="mdl-button close-button" type="button">
       close
     </button>
   </div>
