@@ -48,9 +48,9 @@ controllerDevice.drawLights = function () {
   }
 
   let color;
-  if (this.isDefaultMode ()) {
+  if (this.isDefaultMode) {
     color = this.settings.colors.amber;
-  } else if (this.isSingleMode ()) {
+  } else if (this.isSingleMode) {
     color = this.settings.colors.black;
   } else {
     color = this.settings.colors.red;
@@ -69,9 +69,9 @@ controllerDevice.drawLights = function () {
 controllerDevice.updateMode = function () {
   this.removeListeners ();
 
-  if (this.isDefaultMode ()) {
+  if (this.isDefaultMode) {
     this.setDefaultMode ();
-  } else if (this.isSingleMode ()) {
+  } else if (this.isSingleMode) {
     this.setSingleMode ();
   } else {
     this.setMultipleMode ();
@@ -121,7 +121,7 @@ controllerDevice.onSelectionEvent = function () {
  */
 controllerDevice.attachButtonsDefault = function () {
   this.addNoteListener ('on', (e) => {
-    if (!this.isDefaultMode ()) {
+    if (!this.isDefaultMode) {
       return;
     }
 
@@ -238,14 +238,20 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
   });
 };
 
-controllerDevice.isDefaultMode = function () {
-  return playgroundFacade.selectedNodes.length === 0;
-};
+Object.defineProperty (controllerDevice, 'isDefaultMode', {
+  get () {
+    return playgroundFacade.selectedNodes.length === 0;
+  },
+});
 
-controllerDevice.isSingleMode = function () {
-  return playgroundFacade.selectedNodes.length === 1;
-};
+Object.defineProperty (controllerDevice, 'isSingleMode', {
+  get () {
+    return playgroundFacade.selectedNodes.length === 1;
+  },
+});
 
-controllerDevice.isMultipleMode = function () {
-  return playgroundFacade.selectedNodes.length > 1;
-};
+Object.defineProperty (controllerDevice, 'isMultipleMode', {
+  get () {
+    return playgroundFacade.selectedNodes.length > 1;
+  },
+});
