@@ -11,6 +11,9 @@ import { MappingChipComponent } from './components/mapping-chip.component';
  */
 export const mappingsUi = Object.create (dialogPrototype);
 
+/**
+ * Selectors for DOM elements.
+ */
 mappingsUi.nodeSelectors = {
   node: '#mappings',
   closeButton: '.close-button',
@@ -18,6 +21,9 @@ mappingsUi.nodeSelectors = {
   tableContent: '.table-content',
 };
 
+/**
+ * DOM elements for available parameters.
+ */
 mappingsUi.parameterQueries = {
   playPauseButton: document.getElementById ('play-pause-button'),
   learningRate: document.getElementById ('learningRate'),
@@ -34,6 +40,10 @@ mappingsUi.parameterQueries = {
   discretize: document.getElementById ('discretize').parentNode,
 };
 
+/**
+ * Chips are an item for displaying a mapping.
+ * It has an icon, a label and an action button as well as update methods.
+ */
 mappingsUi.chips = {};
 
 mappingsUi.init = function () {
@@ -92,6 +102,7 @@ mappingsUi.learn = function ({
   type,
 }: LearnOptions) {
   if (mappingsState.isMapped (parameter)) {
+    mappingsState.disableLearningMode ();
     return;
   }
 
