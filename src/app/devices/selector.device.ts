@@ -64,7 +64,7 @@ selectorDevice.drawInputs = function (): void {
  * Attach events to the inputs
  */
 selectorDevice.attachInputs = function (): void {
-  this.onNote ('on', (e) => {
+  this.addNoteListener ('on', (e) => {
     const flatIndex = this.getGridFlatIndex (e.note.number);
 
     if (!(flatIndex >= 0 && flatIndex <= 6)) {
@@ -130,7 +130,7 @@ selectorDevice.drawNeurons = function (): void {
  * Attach events to the neurons
  */
 selectorDevice.attachNeurons = function (): void {
-  this.onNote ('on', (e) => {
+  this.addNoteListener ('on', (e) => {
     const flatIndex = this.getGridFlatIndex (e.note.number);
 
     if (!(flatIndex >= 8 && flatIndex <= 55)) {
@@ -159,13 +159,13 @@ selectorDevice.attachNeurons = function (): void {
       networkUi.toggleNeuron (nodeIndex);
     }, this.settings.time.longClick);
 
-    this.onNote ('off', () => {
+    this.addNoteListener ('off', () => {
       if (clickTimer === null) {
         return;
       }
       clearTimeout (clickTimer);
       clickTimer = null;
-      this.clearNote ('off');
+      this.removeNoteListeners ('off');
     });
   });
 };
@@ -231,7 +231,7 @@ selectorDevice.drawOutputWeights = function (): void {
  * Attach events to the output weights
  */
 selectorDevice.attachOutputWeights = function (): void {
-  this.onNote ('on', (e) => {
+  this.addNoteListener ('on', (e) => {
     const flatIndex = this.getGridFlatIndex (e.note.number);
 
     if (!(flatIndex >= 56 && flatIndex <= 63)) {

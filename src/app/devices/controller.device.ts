@@ -120,19 +120,15 @@ controllerDevice.onSelectionEvent = function () {
  * Attach buttons for the default mode.
  */
 controllerDevice.attachButtonsDefault = function () {
-  this.onNote ('on', (e) => {
+  this.addNoteListener ('on', (e) => {
     if (!this.isDefaultMode ()) {
       return;
     }
 
     const note = parseInt (e.note.number);
+
+    // learning a new mapping
     const { isLearning, learningParameter } = mappingsState;
-    const parameters = mappingsState.getParametersByControl (note);
-
-    parameters.forEach ((parameter) => {
-      playgroundUi.updateParameter (parameter, 1);
-    });
-
     if (isLearning && learningParameter) {
       mappingsUi.learn ({
         parameter: learningParameter,
@@ -141,6 +137,13 @@ controllerDevice.attachButtonsDefault = function () {
       });
     }
 
+    // update targets of already mapped parameters
+    const mappedParameters = mappingsState.getParametersByControl (note);
+    mappedParameters.forEach ((parameter) => {
+      playgroundUi.updateParameter (parameter, 1);
+    });
+
+    // draw feedback lights
     this.playNote ({
       note,
       color: this.settings.colors.green,

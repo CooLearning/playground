@@ -120,7 +120,7 @@ devicePrototype.removeListeners = function (): void {
  * @param {string} noteState - The state of the note to listen to
  * @param {Function} listener - The listener function
  */
-devicePrototype.onNote = function (
+devicePrototype.addNoteListener = function (
   noteState = 'on',
   listener: (e: InputEventNoteon | InputEventNoteoff) => any,
 ): void {
@@ -140,7 +140,7 @@ devicePrototype.onNote = function (
  *
  * @param {string} noteState - The state of the note to remove the listener from
  */
-devicePrototype.clearNote = function (noteState: string): void {
+devicePrototype.removeNoteListeners = function (noteState: string): void {
   if (noteState !== 'on' && noteState !== 'off') {
     throw new Error ('note should be either "on" or "off"');
   }
