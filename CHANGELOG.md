@@ -1,3 +1,22 @@
+## [1.2.1](https://github.com/CooLearning/playground/compare/v1.2.0...v1.2.1) (2021-11-11)
+
+
+### Bug Fixes
+
+* add checks before drawing lights on devices + better method semantics + changing values in the neuron UI updates the weights + various improvements ([8842d14](https://github.com/CooLearning/playground/commit/8842d143a95cdcbb1a15d8b435be5be3dfc51868))
+* **state/devices:** remove useless argument in pick + set false attribute on unpick + create a common `pickDevice` function ([d19690d](https://github.com/CooLearning/playground/commit/d19690d1ee582d74a0198ca0a062b500d4d5455d))
+* **ui/mappings:** disable learning mode if parameter is already mapped ([2e4fd4e](https://github.com/CooLearning/playground/commit/2e4fd4e8b41e1844c6b526fac76ccd72cdcce494))
+
+
+### Performance Improvements
+
+* **controller-device:** better event listeners handling ([cae298b](https://github.com/CooLearning/playground/commit/cae298b6c9e3b32a9fccda68f33dccfd25b01126))
+* **controllerDevice:** rewrite `is*Mode` attributes with get accessors ([104a6b2](https://github.com/CooLearning/playground/commit/104a6b29b2d2a6bbf86b718789e6e7c3f02ccbc4))
+* **devices:** use more explicit handler names for note events + add comments ([5a9e959](https://github.com/CooLearning/playground/commit/5a9e95961ba8fa558181138b554d86003c3a692a))
+* prefer shorter syntax for optional parameters (`?` instead of `= undefined`) ([1874aa5](https://github.com/CooLearning/playground/commit/1874aa526939ba8c56f3ee63268916a4c299359f))
+* **selectorDevice:** add call for removing listeners before attaching events (might be redundant, but it's OK) ([13045c5](https://github.com/CooLearning/playground/commit/13045c521776688c3d308f143400e56284dcba47))
+* **state:** remove unused global state object ([c82ea32](https://github.com/CooLearning/playground/commit/c82ea32082cbb50ad8bae03daf54ff827533e949))
+
 # [1.2.0](https://github.com/CooLearning/playground/compare/v1.1.3...v1.2.0) (2021-11-10)
 
 
