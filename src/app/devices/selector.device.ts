@@ -43,6 +43,7 @@ selectorDevice.drawGrid = function (): void {
  * Attach events to the grid
  */
 selectorDevice.attachEvents = function (): void {
+  this.removeListeners ();
   this.attachInputs ();
   this.attachNeurons ();
   this.attachOutputWeights ();
