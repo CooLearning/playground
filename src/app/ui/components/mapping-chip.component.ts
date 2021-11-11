@@ -49,7 +49,7 @@ export class MappingChipComponent {
     return node;
   }
 
-  createIcon (slug: string = undefined): HTMLSpanElement {
+  createIcon (slug?: string): HTMLSpanElement {
     const span = document.createElement ('span');
     span.classList.add ('mdl-chip__contact');
 
@@ -66,7 +66,7 @@ export class MappingChipComponent {
     return span;
   }
 
-  createContent (contentText: string = undefined): HTMLSpanElement {
+  createContent (contentText?: string): HTMLSpanElement {
     const content = document.createElement ('span');
     content.classList.add ('mdl-chip__text');
     content.style.userSelect = 'none';
