@@ -35,7 +35,6 @@ controllerDevice.init = async function (device: any): Promise<void> {
   await this.runBootSequence ();
   this.drawLights ();
   this.updateMode ();
-  this.attachButtons ();
 
   this.isInitialized = true;
 };
@@ -68,7 +67,6 @@ controllerDevice.drawLights = function () {
  * Set the mode of the controller.
  */
 controllerDevice.updateMode = function () {
-  this.removeControlListeners ();
   this.removeListeners ();
 
   if (this.isDefaultMode ()) {
@@ -84,29 +82,8 @@ controllerDevice.updateMode = function () {
  * Set the default mode.
  */
 controllerDevice.setDefaultMode = function () {
-  this.addControlListener ((e) => {
-    const note = parseInt (e.controller.number);
-    const { isLearning, learningParameter } = mappingsState;
-    const parameters = mappingsState.getParametersByControl (note);
-
-    parameters.forEach ((parameter) => {
-      playgroundUi.updateParameter (parameter, e.value);
-    });
-
-    if (isLearning && learningParameter) {
-      mappingsUi.learn ({
-        parameter: learningParameter,
-        control: note,
-        type: 'range',
-      });
-    }
-
-    this.playNote ({
-      note: this.settings.outputByInput[note],
-      duration: this.settings.time.defaultDuration,
-      color: this.settings.colors.red,
-    });
-  });
+  this.attachButtonsDefault ();
+  this.attachControlsDefault ();
 };
 
 /**
@@ -114,7 +91,7 @@ controllerDevice.setDefaultMode = function () {
  */
 controllerDevice.setSingleMode = function () {
   const selectedNode = playgroundFacade.selectedNodes[0];
-  this.attachRangesToNeuron (selectedNode);
+  this.attachControlsToNeuron (selectedNode);
 };
 
 /**
@@ -122,7 +99,7 @@ controllerDevice.setSingleMode = function () {
  */
 controllerDevice.setMultipleMode = function () {
   const { selectedNodes } = playgroundFacade;
-  selectedNodes.forEach ((n) => this.attachRangesToNeuron (n));
+  selectedNodes.forEach ((n) => this.attachControlsToNeuron (n));
 };
 
 /**
@@ -140,9 +117,9 @@ controllerDevice.onSelectionEvent = function () {
 };
 
 /**
- * Attach events to the buttons.
+ * Attach buttons for the default mode.
  */
-controllerDevice.attachButtons = function () {
+controllerDevice.attachButtonsDefault = function () {
   this.onNote ('on', (e) => {
     if (!this.isDefaultMode ()) {
       return;
@@ -173,11 +150,40 @@ controllerDevice.attachButtons = function () {
 };
 
 /**
+ * Attach controls for the default mode.
+ */
+controllerDevice.attachControlsDefault = function () {
+  this.addControlListener ((e) => {
+    const note = parseInt (e.controller.number);
+    const { isLearning, learningParameter } = mappingsState;
+    const parameters = mappingsState.getParametersByControl (note);
+
+    parameters.forEach ((parameter) => {
+      playgroundUi.updateParameter (parameter, e.value);
+    });
+
+    if (isLearning && learningParameter) {
+      mappingsUi.learn ({
+        parameter: learningParameter,
+        control: note,
+        type: 'range',
+      });
+    }
+
+    this.playNote ({
+      note: this.settings.outputByInput[note],
+      duration: this.settings.time.defaultDuration,
+      color: this.settings.colors.red,
+    });
+  });
+};
+
+/**
  * Attach events to the ranges.
  *
  * @param {number} selectedNode - The selected node.
  */
-controllerDevice.attachRangesToNeuron = function (selectedNode: number): void {
+controllerDevice.attachControlsToNeuron = function (selectedNode: number): void {
   const { neuron } = networkState.getNeuron (selectedNode);
   const links = neuron.inputLinks;
 
