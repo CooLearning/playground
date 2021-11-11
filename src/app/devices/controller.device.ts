@@ -24,16 +24,17 @@ export const controllerDevice = Object.create (devicePrototype);
  */
 controllerDevice.init = async function (device: any): Promise<void> {
   if (this.isInitialized) {
-    this.clearListeners ();
+    this.removeListeners ();
   }
+
+  this.isInitialized = false;
 
   this.device = device;
   this.settings = device.settings;
 
   await this.runBootSequence ();
   this.drawLights ();
-  this.setMode ();
-  this.attachButtons ();
+  this.updateMode ();
 
   this.isInitialized = true;
 };
@@ -42,10 +43,14 @@ controllerDevice.init = async function (device: any): Promise<void> {
  * Draw all lights.
  */
 controllerDevice.drawLights = function () {
+  if (!this.isInitialized) {
+    return;
+  }
+
   let color;
-  if (this.isDefaultMode ()) {
+  if (this.isDefaultMode) {
     color = this.settings.colors.amber;
-  } else if (this.isSingleMode ()) {
+  } else if (this.isSingleMode) {
     color = this.settings.colors.black;
   } else {
     color = this.settings.colors.red;
@@ -61,12 +66,12 @@ controllerDevice.drawLights = function () {
 /**
  * Set the mode of the controller.
  */
-controllerDevice.setMode = function () {
-  this.clearControl ();
+controllerDevice.updateMode = function () {
+  this.removeListeners ();
 
-  if (this.isDefaultMode ()) {
+  if (this.isDefaultMode) {
     this.setDefaultMode ();
-  } else if (this.isSingleMode ()) {
+  } else if (this.isSingleMode) {
     this.setSingleMode ();
   } else {
     this.setMultipleMode ();
@@ -77,7 +82,81 @@ controllerDevice.setMode = function () {
  * Set the default mode.
  */
 controllerDevice.setDefaultMode = function () {
-  this.onControl ((e) => {
+  this.attachButtonsDefault ();
+  this.attachControlsDefault ();
+};
+
+/**
+ * Set the single mode.
+ */
+controllerDevice.setSingleMode = function () {
+  const selectedNode = playgroundFacade.selectedNodes[0];
+  this.attachControlsToNeuron (selectedNode);
+};
+
+/**
+ * Set the multiple mode.
+ */
+controllerDevice.setMultipleMode = function () {
+  const { selectedNodes } = playgroundFacade;
+  selectedNodes.forEach ((n) => this.attachControlsToNeuron (n));
+};
+
+/**
+ * This is called when selection is made.
+ */
+controllerDevice.onSelectionEvent = function () {
+  if (!this.isInitialized) {
+    return;
+  }
+
+  this.drawLights ();
+  setTimeout (() => {
+    this.updateMode ();
+  }, this.settings.time.wait);
+};
+
+/**
+ * Attach buttons for the default mode.
+ */
+controllerDevice.attachButtonsDefault = function () {
+  this.addNoteListener ('on', (e) => {
+    if (!this.isDefaultMode) {
+      return;
+    }
+
+    const note = parseInt (e.note.number);
+
+    // learning a new mapping
+    const { isLearning, learningParameter } = mappingsState;
+    if (isLearning && learningParameter) {
+      mappingsUi.learn ({
+        parameter: learningParameter,
+        control: note,
+        type: 'button',
+      });
+    }
+
+    // update targets of already mapped parameters
+    const mappedParameters = mappingsState.getParametersByControl (note);
+    mappedParameters.forEach ((parameter) => {
+      playgroundUi.updateParameter (parameter, 1);
+    });
+
+    // draw feedback lights
+    this.playNote ({
+      note,
+      color: this.settings.colors.green,
+      duration: this.settings.time.defaultDuration,
+    });
+  });
+};
+
+/**
+ * Attach controls for the default mode.
+ */
+controllerDevice.attachControlsDefault = function () {
+  this.addControlListener ((e) => {
     const note = parseInt (e.controller.number);
     const { isLearning, learningParameter } = mappingsState;
     const parameters = mappingsState.getParametersByControl (note);
@@ -103,80 +182,21 @@ controllerDevice.setDefaultMode = function () {
 };
 
 /**
- * Set the single mode.
- */
-controllerDevice.setSingleMode = function () {
-  const selectedNode = playgroundFacade.selectedNodes[0];
-  this.attachRangesToNeuron (selectedNode);
-};
-
-/**
- * Set the multiple mode.
- */
-controllerDevice.setMultipleMode = function () {
-  const { selectedNodes } = playgroundFacade;
-  selectedNodes.forEach ((n) => this.attachRangesToNeuron (n));
-};
-
-/**
- * This is called when selection is made.
- */
-controllerDevice.onSelect = function () {
-  this.drawLights ();
-  setTimeout (() => {
-    this.setMode ();
-  }, this.settings.time.wait);
-};
-
-/**
- * Attach events to the buttons.
- */
-controllerDevice.attachButtons = function () {
-  this.onNote ('on', (e) => {
-    if (!this.isDefaultMode ()) {
-      return;
-    }
-
-    const note = parseInt (e.note.number);
-    const { isLearning, learningParameter } = mappingsState;
-    const parameters = mappingsState.getParametersByControl (note);
-
-    parameters.forEach ((parameter) => {
-      playgroundUi.updateParameter (parameter, 1);
-    });
-
-    if (isLearning && learningParameter) {
-      mappingsUi.learn ({
-        parameter: learningParameter,
-        control: note,
-        type: 'button',
-      });
-    }
-
-    this.playNote ({
-      note,
-      color: this.settings.colors.green,
-      duration: this.settings.time.defaultDuration,
-    });
-  });
-};
-
-/**
  * Attach events to the ranges.
  *
  * @param {number} selectedNode - The selected node.
  */
-controllerDevice.attachRangesToNeuron = function (selectedNode: number): void {
+controllerDevice.attachControlsToNeuron = function (selectedNode: number): void {
   const { neuron } = networkState.getNeuron (selectedNode);
   const links = neuron.inputLinks;
 
-  const weights = links.map ((link) => ({
+  const filteredLinks = links.map ((link) => ({
     weight: link.weight,
     hasSnapped: false,
   }));
 
   // first draw
-  weights.forEach ((weight, index) => {
+  filteredLinks.forEach ((weight, index) => {
     const note = this.settings.rows.firstButtons[index];
     this.playNote ({
       note,
@@ -185,23 +205,23 @@ controllerDevice.attachRangesToNeuron = function (selectedNode: number): void {
   });
 
   // listen to changes
-  this.onControl ((e) => {
+  this.addControlListener ((e) => {
     if (
       e.controller.number >= this.settings.rows.faders[0]
       && e.controller.number <= this.settings.rows.faders[7]
     ) {
       const index = e.controller.number - this.settings.rows.faders[0];
-      const source = links?.[index]?.source;
+      const source = links[index].source;
       if (typeof source === 'undefined') {
         return;
       }
       const value = rangeMap (e.value, 0, 127, -1, 1);
 
-      if (value.toFixed (1) === weights[index].weight.toFixed (1)) {
-        weights[index].hasSnapped = true;
+      if (value.toFixed (1) === filteredLinks[index].weight.toFixed (1)) {
+        filteredLinks[index].hasSnapped = true;
       }
 
-      if (weights[index].hasSnapped && source.isEnabled) {
+      if (filteredLinks[index].hasSnapped && source.isEnabled) {
         links[index].weight = value;
         neuronCardUi.updateWeight (index, value);
         this.playNote ({
@@ -218,14 +238,20 @@ controllerDevice.attachRangesToNeuron = function (selectedNode: number): void {
   });
 };
 
-controllerDevice.isDefaultMode = function () {
-  return playgroundFacade.selectedNodes.length === 0;
-};
+Object.defineProperty (controllerDevice, 'isDefaultMode', {
+  get () {
+    return playgroundFacade.selectedNodes.length === 0;
+  },
+});
 
-controllerDevice.isSingleMode = function () {
-  return playgroundFacade.selectedNodes.length === 1;
-};
+Object.defineProperty (controllerDevice, 'isSingleMode', {
+  get () {
+    return playgroundFacade.selectedNodes.length === 1;
+  },
+});
 
-controllerDevice.isMultipleMode = function () {
-  return playgroundFacade.selectedNodes.length > 1;
-};
+Object.defineProperty (controllerDevice, 'isMultipleMode', {
+  get () {
+    return playgroundFacade.selectedNodes.length > 1;
+  },
+});

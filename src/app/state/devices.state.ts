@@ -5,6 +5,7 @@ import {
 } from '../devices/known-devices/known-devices';
 import {
   Controllers,
+  Device,
   Devices,
   Selectors,
 } from '../devices/device/device.types';
@@ -59,47 +60,45 @@ devicesState.setSelectors = function (): void {
 };
 
 /**
- * Pick a controller by name
+ * Pick a device.
  *
- * @param {string} name - controller name
- * @param {boolean} [isPicked] - is controller picked
+ * @param {string} name - The name of the device to pick
+ * @param {any} devices - The pool of devices to pick from, either selectors or controllers
+ * @returns {Device} - The picked device
  */
-devicesState.pickController = function (name: string, isPicked = true): void {
-  const controllerName = Object.keys (this.controllers).filter ((n) => n === name)[0];
-  if (typeof controllerName === 'undefined') {
+devicesState.pickDevice = function (name: string, devices: any): Device {
+  const deviceName = Object.keys (this.devices).filter ((n) => n === name)[0];
+  if (typeof deviceName === 'undefined') {
     throw new Error (Errors.PickNotFound);
   }
 
-  const controller = this.controllers[controllerName];
-  if (isPicked) {
-    controller.isPicked = true;
-    controller.input.isPicked = true;
-    controller.output.isPicked = true;
-    this.pickedController = controller;
-    controllerDevice.init (controller);
-  }
+  const device = devices[deviceName];
+  device.isPicked = true;
+  device.input.isPicked = true;
+  device.output.isPicked = true;
+  return device;
+};
+
+/**
+ * Pick a controller by name
+ *
+ * @param {string} name - controller name
+ */
+devicesState.pickController = function (name: string): void {
+  const controller = this.pickDevice (name, this.controllers);
+  this.pickedController = controller;
+  controllerDevice.init (controller);
 };
 
 /**
  * Pick a selector by name
  *
  * @param {string} name - selector name
- * @param {boolean} [isPicked] - is selector picked
  */
-devicesState.pickSelector = function (name: string, isPicked = true): void {
-  const selectorName = Object.keys (this.selectors).filter ((n) => n === name)[0];
-  if (typeof selectorName === 'undefined') {
-    throw new Error (Errors.PickNotFound);
-  }
-
-  const selector = this.selectors[selectorName];
-  if (isPicked) {
-    selector.isPicked = true;
-    selector.input.isPicked = true;
-    selector.output.isPicked = true;
-    this.pickedSelector = selector;
-    selectorDevice.init (selector);
-  }
+devicesState.pickSelector = function (name: string): void {
+  const selector = this.pickDevice (name, this.selectors);
+  this.pickedSelector = selector;
+  selectorDevice.init (selector);
 };
 
 type DeviceProperty = 'isController' | 'isSelector';
@@ -142,8 +141,14 @@ devicesState.getControllers = function () {
 
 devicesState.unpickDevice = function (port) {
   if (port.isSelector) {
+    this.pickedSelector.isPicked = false;
+    this.pickedSelector.input.isPicked = false;
+    this.pickedSelector.output.isPicked = false;
     this.pickedSelector = null;
   } else if (port.isController) {
+    this.pickedController.isPicked = false;
+    this.pickedController.input.isPicked = false;
+    this.pickedController.output.isPicked = false;
     this.pickedController = null;
   }
 };
