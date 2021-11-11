@@ -76,7 +76,7 @@ Available [here](https://coolearning.github.io/playground).
 ### 🔨 Development environment
 
 ```shell
-git clone https://github.com/bamdadsabbagh/playground.git
+git clone https://github.com/coolearning/playground.git
 cd playground
 yarn
 yarn start
