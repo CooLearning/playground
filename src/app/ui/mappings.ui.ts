@@ -4,8 +4,10 @@ import { notificationsUi } from './notifications.ui';
 import { MappingChipComponent } from './components/mapping-chip.component';
 
 /**
- * View model for the modal component.
+ * View model for the dialog component.
  * Contains the mappings.
+ *
+ * @augments dialogPrototype
  */
 export const mappingsUi = Object.create (dialogPrototype);
 

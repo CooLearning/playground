@@ -21,7 +21,8 @@ networkUi.toggleNeuron = function (index: number) {
   }
 
   networkState.toggleNeuron (index);
-  selectorDevice.setNeuronColor ({
+
+  selectorDevice.setNeuronLight ({
     index,
     isDisabled: !nextEnabled,
   });
@@ -29,10 +30,17 @@ networkUi.toggleNeuron = function (index: number) {
 
 networkUi.toggleInput = function (slug: string, render = false) {
   const input = networkState.toggleInput (slug);
-  selectorDevice.setInput (input.id, input.isEnabled);
+
+  // DOM
   if (render) {
+    // todo to deprecate
     const canvas = d3.select (`#canvas-${slug}`);
     canvas.classed ('disabled', !input.isEnabled);
+  }
+
+  // device
+  if (selectorDevice.isInitialized === true) {
+    selectorDevice.setInputLight (input.id, input.isEnabled);
   }
 };
 
@@ -54,10 +62,10 @@ networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean
 
   neuronCardUi.updateCard (nodeIndex);
 
-  selectorDevice.setNeuronColor ({
+  selectorDevice.setNeuronLight ({
     index: nodeIndex,
     isSelected,
   });
 
-  controllerDevice.onSelect ();
+  controllerDevice.onSelectionEvent ();
 };

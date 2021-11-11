@@ -13,7 +13,7 @@ devicePrototype.network = null as any;
  */
 devicePrototype.runBootSequence = async function (): Promise<void> {
   return new Promise ((resolve) => {
-    this.clearListeners ();
+    this.removeListeners ();
 
     const { color, sysex } = this.settings.bootSequence;
     if (sysex) {
@@ -110,7 +110,7 @@ devicePrototype.playNotes = function (
 /**
  * Clear listeners.
  */
-devicePrototype.clearListeners = function (): void {
+devicePrototype.removeListeners = function (): void {
   this.device.input.removeListener ();
 };
 
@@ -153,7 +153,7 @@ devicePrototype.clearNote = function (noteState: string): void {
  *
  * @param {*} listener - The listener function
  */
-devicePrototype.onControl = function (listener) {
+devicePrototype.addControlListener = function (listener) {
   this.device.input.addListener (
     'controlchange',
     this.settings.channels.input,
@@ -164,6 +164,6 @@ devicePrototype.onControl = function (listener) {
 /**
  * Utility function to remove an input event from the device
  */
-devicePrototype.clearControl = function () {
+devicePrototype.removeControlListeners = function () {
   this.device.input.removeListener ('controlchange');
 };

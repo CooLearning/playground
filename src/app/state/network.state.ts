@@ -168,3 +168,22 @@ networkState.toggleInput = function (slug: string): any {
   });
   return input;
 };
+
+networkState.setWeight = function (weightIndex, value) {
+  let targetNeuronOrNeurons;
+  const { selectedNodes } = playgroundFacade;
+  if (selectedNodes.length === 0) {
+    return;
+  } else if (selectedNodes.length === 1) {
+    targetNeuronOrNeurons = [this.getNeuron (selectedNodes[0])];
+  } else {
+    targetNeuronOrNeurons = selectedNodes.map ((nodeIndex) => this.getNeuron (nodeIndex));
+  }
+
+  targetNeuronOrNeurons.forEach (({ neuron }) => {
+    const weight = neuron.inputLinks?.[weightIndex]?.weight;
+    if (typeof weight !== 'undefined') {
+      neuron.inputLinks[weightIndex].weight = value;
+    }
+  });
+};

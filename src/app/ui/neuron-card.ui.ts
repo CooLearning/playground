@@ -12,6 +12,7 @@ neuronCardUi.card = null;
 neuronCardUi.init = function () {
   this.fetchWeights ();
   this.fetchCard ();
+  this.attachEvents ();
 };
 
 neuronCardUi.fetchCard = function () {
@@ -77,4 +78,15 @@ neuronCardUi.updateCard = function (nodeIndex: number) {
 
 neuronCardUi.updateWeight = function (index, weight) {
   this.weights[index].value = weight.toPrecision (2);
+};
+
+neuronCardUi.attachEvents = function () {
+  if (this.weights) {
+    this.weights.forEach ((weight, index) => {
+      weight.onchange = (e: InputEvent) => {
+        const value = parseFloat ((e.target as HTMLInputElement).value);
+        networkState.setWeight (index, value);
+      };
+    });
+  }
 };

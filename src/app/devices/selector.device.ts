@@ -14,8 +14,10 @@ selectorDevice.grid = null as number[][];
  */
 selectorDevice.init = async function (device: any): Promise<void> {
   if (this.isInitialized) {
-    this.clearListeners ();
+    this.removeListeners ();
   }
+
+  this.isInitialized = false;
 
   this.device = device;
   this.settings = device.settings;
@@ -80,7 +82,11 @@ selectorDevice.attachInputs = function (): void {
  * @param {string} inputName - The name of the input
  * @param {boolean} isEnabled - The state of the input
  */
-selectorDevice.setInput = function (inputName: string, isEnabled: boolean): void {
+selectorDevice.setInputLight = function (inputName: string, isEnabled: boolean): void {
+  if (!this.isInitialized) {
+    return;
+  }
+
   const map = {
     x: 1,
     y: 2,
@@ -175,7 +181,11 @@ type SetNeuronOptions = {
  *
  * @param {SetNeuronOptions} options - The options
  */
-selectorDevice.setNeuronColor = function (options: SetNeuronOptions): void {
+selectorDevice.setNeuronLight = function (options: SetNeuronOptions): void {
+  if (!this.isInitialized) {
+    return;
+  }
+
   const { index } = options;
   const isSelected = options.isSelected || null;
   const isDisabled = options.isDisabled || null;

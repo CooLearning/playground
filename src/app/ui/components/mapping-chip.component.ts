@@ -10,7 +10,7 @@ type MappingChipOptions = {
 }
 
 export class MappingChipComponent {
-  private name: string;
+  private readonly name: string;
 
   private readonly node: HTMLSpanElement;
 

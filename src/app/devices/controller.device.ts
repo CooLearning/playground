@@ -24,15 +24,17 @@ export const controllerDevice = Object.create (devicePrototype);
  */
 controllerDevice.init = async function (device: any): Promise<void> {
   if (this.isInitialized) {
-    this.clearListeners ();
+    this.removeListeners ();
   }
+
+  this.isInitialized = false;
 
   this.device = device;
   this.settings = device.settings;
 
   await this.runBootSequence ();
   this.drawLights ();
-  this.setMode ();
+  this.updateMode ();
   this.attachButtons ();
 
   this.isInitialized = true;
@@ -42,6 +44,10 @@ controllerDevice.init = async function (device: any): Promise<void> {
  * Draw all lights.
  */
 controllerDevice.drawLights = function () {
+  if (!this.isInitialized) {
+    return;
+  }
+
   let color;
   if (this.isDefaultMode ()) {
     color = this.settings.colors.amber;
@@ -61,8 +67,9 @@ controllerDevice.drawLights = function () {
 /**
  * Set the mode of the controller.
  */
-controllerDevice.setMode = function () {
-  this.clearControl ();
+controllerDevice.updateMode = function () {
+  this.removeControlListeners ();
+  this.removeListeners ();
 
   if (this.isDefaultMode ()) {
     this.setDefaultMode ();
@@ -77,7 +84,7 @@ controllerDevice.setMode = function () {
  * Set the default mode.
  */
 controllerDevice.setDefaultMode = function () {
-  this.onControl ((e) => {
+  this.addControlListener ((e) => {
     const note = parseInt (e.controller.number);
     const { isLearning, learningParameter } = mappingsState;
     const parameters = mappingsState.getParametersByControl (note);
@@ -121,10 +128,14 @@ controllerDevice.setMultipleMode = function () {
 /**
  * This is called when selection is made.
  */
-controllerDevice.onSelect = function () {
+controllerDevice.onSelectionEvent = function () {
+  if (!this.isInitialized) {
+    return;
+  }
+
   this.drawLights ();
   setTimeout (() => {
-    this.setMode ();
+    this.updateMode ();
   }, this.settings.time.wait);
 };
 
@@ -170,13 +181,13 @@ controllerDevice.attachRangesToNeuron = function (selectedNode: number): void {
   const { neuron } = networkState.getNeuron (selectedNode);
   const links = neuron.inputLinks;
 
-  const weights = links.map ((link) => ({
+  const filteredLinks = links.map ((link) => ({
     weight: link.weight,
     hasSnapped: false,
   }));
 
   // first draw
-  weights.forEach ((weight, index) => {
+  filteredLinks.forEach ((weight, index) => {
     const note = this.settings.rows.firstButtons[index];
     this.playNote ({
       note,
@@ -185,23 +196,23 @@ controllerDevice.attachRangesToNeuron = function (selectedNode: number): void {
   });
 
   // listen to changes
-  this.onControl ((e) => {
+  this.addControlListener ((e) => {
     if (
       e.controller.number >= this.settings.rows.faders[0]
       && e.controller.number <= this.settings.rows.faders[7]
     ) {
       const index = e.controller.number - this.settings.rows.faders[0];
-      const source = links?.[index]?.source;
+      const source = links[index].source;
       if (typeof source === 'undefined') {
         return;
       }
       const value = rangeMap (e.value, 0, 127, -1, 1);
 
-      if (value.toFixed (1) === weights[index].weight.toFixed (1)) {
-        weights[index].hasSnapped = true;
+      if (value.toFixed (1) === filteredLinks[index].weight.toFixed (1)) {
+        filteredLinks[index].hasSnapped = true;
       }
 
-      if (weights[index].hasSnapped && source.isEnabled) {
+      if (filteredLinks[index].hasSnapped && source.isEnabled) {
         links[index].weight = value;
         neuronCardUi.updateWeight (index, value);
         this.playNote ({
