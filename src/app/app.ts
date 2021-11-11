@@ -1,9 +1,13 @@
 import { midi } from './midi/midi';
 import { ui } from './ui/ui';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const packageJson = require ('../../package.json');
+
 export const app = Object.create (null);
 
 app.isInitialized = false;
+app.version = packageJson.version;
 
 /**
  * Initialize app
