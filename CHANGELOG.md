@@ -1,3 +1,10 @@
+## [1.4.1](https://github.com/CooLearning/playground/compare/v1.4.0...v1.4.1) (2021-11-12)
+
+
+### Bug Fixes
+
+* **help:** set relative paths to device drawings ([a0f63a9](https://github.com/CooLearning/playground/commit/a0f63a9c3785242201ba3b5ead7075e439fb2cd9))
+
 # [1.4.0](https://github.com/CooLearning/playground/compare/v1.3.0...v1.4.0) (2021-11-12)
 
 
