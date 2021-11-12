@@ -30,6 +30,7 @@ import { AppendingLineChart } from './linechart';
 import * as d3 from 'd3';
 import { Coolearning } from '../coolearning/coolearning';
 import { networkUi } from '../app/ui/network.ui';
+import { playgroundUi } from '../app/ui/playground.ui';
 
 Coolearning ();
 
@@ -196,7 +197,7 @@ function makeGUI () {
   d3.select ('#play-pause-button').on ('click', function () {
     // Change the button's content.
     userHasInteracted ();
-    player.playOrPause ();
+    playgroundUi.togglePlayback ();
   });
 
   player.onPlayPause (isPlaying => {

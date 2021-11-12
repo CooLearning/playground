@@ -313,3 +313,14 @@ selectorDevice.attachLayers = function () {
     }
   }, true);
 };
+
+selectorDevice.updateLightPlayback = function () {
+  const isPlaying = playgroundFacade.isPlaying;
+  const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
+  this.playNote ({
+    note: playbackPad,
+    color: isPlaying
+      ? this.settings.colorByState.playbackOn
+      : this.settings.colorByState.playbackOff,
+  });
+};

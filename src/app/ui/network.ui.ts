@@ -65,11 +65,6 @@ networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean
   canvas.classed ('selected', isSelected);
 
   neuronCardUi.updateCard (nodeIndex);
-
-  selectorDevice.setNeuronLight ({
-    index: nodeIndex,
-    isSelected,
-  });
-
+  selectorDevice.setNeuronLight ({ index: nodeIndex, isSelected });
   controllerDevice.onSelectionEvent ();
 };
