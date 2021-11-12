@@ -3,6 +3,7 @@ import { buttonsUi } from './buttons.ui';
 import { notificationsUi } from './notifications.ui';
 import { neuronCardUi } from './neuron-card.ui';
 import { devicesUi } from './devices.ui';
+import { helpUi } from './help.ui';
 
 export const ui = Object.create (null);
 
@@ -17,6 +18,7 @@ ui.init = async function () {
   buttonsUi.init ();
   neuronCardUi.init ();
   devicesUi.init ();
+  helpUi.init ();
 
   notificationsUi.notify ('test');
 };

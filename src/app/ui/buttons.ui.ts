@@ -1,5 +1,6 @@
 import { devicesUi } from './devices.ui';
 import { mappingsUi } from './mappings.ui';
+import { helpUi } from './help.ui';
 
 export const buttonsUi = Object.create (null);
 
@@ -9,6 +10,7 @@ buttonsUi.nodeSelectors = {
   devices: '.devices',
   mappings: '.mappings',
   reset: '.reset',
+  help: '.help',
 };
 
 buttonsUi.init = function () {
@@ -17,11 +19,14 @@ buttonsUi.init = function () {
   this.devices = this.node.querySelector (this.nodeSelectors.devices);
   this.mappings = this.node.querySelector (this.nodeSelectors.mappings);
   this.reset = this.node.querySelector (this.nodeSelectors.reset);
+  this.help = this.node.querySelector (this.nodeSelectors.help);
+
+  this.devices.onclick = () => mappingsUi.show ();
+  this.mappings.onclick = () => devicesUi.show ();
+  this.help.onclick = () => helpUi.show ();
 
   // eslint-disable-next-line no-console
   this.settings.onclick = () => console.log ('settings');
-  this.devices.onclick = () => mappingsUi.show ();
-  this.mappings.onclick = () => devicesUi.show ();
   // eslint-disable-next-line no-console
   this.reset.onclick = () => console.log ('reset');
 };

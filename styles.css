@@ -1073,3 +1073,32 @@ Devices
 #devices {
   width: 650px;
 }
+
+/**
+Help Dialog
+ */
+
+#help {
+  width: 80vw;
+}
+
+#help .mdl-dialog__content h6 {
+  cursor: pointer;
+  transition: all .1s ease-in;
+}
+
+#help .mdl-dialog__content div div {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+#help .mdl-dialog__content h6:hover {
+  color: #0D658C;
+}
+
+#help .mdl-dialog__content img {
+  cursor: pointer;
+  width: 600px;
+  height: 600px;
+}
