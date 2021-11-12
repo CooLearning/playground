@@ -190,28 +190,25 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
   const { neuron } = networkState.getNeuron (selectedNode);
   const links = neuron.inputLinks;
 
-  const filteredLinks = links.map ((link) => ({
-    weight: link.weight,
-    hasSnapped: false,
-  }));
-
   // first draw
-  filteredLinks.forEach ((weight, index) => {
-    const note = this.settings.rows.firstButtons[index];
+  links.forEach ((link, index) => {
+    link.hasSnapped = false;
     this.playNote ({
-      note,
+      note: this.settings.rows.firstButtons[index],
       color: this.settings.colors.red,
     });
   });
 
   // listen to changes
   this.addControlListener ((e) => {
-    if (
-      e.controller.number >= this.settings.rows.faders[0]
-      && e.controller.number <= this.settings.rows.faders[7]
-    ) {
-      const index = e.controller.number - this.settings.rows.faders[0];
-      const source = links[index].source;
+    const inputNote = e.controller.number;
+    const firstFader = this.settings.rows.faders[0];
+    const lastFader = this.settings.rows.faders[7];
+
+    if (inputNote >= firstFader && inputNote <= lastFader) {
+      const index = inputNote - firstFader;
+
+      const source = links?.[index]?.source;
       if (typeof source === 'undefined') {
         return;
       }
@@ -223,21 +220,35 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
           .toFixed (2),
       );
 
-      if (value.toFixed (1) === filteredLinks[index].weight.toFixed (1)) {
-        filteredLinks[index].hasSnapped = true;
+      if (value.toFixed (1) === links[index].weight.toFixed (1)) {
+        // snap
+        links[index].hasSnapped = true;
+
+        // automatic unsnap
+        if (links[index].snapTimer) {
+          clearTimeout (links[index].snapTimer);
+        }
+
+        links[index].snapTimer = setTimeout (() => {
+          links[index].hasSnapped = false;
+          this.playNote ({
+            note: this.settings.outputByInput[inputNote],
+            color: this.settings.colors.red,
+          });
+        }, 800);
       }
 
-      if (filteredLinks[index].hasSnapped && source.isEnabled) {
+      if (links[index].hasSnapped && source.isEnabled) {
         networkState.setWeight (index, value);
         neuronCardUi.updateWeight (index, value);
         // playgroundFacade.updateUI (); // todo this makes the UI laggy
         this.playNote ({
-          note: this.settings.outputByInput[e.controller.number],
+          note: this.settings.outputByInput[inputNote],
           color: this.settings.colors.green,
         });
       } else {
         this.playNote ({
-          note: this.settings.outputByInput[e.controller.number],
+          note: this.settings.outputByInput[inputNote],
           color: this.settings.colors.red,
         });
       }
