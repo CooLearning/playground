@@ -230,7 +230,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
       if (filteredLinks[index].hasSnapped && source.isEnabled) {
         networkState.setWeight (index, value);
         neuronCardUi.updateWeight (index, value);
-        playgroundFacade.updateUI (); // todo this is slow
+        // playgroundFacade.updateUI (); // todo this makes the UI laggy
         this.playNote ({
           note: this.settings.outputByInput[e.controller.number],
           color: this.settings.colors.green,
