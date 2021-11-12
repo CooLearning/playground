@@ -20,7 +20,7 @@
     "serve": "npx serve dist/",
     "serve-watch": "concurrently \"npx serve dist/\" \"yarn watch\"",
     "build:archive": "./bin/archive-release.sh",
-    "build:prepare": "./bin/prepare.sh"
+    "build:prepare": "./bin/prepare-release.sh"
   },
   "devDependencies": {
     "@bamdadsabbagh/eslint-config": "^1.18.0",
