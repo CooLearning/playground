@@ -41,7 +41,7 @@ networkUi.toggleInput = function (slug: string, render = false) {
   }
 
   playgroundFacade.updateUI ();
-  
+
   // device
   if (selectorDevice.isInitialized === true) {
     selectorDevice.setInputLight (input.id, input.isEnabled);
