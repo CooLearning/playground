@@ -1,3 +1,28 @@
+# [1.3.0](https://github.com/CooLearning/playground/compare/v1.2.1...v1.3.0) (2021-11-12)
+
+
+### Bug Fixes
+
+* make a click on play pause update light on selector device ([df5532b](https://github.com/CooLearning/playground/commit/df5532be1a6297003bd4273a4ff1f7280bb37496))
+
+
+### Features
+
+* add automatic unsnap after setting a weight with `controller` device ([2818b97](https://github.com/CooLearning/playground/commit/2818b97fc08f00278273d708e9b9657d46e439db))
+* add navigation global buttons for selector device (assign the last button of the last column to play/pause) ([26e1951](https://github.com/CooLearning/playground/commit/26e19510347604546b6d6ea3e0e5505f24df193c))
+* **device prototype:** add blinking light feature + add new `isToggle` argument for `addControlListener` as some buttons can act like controls ([b96917b](https://github.com/CooLearning/playground/commit/b96917bd2fa41851b9844ddd0d8a68088823c4ec))
+* embed version from package.json to main `app` object ([79b104d](https://github.com/CooLearning/playground/commit/79b104d326a64138679d4c93562329bbf557aedd))
+* keep rendering the network upon changes even if playback is paused + improve new weight performance from selector device (rounded value) ([086c068](https://github.com/CooLearning/playground/commit/086c0688eb396d932da83ee411701bcd0ab98ed3))
+* **playground:** make dead links transparent ([ff41643](https://github.com/CooLearning/playground/commit/ff4164309e3ab3044d0b1caeca8242c239ad0f9a))
+* **selector:** add new (dummy) layer events handler (WIP) ([61605ac](https://github.com/CooLearning/playground/commit/61605ac31cb4767778a0c91efaff288b54d1f6d4))
+
+
+### Performance Improvements
+
+* **eslint:** update dependency and configuration ([db63018](https://github.com/CooLearning/playground/commit/db63018ce3b40fc32232aeddf23a8b71c2e1864c))
+* **playground:** disable original `link-hover` ([98dacc6](https://github.com/CooLearning/playground/commit/98dacc6d8a683c5ca4efda1182494f7bc6a5e41e))
+* temporarily disable very costly UI rendering call ([9e19b54](https://github.com/CooLearning/playground/commit/9e19b54c30e56a03fcbddff6dcbe8f7326a5395e))
+
 ## [1.2.1](https://github.com/CooLearning/playground/compare/v1.2.0...v1.2.1) (2021-11-11)
 
 
