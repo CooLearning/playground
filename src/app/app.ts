@@ -23,5 +23,5 @@ app.init = async function (): Promise<void> {
   this.isInitialized = true;
 
   // eslint-disable-next-line no-console
-  console.log (app);
+  console.log ({ version: app.version });
 };
