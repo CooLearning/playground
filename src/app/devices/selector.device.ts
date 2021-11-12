@@ -47,6 +47,8 @@ selectorDevice.attachEvents = function (): void {
   this.attachInputs ();
   this.attachNeurons ();
   this.attachOutputWeights ();
+  this.attachNavigation ();
+  this.attachLayers ();
 };
 
 /**
@@ -261,4 +263,64 @@ selectorDevice.attachOutputWeights = function (): void {
  */
 selectorDevice.getGridFlatIndex = function (note: number): number {
   return this.grid.flat ().indexOf (note);
+};
+
+selectorDevice.attachNavigation = function () {
+  const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
+
+  // first draw
+  this.playNote ({
+    note: playbackPad,
+    color: playgroundFacade.isPlaying
+      ? this.settings.colorByState.playbackOn
+      : this.settings.colorByState.playbackOff,
+  });
+
+  // listen for changes
+  this.addControlListener ((e) => {
+    const inputNote = e.controller.number;
+    if (inputNote === playbackPad) {
+      const isPlaying = playgroundFacade.togglePlayback ();
+      this.playNote ({
+        note: inputNote,
+        color: isPlaying
+          ? this.settings.colorByState.playbackOn
+          : this.settings.colorByState.playbackOff,
+      });
+    }
+  }, true);
+};
+
+selectorDevice.attachLayers = function () {
+  const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
+
+  // first draw
+  layerPads.forEach ((pad) => {
+    this.playOrBlinkNote ({
+      note: pad,
+      color: this.settings.colorByState.layer,
+    });
+  });
+
+  // listen for changes
+  this.addControlListener ((e) => {
+    const inputNote = e.controller.number;
+    if (layerPads.includes (inputNote)) {
+      this.playOrBlinkNote ({
+        note: inputNote,
+        color: this.settings.colorByState.layer,
+      });
+    }
+  }, true);
+};
+
+selectorDevice.updateLightPlayback = function () {
+  const isPlaying = playgroundFacade.isPlaying;
+  const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
+  this.playNote ({
+    note: playbackPad,
+    color: isPlaying
+      ? this.settings.colorByState.playbackOn
+      : this.settings.colorByState.playbackOff,
+  });
 };

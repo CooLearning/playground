@@ -26,6 +26,8 @@ networkUi.toggleNeuron = function (index: number) {
     index,
     isDisabled: !nextEnabled,
   });
+
+  playgroundFacade.updateUI ();
 };
 
 networkUi.toggleInput = function (slug: string, render = false) {
@@ -38,6 +40,8 @@ networkUi.toggleInput = function (slug: string, render = false) {
     canvas.classed ('disabled', !input.isEnabled);
   }
 
+  playgroundFacade.updateUI ();
+  
   // device
   if (selectorDevice.isInitialized === true) {
     selectorDevice.setInputLight (input.id, input.isEnabled);
@@ -61,11 +65,6 @@ networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean
   canvas.classed ('selected', isSelected);
 
   neuronCardUi.updateCard (nodeIndex);
-
-  selectorDevice.setNeuronLight ({
-    index: nodeIndex,
-    isSelected,
-  });
-
+  selectorDevice.setNeuronLight ({ index: nodeIndex, isSelected });
   controllerDevice.onSelectionEvent ();
 };

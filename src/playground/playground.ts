@@ -30,6 +30,7 @@ import { AppendingLineChart } from './linechart';
 import * as d3 from 'd3';
 import { Coolearning } from '../coolearning/coolearning';
 import { networkUi } from '../app/ui/network.ui';
+import { playgroundUi } from '../app/ui/playground.ui';
 
 Coolearning ();
 
@@ -100,6 +101,10 @@ class Player {
   private timerIndex = 0;
   private isPlaying = false;
   private callback: (isPlaying: boolean) => void = null;
+
+  getIsPlaying (): boolean {
+    return this.isPlaying;
+  }
 
   /** Plays/pauses the player. */
   playOrPause () {
@@ -176,7 +181,7 @@ let testData: Example2D[] = [];
 export let network: nn.Node[][] = null;
 let lossTrain = 0;
 let lossTest = 0;
-let player = new Player ();
+export let player = new Player ();
 let lineChart = new AppendingLineChart (d3.select ('#linechart'),
   ['#777', 'black']);
 export let selectedNodes: number[] = [];
@@ -192,7 +197,7 @@ function makeGUI () {
   d3.select ('#play-pause-button').on ('click', function () {
     // Change the button's content.
     userHasInteracted ();
-    player.playOrPause ();
+    playgroundUi.togglePlayback ();
   });
 
   player.onPlayPause (isPlaying => {
@@ -422,6 +427,7 @@ function updateWeightsUI (network: nn.Node[][], container) {
             'stroke-dashoffset': -iter / 3,
             'stroke-width': linkWidthScale (Math.abs (link.weight)),
             'stroke': colorScale (link.weight),
+            'opacity': link.isDead ? 0 : 1,
           })
           .datum (link);
       }
@@ -808,9 +814,9 @@ function drawLink (
 
   // Add an invisible thick link that will be used for
   // showing the weight value on hover.
-  container.append ('path')
-    .attr ('d', diagonal (datum, 0))
-    .attr ('class', 'link-hover');
+  // container.append ('path')
+  //   .attr ('d', diagonal (datum, 0))
+  //   .attr ('class', 'link-hover');
   // .on ('mouseenter', function () {
   //     updateHoverCard (HoverType.WEIGHT, input, d3.mouse (this))
   // })
@@ -881,7 +887,7 @@ function getLoss (network: nn.Node[][], dataPoints: Example2D[]): number {
   return loss / dataPoints.length;
 }
 
-function updateUI (firstStep = false) {
+export function updateUI (firstStep = false) {
 
   // Update the links visually.
   updateWeightsUI (network, d3.select ('g.core'));
