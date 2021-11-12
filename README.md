@@ -2,7 +2,7 @@
 
 ## 📖 Context
 
-This project is an evolution based
+This project is based
 on [tensorflow/playground](https://github.com/tensorflow/playground).
 
 It aims to bring interactivity to the user interface with USB controllers by
@@ -38,10 +38,22 @@ This usually provides a grid of colored backlit pads.
 
 This device usually provides faders, potentiometers and buttons.
 
-- Use faders to control **input weights** of selected **neurons**
-- Use potentiometers to control **activation curves**, etc. of selected **
-  neurons**
-- Use buttons to play, pause or reset the neural network iterations.
+A controller has 4 main modes:
+
+- Default mode:
+  - Bind controls to parameters through the **mappings UI**
+- Single selection mode:
+  - Change a single neuron's parameters:
+    - Input weights
+    - Input biases
+    - Input meta (learning rate, activation, etc.)
+- Multiple selection mode:
+  - Change multiple neurons' parameters:
+    - Input weights
+    - Input biases
+    - Input meta (learning rate, activation, etc.)
+- Edit mode:
+  - **TODO**
 
 ## 🧮 Constraints
 
