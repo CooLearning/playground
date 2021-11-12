@@ -44,3 +44,8 @@ Object.defineProperty (playgroundFacade, 'isPlaying', {
     return player.getIsPlaying ();
   },
 });
+
+playgroundFacade.togglePlayback = function () {
+  player.playOrPause ();
+  return this.isPlaying;
+};

@@ -14,6 +14,8 @@ export type NovationLaunchpadX = DeviceSettings & {
     neuronSelected: number;
     outputWeightOn: number;
     outputWeightOff: number;
+    playbackOn: number;
+    playbackOff: number;
   };
 }
 
@@ -79,6 +81,8 @@ export const novationLaunchpadX: NovationLaunchpadX = {
       neuronSelected: this.colors.aqua,
       outputWeightOn: this.colors.fuchsia,
       outputWeightOff: this.colors.gray,
+      playbackOn: this.colors.lime,
+      playbackOff: this.colors.red,
     };
   },
   time: {
