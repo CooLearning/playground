@@ -1,3 +1,4 @@
+import * as d3 from 'd3';
 import {
   addToSelectedNodes,
   removeFromSelectedNodes,
@@ -5,6 +6,7 @@ import {
   selectedNodes as importedSelectedNodes,
   updateUI,
   player,
+  updateWeightsUI,
 } from '../../playground/playground';
 
 export const playgroundFacade = Object.create (null);
@@ -36,6 +38,12 @@ Object.defineProperty (playgroundFacade, 'unselectNode', {
 playgroundFacade.updateUI = function () {
   if (this.isPlaying !== true) {
     updateUI ();
+  }
+};
+
+playgroundFacade.updateWeightsUI = function () {
+  if (this.isPlaying !== true) {
+    updateWeightsUI (this.network, d3.select ('g.core'));
   }
 };
 

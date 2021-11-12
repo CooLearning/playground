@@ -8,7 +8,7 @@ module.exports = {
         changelogFile: 'CHANGELOG.md',
       }],
       ['@semantic-release/exec', {
-        'prepareCmd': 'yarn build:archive ${nextRelease.version}',
+        'prepareCmd': 'yarn build:prepare ${nextRelease.version} && yarn build && yarn build:archive ${nextRelease.version}',
       }],
       ['@semantic-release/npm', {
         npmPublish: false,

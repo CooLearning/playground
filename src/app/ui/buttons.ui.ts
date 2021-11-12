@@ -21,8 +21,8 @@ buttonsUi.init = function () {
   this.reset = this.node.querySelector (this.nodeSelectors.reset);
   this.help = this.node.querySelector (this.nodeSelectors.help);
 
-  this.devices.onclick = () => mappingsUi.show ();
-  this.mappings.onclick = () => devicesUi.show ();
+  this.mappings.onclick = () => mappingsUi.show ();
+  this.devices.onclick = () => devicesUi.show ();
   this.help.onclick = () => helpUi.show ();
 
   // eslint-disable-next-line no-console
