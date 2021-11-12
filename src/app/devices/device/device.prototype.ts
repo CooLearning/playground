@@ -7,6 +7,7 @@ devicePrototype.isInitialized = false as boolean;
 devicePrototype.device = null as Device;
 devicePrototype.settings = null as DeviceSettings;
 devicePrototype.network = null as any;
+devicePrototype.blinkingNotes = {};
 
 /**
  * Run the boot sequence
@@ -107,6 +108,62 @@ devicePrototype.playNotes = function (
   }
 };
 
+devicePrototype.clearBlinkingNote = function (note) {
+  if (typeof this.blinkingNotes?.[note] === 'number') {
+    clearTimeout (this.blinkingNotes[note]);
+    this.blinkingNotes[note] = null;
+  }
+};
+
+devicePrototype.blinkNote = function ({
+  note,
+  color,
+  interval = 800,
+}): void {
+  this.clearBlinkingNote (note);
+  this.blinkingNotes[note] = setInterval (() => {
+    this.playNote ({
+      note,
+      color,
+      duration: interval / 2,
+    });
+  }, interval);
+};
+
+devicePrototype.playOrBlinkNote = function ({
+  note,
+  color,
+  interval = 800,
+  duration = 3600000,
+}) {
+  if (typeof this.blinkingNotes?.[note] === 'undefined') {
+    // first time
+    this.blinkingNotes[note] = null;
+    this.playNote ({
+      note,
+      color,
+      duration,
+    });
+  } else if (this.blinkingNotes?.[note] === null) {
+    // not blinking
+    this.blinkNote ({
+      note,
+      color,
+      interval,
+    });
+  } else {
+    // already blinking
+    this.clearBlinkingNote (note);
+    setTimeout (() => {
+      this.playNote ({
+        note,
+        color,
+        duration,
+      });
+    }, interval / 2); // wait for the blink to finish;
+  }
+};
+
 /**
  * Clear listeners.
  */
@@ -152,12 +209,18 @@ devicePrototype.removeNoteListeners = function (noteState: string): void {
  * Utility function to attach an input event to the device
  *
  * @param {*} listener - The listener function
+ * @param {boolean} isToggle - Set true to simulate button toggle
  */
-devicePrototype.addControlListener = function (listener) {
+devicePrototype.addControlListener = function (listener, isToggle = false): void {
   this.device.input.addListener (
     'controlchange',
     this.settings.channels.input,
-    (e) => listener (e),
+    (e) => {
+      if (isToggle && e.value !== 127) {
+        return;
+      }
+      listener (e);
+    },
   );
 };
 
