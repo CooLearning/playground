@@ -16,6 +16,7 @@ export type NovationLaunchpadX = DeviceSettings & {
     outputWeightOff: number;
     playbackOn: number;
     playbackOff: number;
+    layer: number;
   };
 }
 
@@ -83,6 +84,7 @@ export const novationLaunchpadX: NovationLaunchpadX = {
       outputWeightOff: this.colors.gray,
       playbackOn: this.colors.lime,
       playbackOff: this.colors.red,
+      layer: this.colors.blue,
     };
   },
   time: {

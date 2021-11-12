@@ -48,6 +48,7 @@ selectorDevice.attachEvents = function (): void {
   this.attachNeurons ();
   this.attachOutputWeights ();
   this.attachNavigation ();
+  this.attachLayers ();
 };
 
 /**
@@ -278,7 +279,7 @@ selectorDevice.attachNavigation = function () {
   // listen for changes
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
-    if (inputNote === playbackPad && e.value === 127) {
+    if (inputNote === playbackPad) {
       const isPlaying = playgroundFacade.togglePlayback ();
       this.playNote ({
         note: inputNote,
@@ -287,5 +288,28 @@ selectorDevice.attachNavigation = function () {
           : this.settings.colorByState.playbackOff,
       });
     }
+  }, true);
+};
+
+selectorDevice.attachLayers = function () {
+  const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
+
+  // first draw
+  layerPads.forEach ((pad) => {
+    this.playOrBlinkNote ({
+      note: pad,
+      color: this.settings.colorByState.layer,
+    });
   });
+
+  // listen for changes
+  this.addControlListener ((e) => {
+    const inputNote = e.controller.number;
+    if (layerPads.includes (inputNote)) {
+      this.playOrBlinkNote ({
+        note: inputNote,
+        color: this.settings.colorByState.layer,
+      });
+    }
+  }, true);
 };
