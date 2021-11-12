@@ -813,9 +813,9 @@ function drawLink (
 
   // Add an invisible thick link that will be used for
   // showing the weight value on hover.
-  container.append ('path')
-    .attr ('d', diagonal (datum, 0))
-    .attr ('class', 'link-hover');
+  // container.append ('path')
+  //   .attr ('d', diagonal (datum, 0))
+  //   .attr ('class', 'link-hover');
   // .on ('mouseenter', function () {
   //     updateHoverCard (HoverType.WEIGHT, input, d3.mouse (this))
   // })
