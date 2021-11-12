@@ -215,15 +215,22 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
       if (typeof source === 'undefined') {
         return;
       }
-      const value = rangeMap (e.value, 0, 127, -1, 1);
+
+      // compute the new value
+      // intentionally use 2 decimals to avoid high frequency changes
+      const value = parseFloat (
+        rangeMap (e.value, 0, 127, -1, 1)
+          .toFixed (2),
+      );
 
       if (value.toFixed (1) === filteredLinks[index].weight.toFixed (1)) {
         filteredLinks[index].hasSnapped = true;
       }
 
       if (filteredLinks[index].hasSnapped && source.isEnabled) {
-        links[index].weight = value;
+        networkState.setWeight (index, value);
         neuronCardUi.updateWeight (index, value);
+        playgroundFacade.updateUI (); // todo this is slow
         this.playNote ({
           note: this.settings.outputByInput[e.controller.number],
           color: this.settings.colors.green,

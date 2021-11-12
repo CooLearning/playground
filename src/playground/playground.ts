@@ -101,6 +101,10 @@ class Player {
   private isPlaying = false;
   private callback: (isPlaying: boolean) => void = null;
 
+  getIsPlaying (): boolean {
+    return this.isPlaying;
+  }
+
   /** Plays/pauses the player. */
   playOrPause () {
     if (this.isPlaying) {
@@ -176,7 +180,7 @@ let testData: Example2D[] = [];
 export let network: nn.Node[][] = null;
 let lossTrain = 0;
 let lossTest = 0;
-let player = new Player ();
+export let player = new Player ();
 let lineChart = new AppendingLineChart (d3.select ('#linechart'),
   ['#777', 'black']);
 export let selectedNodes: number[] = [];
@@ -881,7 +885,7 @@ function getLoss (network: nn.Node[][], dataPoints: Example2D[]): number {
   return loss / dataPoints.length;
 }
 
-function updateUI (firstStep = false) {
+export function updateUI (firstStep = false) {
 
   // Update the links visually.
   updateWeightsUI (network, d3.select ('g.core'));

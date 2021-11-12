@@ -86,6 +86,7 @@ neuronCardUi.attachEvents = function () {
       weight.onchange = (e: InputEvent) => {
         const value = parseFloat ((e.target as HTMLInputElement).value);
         networkState.setWeight (index, value);
+        playgroundFacade.updateUI ();
       };
     });
   }
