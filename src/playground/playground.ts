@@ -427,6 +427,7 @@ function updateWeightsUI (network: nn.Node[][], container) {
             'stroke-dashoffset': -iter / 3,
             'stroke-width': linkWidthScale (Math.abs (link.weight)),
             'stroke': colorScale (link.weight),
+            'opacity': link.isDead ? 0 : 1,
           })
           .datum (link);
       }
