@@ -99,7 +99,7 @@ yarn start
 
 ### [Novation Launchpad X](https://novationmusic.com/en/launch/launchpad-x)
 
-<img alt="novation launchpad x" width="200px" src="https://novationmusic.com/sites/novation/files/lpx-overhead-391-390.png">
+![](assets/known-devices-drawings/novation-launchpad-x-drawing.svg)
 
 ### [Novation Launch Control XL](https://novationmusic.com/en/launch/launch-control-xl)
 
