@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/CooLearning/playground/compare/v1.3.0...v1.4.0) (2021-11-12)
+
+
+### Features
+
+* **help:** add new help UI + add detailed drawing for novation launchpad X + update build command ([e8df82b](https://github.com/CooLearning/playground/commit/e8df82b54430afbcfc5b95ef0a81502e3953e2c7))
+
 # [1.3.0](https://github.com/CooLearning/playground/compare/v1.2.1...v1.3.0) (2021-11-12)
 
 
