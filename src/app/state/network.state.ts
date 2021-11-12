@@ -175,12 +175,12 @@ networkState.setWeight = function (weightIndex, value) {
   if (selectedNodes.length === 0) {
     return;
   } else if (selectedNodes.length === 1) {
-    targetNeuronOrNeurons = [this.getNeuron (selectedNodes[0])];
+    targetNeuronOrNeurons = [this.getNeuron (selectedNodes[0]).neuron];
   } else {
-    targetNeuronOrNeurons = selectedNodes.map ((nodeIndex) => this.getNeuron (nodeIndex));
+    targetNeuronOrNeurons = selectedNodes.map ((nodeIndex) => this.getNeuron (nodeIndex).neuron);
   }
 
-  targetNeuronOrNeurons.forEach (({ neuron }) => {
+  targetNeuronOrNeurons.forEach ((neuron) => {
     const weight = neuron.inputLinks?.[weightIndex]?.weight;
     if (typeof weight !== 'undefined') {
       neuron.inputLinks[weightIndex].weight = value;
