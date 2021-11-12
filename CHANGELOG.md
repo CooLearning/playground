@@ -1,3 +1,20 @@
+# [1.5.0](https://github.com/CooLearning/playground/compare/v1.4.1...v1.5.0) (2021-11-12)
+
+
+### Bug Fixes
+
+* devices and mappings semantics were inverted ([4370272](https://github.com/CooLearning/playground/commit/437027250becc6e18655c8dbd021f9d24243c3de))
+
+
+### Features
+
+* add and use `updateWeightsUI` in playground facade so that we can render efficiently while updating weights with our `controller` ([ae2b0a5](https://github.com/CooLearning/playground/commit/ae2b0a5783fc0b659b2317ca9daf2b29b1bae376))
+
+
+### Performance Improvements
+
+* **state/network:** grab neuron element only when building targets ([6a76ef4](https://github.com/CooLearning/playground/commit/6a76ef4ecdb438412a8299379ec98a999a5b8d5b))
+
 ## [1.4.1](https://github.com/CooLearning/playground/compare/v1.4.0...v1.4.1) (2021-11-12)
 
 
