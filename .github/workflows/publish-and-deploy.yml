@@ -31,7 +31,10 @@ jobs:
       - name: Install project dependencies
         run: yarn
 
-      - name: Build and release
+      - name: Dummy build
+        run: yarn build
+
+      - name: Rebuild and release
         run: semantic-release
         env:
           GH_TOKEN: ${{ secrets.PAT }}
