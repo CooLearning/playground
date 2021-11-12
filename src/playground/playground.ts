@@ -414,7 +414,7 @@ function updateBiasesUI (network: nn.Node[][]) {
   });
 }
 
-function updateWeightsUI (network: nn.Node[][], container) {
+export function updateWeightsUI (network: nn.Node[][], container) {
   for (let layerIdx = 1; layerIdx < network.length; layerIdx++) {
     let currentLayer = network[layerIdx];
     // Update all the nodes in this layer.
