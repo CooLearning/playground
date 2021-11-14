@@ -1,7 +1,7 @@
 import { devicePrototype } from './device/device.prototype';
 import { rangeMap } from '../utils/range-map';
 import { playgroundFacade } from '../facades/playground.facade';
-import { neuronCardUi } from '../ui/neuron-card.ui';
+import { selectCardUi } from '../ui/select-card.ui';
 import { networkState } from '../state/network.state';
 import { mappingsState } from '../state/mappings.state';
 import { mappingsUi } from '../ui/mappings.ui';
@@ -264,15 +264,15 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
           0,
           127,
           0,
-          neuronCardUi.options.learningRate.length - 1,
+          selectCardUi.options.learningRate.length - 1,
         ).toString (),
       );
 
-      const learningRate = neuronCardUi.options.learningRate[learningRateOptionIndex];
+      const learningRate = selectCardUi.options.learningRate[learningRateOptionIndex];
 
       if (learningRate !== links[index].source.learningRate) {
         networkState.updateSourceLearningRate (index, learningRate);
-        neuronCardUi.setLearningRate (index, learningRate);
+        selectCardUi.setLearningRate (index, learningRate);
         playgroundFacade.updateUI ();
       }
     }
@@ -292,15 +292,15 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
           0,
           127,
           0,
-          neuronCardUi.options.activation.length - 1,
+          selectCardUi.options.activation.length - 1,
         ).toString (),
       );
 
-      const activation = neuronCardUi.options.activation[activationOptionIndex];
+      const activation = selectCardUi.options.activation[activationOptionIndex];
 
       if (activation !== links[index].source.activation.name) {
         networkState.updateSourceActivation (index, activation);
-        neuronCardUi.setActivation (index, activation);
+        selectCardUi.setActivation (index, activation);
         playgroundFacade.updateUI ();
       }
     }
@@ -322,15 +322,15 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
             0,
             127,
             0,
-            neuronCardUi.options.regularization.length - 1,
+            selectCardUi.options.regularization.length - 1,
           ).toString (),
         );
 
-        const regularization = neuronCardUi.options.regularization[regularizationOptionIndex];
+        const regularization = selectCardUi.options.regularization[regularizationOptionIndex];
 
         if (regularization !== links[index].source.regularization.name) {
           networkState.updateSourceRegularization (index, regularization);
-          neuronCardUi.setRegularization (index, regularization);
+          selectCardUi.setRegularization (index, regularization);
           playgroundFacade.updateUI ();
         }
       }
@@ -342,15 +342,15 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
             0,
             127,
             0,
-            neuronCardUi.options.regularizationRate.length - 1,
+            selectCardUi.options.regularizationRate.length - 1,
           ).toString (),
         );
 
-        const regularizationRate = neuronCardUi.options.regularizationRate[regularizationRateOptionIndex];
+        const regularizationRate = selectCardUi.options.regularizationRate[regularizationRateOptionIndex];
 
         if (regularizationRate !== links[index].source.regularizationRate) {
           networkState.updateSourceRegularizationRate (index, regularizationRate);
-          neuronCardUi.setRegularizationRate (index, regularizationRate);
+          selectCardUi.setRegularizationRate (index, regularizationRate);
           playgroundFacade.updateUI ();
         }
       }
@@ -394,7 +394,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
         if (links[index].hasSnapped) {
           networkState.setWeight (index, value);
-          neuronCardUi.setWeight (index, value);
+          selectCardUi.setWeight (index, value);
           playgroundFacade.updateWeightsUI ();
           this.playNote ({
             note: this.settings.outputByInput[inputNote],
@@ -413,7 +413,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
         const value = rangeMap (e.value, 0, 127, -1, 1);
         if (value.toFixed (2) !== links[index].source.bias.toFixed (2)) {
           links[index].source.bias = value;
-          neuronCardUi.setBias (index, value);
+          selectCardUi.setBias (index, value);
           playgroundFacade.updateBiasesUI ();
         }
       }

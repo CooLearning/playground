@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { networkState } from '../state/network.state';
 import { selectorDevice } from '../devices/selector.device';
 import { playgroundFacade } from '../facades/playground.facade';
-import { neuronCardUi } from './neuron-card.ui';
+import { selectCardUi } from './select-card.ui';
 import { controllerDevice } from '../devices/controller.device';
 
 /**
@@ -22,7 +22,7 @@ networkUi.toggleNeuron = function (index: number) {
 
   networkState.toggleNeuron (index);
 
-  neuronCardUi.updateCard ();
+  selectCardUi.updateCard ();
   playgroundFacade.updateWeightsUI ();
 
   selectorDevice.setNeuronLight ({
@@ -66,7 +66,7 @@ networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean
   const canvas = d3.select (`#canvas-${nodeIndex}`);
   canvas.classed ('selected', isSelected);
 
-  neuronCardUi.updateCard ();
+  selectCardUi.updateCard ();
 
   selectorDevice.setNeuronLight ({ index: nodeIndex, isSelected });
   controllerDevice.onSelectionEvent ();

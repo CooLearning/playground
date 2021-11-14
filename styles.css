@@ -1079,9 +1079,9 @@ Help Dialog
 }
 
 /**
-Neuron card
+Select card
  */
-#neuron-card {
+#select-card {
   display: none;
   flex-direction: column;
 
@@ -1103,16 +1103,16 @@ Neuron card
   text-align: center;
 }
 
-#neuron-card .row {
+#select-card .row {
   display: grid;
   grid-gap: 5px;
   grid-template-columns: 40px repeat(6, 70px);
 }
 
-#neuron-card .header {
+#select-card .header {
   font-style: italic;
 }
 
-#neuron-card input {
+#select-card input {
   width: 60px;
 }
