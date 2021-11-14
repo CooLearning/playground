@@ -290,11 +290,12 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
         playgroundFacade.updateUI ();
       }
     }
-    // third row: regularization + regularization rates (shifted)
+    // third row: regularization (shifted) + regularization rate
     else if (this.settings.rows.thirdPots.indexOf (inputNote) !== -1) {
       const index = this.settings.rows.thirdPots.indexOf (inputNote);
-      // regularization
-      if (this.shifted[index] === false) {
+
+      // regularization (shifted)
+      if (this.shifted[index] === true) {
         const regularizationOptionIndex = parseInt (
           rangeMap (
             e.value,
