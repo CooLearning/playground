@@ -29,7 +29,7 @@ export let activations: { [key: string]: nn.ActivationFunction } = {
 
 /** A map between names and regularization functions. */
 export let regularizations: { [key: string]: nn.RegularizationFunction } = {
-  'none': null,
+  'none': nn.RegularizationFunction.NONE,
   'L1': nn.RegularizationFunction.L1,
   'L2': nn.RegularizationFunction.L2,
 };
@@ -142,7 +142,7 @@ export class State {
   tutorial: string = null;
   percTrainData = 50;
   activation = nn.Activations.TANH;
-  regularization: nn.RegularizationFunction = null;
+  regularization: nn.RegularizationFunction = nn.RegularizationFunction.NONE;
   problem = Problem.CLASSIFICATION;
   initZero = false;
   hideText = true;

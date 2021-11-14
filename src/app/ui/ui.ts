@@ -19,8 +19,6 @@ ui.init = async function () {
   neuronCardUi.init ();
   devicesUi.init ();
   helpUi.init ();
-
-  notificationsUi.notify ('test');
 };
 
 /**

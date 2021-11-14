@@ -1,5 +1,5 @@
-import { midi } from './midi/midi';
 import { ui } from './ui/ui';
+import { midi } from './midi/midi';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageJson = require ('../../package.json');
@@ -23,5 +23,5 @@ app.init = async function (): Promise<void> {
   this.isInitialized = true;
 
   // eslint-disable-next-line no-console
-  console.log (app);
+  console.log ({ version: app.version });
 };
