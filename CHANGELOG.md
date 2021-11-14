@@ -1,3 +1,13 @@
+## [1.6.1](https://github.com/CooLearning/playground/compare/v1.6.0...v1.6.1) (2021-11-14)
+
+
+### Bug Fixes
+
+* **device/controller:** add sanity checks when changing sources ([8672d5a](https://github.com/CooLearning/playground/commit/8672d5ae923cb30bebbd0e711134edcee42ab08e))
+* **device/controller:** reverse third row bindings as to control regularization rates by default and regularization types when shift key is pressed ([b24bb8b](https://github.com/CooLearning/playground/commit/b24bb8b9452696c67236719432b933bba57ebdc4))
+* **device/selector:** add sanity check before updating lights ([f91dcd1](https://github.com/CooLearning/playground/commit/f91dcd1822e2fab87a542ba759dc1c8ed4053196))
+* **UI/neuron-card:** set title items to singular ([48e4824](https://github.com/CooLearning/playground/commit/48e4824b59a08133f8607d7c0e31da8eb65dd692))
+
 # [1.6.0](https://github.com/CooLearning/playground/compare/v1.5.0...v1.6.0) (2021-11-14)
 
 
