@@ -118,7 +118,7 @@ devicePrototype.clearBlinkingNote = function (note) {
 devicePrototype.blinkNote = function ({
   note,
   color,
-  interval = 800,
+  interval = 200,
 }): void {
   this.clearBlinkingNote (note);
   this.blinkingNotes[note] = setInterval (() => {
@@ -133,7 +133,7 @@ devicePrototype.blinkNote = function ({
 devicePrototype.playOrBlinkNote = function ({
   note,
   color,
-  interval = 800,
+  interval = 200,
   duration = 3600000,
 }) {
   if (typeof this.blinkingNotes?.[note] === 'undefined') {
@@ -144,14 +144,16 @@ devicePrototype.playOrBlinkNote = function ({
       color,
       duration,
     });
-  } else if (this.blinkingNotes?.[note] === null) {
+  }
+  else if (this.blinkingNotes?.[note] === null) {
     // not blinking
     this.blinkNote ({
       note,
       color,
       interval,
     });
-  } else {
+  }
+  else {
     // already blinking
     this.clearBlinkingNote (note);
     setTimeout (() => {
