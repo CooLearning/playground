@@ -319,6 +319,10 @@ selectorDevice.attachLayers = function () {
 };
 
 selectorDevice.updateLightPlayback = function () {
+  if (!this.isInitialized) {
+    return;
+  }
+
   const isPlaying = playgroundFacade.isPlaying;
   const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
   this.playNote ({
