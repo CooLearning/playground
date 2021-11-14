@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/CooLearning/playground/compare/v1.5.0...v1.6.0) (2021-11-14)
+
+
+### Features
+
+* modify original playground to allow on the fly meta parameters change + add controls from controller device + add meta parameters to neuron-card + add bias setters + add shift mode on controller device + various improvements ([bedb04a](https://github.com/CooLearning/playground/commit/bedb04a10ca7bf5e9cbe3a2acf94786999caff1e))
+
 # [1.5.0](https://github.com/CooLearning/playground/compare/v1.4.1...v1.5.0) (2021-11-12)
 
 
