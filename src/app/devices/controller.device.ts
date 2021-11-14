@@ -251,6 +251,13 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
     // first row: learning rate
     if (this.settings.rows.firstPots.indexOf (inputNote) !== -1) {
       const index = inputNote - this.settings.rows.firstPots[0];
+      if (typeof links[index]?.source === 'undefined') {
+        return;
+      }
+      if (links[index].source.isEnabled === false) {
+        return;
+      }
+
       const learningRateOptionIndex = parseInt (
         rangeMap (
           e.value,
@@ -263,7 +270,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
       const learningRate = neuronCardUi.options.learningRate[learningRateOptionIndex];
 
-      if (learningRate !== neuron.inputLinks[index].source.learningRate) {
+      if (learningRate !== links[index].source.learningRate) {
         networkState.updateSourceLearningRate (index, learningRate);
         neuronCardUi.setLearningRate (index, learningRate);
         playgroundFacade.updateUI ();
@@ -272,6 +279,13 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
     // second row: activation
     else if (this.settings.rows.secondPots.indexOf (inputNote) !== -1) {
       const index = inputNote - this.settings.rows.secondPots[0];
+      if (typeof links[index]?.source === 'undefined') {
+        return;
+      }
+      if (links[index].source.isEnabled === false) {
+        return;
+      }
+
       const activationOptionIndex = parseInt (
         rangeMap (
           e.value,
@@ -284,7 +298,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
       const activation = neuronCardUi.options.activation[activationOptionIndex];
 
-      if (activation !== neuron.inputLinks[index].source.activation.name) {
+      if (activation !== links[index].source.activation.name) {
         networkState.updateSourceActivation (index, activation);
         neuronCardUi.setActivation (index, activation);
         playgroundFacade.updateUI ();
@@ -293,6 +307,12 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
     // third row: regularization (shifted) + regularization rate
     else if (this.settings.rows.thirdPots.indexOf (inputNote) !== -1) {
       const index = this.settings.rows.thirdPots.indexOf (inputNote);
+      if (typeof links[index]?.source === 'undefined') {
+        return;
+      }
+      if (links[index].source.isEnabled === false) {
+        return;
+      }
 
       // regularization (shifted)
       if (this.shifted[index] === true) {
@@ -308,7 +328,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
         const regularization = neuronCardUi.options.regularization[regularizationOptionIndex];
 
-        if (regularization !== neuron.inputLinks[index].source.regularization.name) {
+        if (regularization !== links[index].source.regularization.name) {
           networkState.updateSourceRegularization (index, regularization);
           neuronCardUi.setRegularization (index, regularization);
           playgroundFacade.updateUI ();
@@ -328,7 +348,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
         const regularizationRate = neuronCardUi.options.regularizationRate[regularizationRateOptionIndex];
 
-        if (regularizationRate !== neuron.inputLinks[index].source.regularizationRate) {
+        if (regularizationRate !== links[index].source.regularizationRate) {
           networkState.updateSourceRegularizationRate (index, regularizationRate);
           neuronCardUi.setRegularizationRate (index, regularizationRate);
           playgroundFacade.updateUI ();
@@ -338,8 +358,10 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
     // faders: weights + biases (shifted)
     else if (this.settings.rows.faders.indexOf (inputNote) !== -1) {
       const index = this.settings.rows.faders.indexOf (inputNote);
-      const source = links?.[index]?.source;
-      if (typeof source === 'undefined') {
+      if (typeof links[index]?.source === 'undefined') {
+        return;
+      }
+      if (links[index].source.isEnabled === false) {
         return;
       }
 
@@ -370,7 +392,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
           }, 800);
         }
 
-        if (links[index].hasSnapped && source.isEnabled) {
+        if (links[index].hasSnapped) {
           networkState.setWeight (index, value);
           neuronCardUi.setWeight (index, value);
           playgroundFacade.updateWeightsUI ();
@@ -389,8 +411,8 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
       // biases
       else {
         const value = rangeMap (e.value, 0, 127, -1, 1);
-        if (value.toFixed (2) !== neuron.inputLinks[index].source.bias.toFixed (2)) {
-          neuron.inputLinks[index].source.bias = value;
+        if (value.toFixed (2) !== links[index].source.bias.toFixed (2)) {
+          links[index].source.bias = value;
           neuronCardUi.setBias (index, value);
           playgroundFacade.updateBiasesUI ();
         }
