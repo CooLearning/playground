@@ -313,6 +313,7 @@ limitations under the License.
           </marker>
         </defs>
       </svg>
+
       <!-- Hover card -->
       <div id="hovercard">
         <div style="font-size:10px">Click anywhere to edit.</div>
@@ -327,127 +328,7 @@ limitations under the License.
                     </span>
         </div>
       </div>
-      <!-- Neuron card -->
-      <div id="neuron-card">
-        <div
-          class="node"
-          style="font-size: 10px; text-align: center; width: 100%;"
-        >Node:
-        </div>
-        <div class="title">
-          <span class="title text">Bias</span>
-          <span class="title value"></span>
-        </div>
-        <div>
-          <label>
-            <input step="0.1" type="number" />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#1</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#2</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#3</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#4</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#5</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#6</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#7</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-        <div class="title">
-          <span class="title text">Weight</span>
-          <span class="title value">#8</span>
-        </div>
-        <div>
-          <label>
-            <input
-              class="neuron-card__weight"
-              step="0.1"
-              type="number"
-            />
-          </label>
-        </div>
-      </div>
+
       <div class="callout thumbnail">
         <svg viewBox="0 0 30 30">
           <defs>
@@ -911,6 +792,123 @@ limitations under the License.
     </button>
   </div>
 </dialog>
+
+<!-- Neuron card -->
+<div id="neuron-card">
+  <div class="row header">
+    <span>Sources</span>
+    <span>Weights</span>
+    <span>Biases</span>
+    <span>Learning rate</span>
+    <span>Activation</span>
+    <span>Regularization</span>
+    <span>Regul. rate</span>
+  </div>
+  <div class="row">
+    <span>#1</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+  <div class="row">
+    <span>#2</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+  <div class="row">
+    <span>#3</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+  <div class="row">
+    <span>#4</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+  <div class="row">
+    <span>#5</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+  <div class="row">
+    <span>#6</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+  <div class="row">
+    <span>#7</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+  <div class="row">
+    <span>#8</span>
+    <label>
+      <input class="weight" step="0.1" type="number" />
+    </label>
+    <label>
+      <input class="bias" step="0.1" type="number" />
+    </label>
+    <div class="learning-rate"></div>
+    <div class="activation"></div>
+    <div class="regularization"></div>
+    <div class="regularization-rate"></div>
+  </div>
+</div>
 
 <script src="bundle.js"></script>
 <!-- Google analytics -->

@@ -378,31 +378,6 @@ header h1 .optional {
   width: 60px;
 }
 
-/* Neuron Card */
-#neuron-card {
-  display: none;
-  position: absolute;
-  padding: 5px;
-  border: 1px solid #aaa;
-  z-index: 1000;
-  background: #fff;
-  cursor: default;
-  border-radius: 5px;
-  left: -203px;
-  width: 170px;
-  top: 72px;
-  flex-wrap: wrap;
-  justify-content: space-between;
-}
-
-#neuron-card div {
-  padding: 2px;
-}
-
-#neuron-card input {
-  width: 80px;
-}
-
 /* Main Part*/
 
 #main-part {
@@ -1111,5 +1086,44 @@ Help Dialog
   cursor: pointer;
   width: 600px;
   height: 600px;
+}
+
+/**
+Neuron card
+ */
+#neuron-card {
+  display: none;
+  flex-direction: column;
+
+  position: absolute;
+  left: 50%;
+  top: 5px;
+  transform: translate(-50%, 0);
+
+  z-index: 1000;
+
+  background: #fff;
+  cursor: default;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+
+  padding: 5px;
+
+  font-size: 0.8em;
+  text-align: center;
+}
+
+#neuron-card .row {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: 40px repeat(6, 70px);
+}
+
+#neuron-card .header {
+  font-style: italic;
+}
+
+#neuron-card input {
+  width: 60px;
 }
 
