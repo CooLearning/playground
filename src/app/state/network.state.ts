@@ -1,5 +1,6 @@
 import { playgroundFacade } from '../facades/playground.facade';
 import { Link } from './network.state.types';
+import { activations, regularizations } from '../../playground/state';
 
 /**
  * State object for the network.
@@ -54,7 +55,8 @@ networkState.getNeuronAndLayerIndexes = function (nodeIndex: number): GetNeuronA
   let neuronIndex;
   if (nodeIndex % neuronsPerLayer === 0) {
     neuronIndex = neuronsPerLayer;
-  } else {
+  }
+  else {
     neuronIndex = nodeIndex % neuronsPerLayer;
   }
 
@@ -109,8 +111,6 @@ networkState.toggleOutput = function (outputIndex: number): void {
 networkState.toggleNeuron = function (nodeIndex: number): void {
   const { neuron, isEnabled } = this.getNeuron (nodeIndex);
 
-  // todo how to impact node.bias ?
-
   neuron.isEnabled = !isEnabled;
 
   // input weights
@@ -122,7 +122,8 @@ networkState.toggleNeuron = function (nodeIndex: number): void {
     if (neuron.isEnabled) {
       link.isDead = false;
       link.weight = link.savedWeight || Math.random () - 0.5;
-    } else {
+    }
+    else {
       link.isDead = true;
       link.savedWeight = link.weight;
       link.weight = 0;
@@ -138,7 +139,8 @@ networkState.toggleNeuron = function (nodeIndex: number): void {
     if (neuron.isEnabled) {
       link.isDead = false;
       link.weight = link.savedWeight || Math.random () - 0.5;
-    } else {
+    }
+    else {
       link.isDead = true;
       link.savedWeight = link.weight;
       link.weight = 0;
@@ -169,21 +171,52 @@ networkState.toggleInput = function (slug: string): any {
   return input;
 };
 
-networkState.setWeight = function (weightIndex, value) {
-  let targetNeuronOrNeurons;
+networkState.getSelectedNeurons = function () {
   const { selectedNodes } = playgroundFacade;
+
+  let targets; // neuron or neurons
+
   if (selectedNodes.length === 0) {
     return;
-  } else if (selectedNodes.length === 1) {
-    targetNeuronOrNeurons = [this.getNeuron (selectedNodes[0]).neuron];
-  } else {
-    targetNeuronOrNeurons = selectedNodes.map ((nodeIndex) => this.getNeuron (nodeIndex).neuron);
   }
+  else if (selectedNodes.length === 1) {
+    targets = [this.getNeuron (selectedNodes[0]).neuron];
+  }
+  else {
+    targets = selectedNodes.map ((i) => this.getNeuron (i).neuron);
+  }
+  return targets;
+};
 
-  targetNeuronOrNeurons.forEach ((neuron) => {
-    const weight = neuron.inputLinks?.[weightIndex]?.weight;
+networkState.setWeight = function (index, value) {
+  this.getSelectedNeurons ().forEach ((neuron) => {
+    const weight = neuron.inputLinks?.[index]?.weight;
     if (typeof weight !== 'undefined') {
-      neuron.inputLinks[weightIndex].weight = value;
+      neuron.inputLinks[index].weight = value;
     }
+  });
+};
+
+networkState.updateSourceLearningRate = function (index, value) {
+  this.getSelectedNeurons ().forEach ((neuron) => {
+    neuron.inputLinks[index].source.learningRate = value;
+  });
+};
+
+networkState.updateSourceActivation = function (index, value) {
+  this.getSelectedNeurons ().forEach ((neuron) => {
+    neuron.inputLinks[index].source.activation = activations[value];
+  });
+};
+
+networkState.updateSourceRegularization = function (index, value) {
+  this.getSelectedNeurons ().forEach ((neuron) => {
+    neuron.inputLinks[index].source.regularization = regularizations[value];
+  });
+};
+
+networkState.updateSourceRegularizationRate = function (index, value) {
+  this.getSelectedNeurons ().forEach ((neuron) => {
+    neuron.inputLinks[index].source.regularizationRate = value;
   });
 };

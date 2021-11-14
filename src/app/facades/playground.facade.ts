@@ -7,6 +7,7 @@ import {
   updateUI,
   player,
   updateWeightsUI,
+  updateBiasesUI,
 } from '../../playground/playground';
 
 export const playgroundFacade = Object.create (null);
@@ -44,6 +45,12 @@ playgroundFacade.updateUI = function () {
 playgroundFacade.updateWeightsUI = function () {
   if (this.isPlaying !== true) {
     updateWeightsUI (this.network, d3.select ('g.core'));
+  }
+};
+
+playgroundFacade.updateBiasesUI = function () {
+  if (this.isPlaying !== true) {
+    updateBiasesUI (this.network);
   }
 };
 

@@ -147,7 +147,8 @@ selectorDevice.attachNeurons = function (): void {
     if (isEnabled) {
       if (playgroundFacade.selectedNodes.indexOf (nodeIndex) === -1) {
         networkUi.toggleNodeSelection (nodeIndex, true);
-      } else {
+      }
+      else {
         networkUi.toggleNodeSelection (nodeIndex, false);
       }
     }
@@ -202,9 +203,11 @@ selectorDevice.setNeuronLight = function (options: SetNeuronOptions): void {
   let color;
   if (isSelected) {
     color = this.settings.colorByState.neuronSelected;
-  } else if (isDisabled) {
+  }
+  else if (isDisabled) {
     color = this.settings.colorByState.neuronOff;
-  } else {
+  }
+  else {
     color = this.settings.colorByState.neuronOn;
   }
 
@@ -293,14 +296,15 @@ selectorDevice.attachNavigation = function () {
 
 selectorDevice.attachLayers = function () {
   const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
+  const layersCount = networkState.neurons.length;
 
   // first draw
-  layerPads.forEach ((pad) => {
+  for (let i = 0; i < layersCount; ++i) {
     this.playOrBlinkNote ({
-      note: pad,
+      note: layerPads[i],
       color: this.settings.colorByState.layer,
     });
-  });
+  }
 
   // listen for changes
   this.addControlListener ((e) => {

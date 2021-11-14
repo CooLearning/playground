@@ -22,12 +22,13 @@ networkUi.toggleNeuron = function (index: number) {
 
   networkState.toggleNeuron (index);
 
+  neuronCardUi.updateCard ();
+  playgroundFacade.updateWeightsUI ();
+
   selectorDevice.setNeuronLight ({
     index,
     isDisabled: !nextEnabled,
   });
-
-  playgroundFacade.updateUI ();
 };
 
 networkUi.toggleInput = function (slug: string, render = false) {
@@ -40,7 +41,7 @@ networkUi.toggleInput = function (slug: string, render = false) {
     canvas.classed ('disabled', !input.isEnabled);
   }
 
-  playgroundFacade.updateUI ();
+  playgroundFacade.updateWeightsUI ();
 
   // device
   if (selectorDevice.isInitialized === true) {
@@ -56,7 +57,8 @@ networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean
   // playground local state
   if (isSelected) {
     playgroundFacade.selectNode (nodeIndex);
-  } else {
+  }
+  else {
     playgroundFacade.unselectNode (nodeIndex);
   }
 
@@ -64,7 +66,8 @@ networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean
   const canvas = d3.select (`#canvas-${nodeIndex}`);
   canvas.classed ('selected', isSelected);
 
-  neuronCardUi.updateCard (nodeIndex);
+  neuronCardUi.updateCard ();
+
   selectorDevice.setNeuronLight ({ index: nodeIndex, isSelected });
   controllerDevice.onSelectionEvent ();
 };

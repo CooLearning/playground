@@ -16,6 +16,17 @@ import { playgroundUi } from '../ui/playground.ui';
  */
 export const controllerDevice = Object.create (devicePrototype);
 
+controllerDevice.shifted = {
+  0: false,
+  1: false,
+  2: false,
+  3: false,
+  4: false,
+  5: false,
+  6: false,
+  7: false,
+};
+
 /**
  * Initialize the controller.
  *
@@ -50,9 +61,11 @@ controllerDevice.drawLights = function () {
   let color;
   if (this.isDefaultMode) {
     color = this.settings.colors.amber;
-  } else if (this.isSingleMode) {
+  }
+  else if (this.isSingleMode) {
     color = this.settings.colors.black;
-  } else {
+  }
+  else {
     color = this.settings.colors.red;
   }
 
@@ -71,9 +84,11 @@ controllerDevice.updateMode = function () {
 
   if (this.isDefaultMode) {
     this.setDefaultMode ();
-  } else if (this.isSingleMode) {
+  }
+  else if (this.isSingleMode) {
     this.setSingleMode ();
-  } else {
+  }
+  else {
     this.setMultipleMode ();
   }
 };
@@ -90,8 +105,9 @@ controllerDevice.setDefaultMode = function () {
  * Set the single mode.
  */
 controllerDevice.setSingleMode = function () {
-  const selectedNode = playgroundFacade.selectedNodes[0];
-  this.attachControlsToNeuron (selectedNode);
+  const node = playgroundFacade.selectedNodes[0];
+  this.attachButtonsToNeuron ();
+  this.attachControlsToNeuron (node);
 };
 
 /**
@@ -99,7 +115,10 @@ controllerDevice.setSingleMode = function () {
  */
 controllerDevice.setMultipleMode = function () {
   const { selectedNodes } = playgroundFacade;
-  selectedNodes.forEach ((n) => this.attachControlsToNeuron (n));
+  selectedNodes.forEach ((node) => {
+    this.attachButtonsToNeuron ();
+    this.attachControlsToNeuron (node);
+  });
 };
 
 /**
@@ -181,6 +200,32 @@ controllerDevice.attachControlsDefault = function () {
   });
 };
 
+controllerDevice.attachButtonsToNeuron = function (): void {
+  this.addNoteListener ('on', (e) => {
+    const inputNote = parseInt (e.note.number);
+    const index = this.settings.rows.secondButtons.indexOf (inputNote);
+    if (index !== -1) {
+      this.shifted[index] = true;
+      this.playNote ({
+        note: inputNote,
+        color: this.settings.colors.amber,
+      });
+    }
+  });
+
+  this.addNoteListener ('off', (e) => {
+    const inputNote = parseInt (e.note.number);
+    const index = this.settings.rows.secondButtons.indexOf (inputNote);
+    if (index !== -1) {
+      this.shifted[index] = false;
+      this.playNote ({
+        note: inputNote,
+        color: this.settings.colors.black,
+      });
+    }
+  });
+};
+
 /**
  * Attach events to the ranges.
  *
@@ -202,55 +247,152 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
   // listen to changes
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
-    const firstFader = this.settings.rows.faders[0];
-    const lastFader = this.settings.rows.faders[7];
 
-    if (inputNote >= firstFader && inputNote <= lastFader) {
-      const index = inputNote - firstFader;
+    // first row: learning rate
+    if (this.settings.rows.firstPots.indexOf (inputNote) !== -1) {
+      const index = inputNote - this.settings.rows.firstPots[0];
+      const learningRateOptionIndex = parseInt (
+        rangeMap (
+          e.value,
+          0,
+          127,
+          0,
+          neuronCardUi.options.learningRate.length - 1,
+        ).toString (),
+      );
 
+      const learningRate = neuronCardUi.options.learningRate[learningRateOptionIndex];
+
+      if (learningRate !== neuron.inputLinks[index].source.learningRate) {
+        networkState.updateSourceLearningRate (index, learningRate);
+        neuronCardUi.setLearningRate (index, learningRate);
+        playgroundFacade.updateUI ();
+      }
+    }
+    // second row: activation
+    else if (this.settings.rows.secondPots.indexOf (inputNote) !== -1) {
+      const index = inputNote - this.settings.rows.secondPots[0];
+      const activationOptionIndex = parseInt (
+        rangeMap (
+          e.value,
+          0,
+          127,
+          0,
+          neuronCardUi.options.activation.length - 1,
+        ).toString (),
+      );
+
+      const activation = neuronCardUi.options.activation[activationOptionIndex];
+
+      if (activation !== neuron.inputLinks[index].source.activation.name) {
+        networkState.updateSourceActivation (index, activation);
+        neuronCardUi.setActivation (index, activation);
+        playgroundFacade.updateUI ();
+      }
+    }
+    // third row: regularization + regularization rates (shifted)
+    else if (this.settings.rows.thirdPots.indexOf (inputNote) !== -1) {
+      const index = this.settings.rows.thirdPots.indexOf (inputNote);
+      // regularization
+      if (this.shifted[index] === false) {
+        const regularizationOptionIndex = parseInt (
+          rangeMap (
+            e.value,
+            0,
+            127,
+            0,
+            neuronCardUi.options.regularization.length - 1,
+          ).toString (),
+        );
+
+        const regularization = neuronCardUi.options.regularization[regularizationOptionIndex];
+
+        if (regularization !== neuron.inputLinks[index].source.regularization.name) {
+          networkState.updateSourceRegularization (index, regularization);
+          neuronCardUi.setRegularization (index, regularization);
+          playgroundFacade.updateUI ();
+        }
+      }
+      // regularization rate
+      else {
+        const regularizationRateOptionIndex = parseInt (
+          rangeMap (
+            e.value,
+            0,
+            127,
+            0,
+            neuronCardUi.options.regularizationRate.length - 1,
+          ).toString (),
+        );
+
+        const regularizationRate = neuronCardUi.options.regularizationRate[regularizationRateOptionIndex];
+
+        if (regularizationRate !== neuron.inputLinks[index].source.regularizationRate) {
+          networkState.updateSourceRegularizationRate (index, regularizationRate);
+          neuronCardUi.setRegularizationRate (index, regularizationRate);
+          playgroundFacade.updateUI ();
+        }
+      }
+    }
+    // faders: weights + biases (shifted)
+    else if (this.settings.rows.faders.indexOf (inputNote) !== -1) {
+      const index = this.settings.rows.faders.indexOf (inputNote);
       const source = links?.[index]?.source;
       if (typeof source === 'undefined') {
         return;
       }
 
-      // compute the new value
-      // intentionally use 2 decimals to avoid high frequency changes
-      const value = parseFloat (
-        rangeMap (e.value, 0, 127, -1, 1)
-          .toFixed (2),
-      );
+      // weights
+      if (this.shifted[index] === false) {
+        // compute the new value
+        // intentionally use 2 decimals to avoid high frequency changes
+        const value = parseFloat (
+          rangeMap (e.value, 0, 127, -1, 1)
+            .toFixed (2),
+        );
 
-      if (value.toFixed (1) === links[index].weight.toFixed (1)) {
-        // snap
-        links[index].hasSnapped = true;
+        if (value.toFixed (1) === links[index].weight.toFixed (1)) {
+          // snap
+          links[index].hasSnapped = true;
 
-        // automatic unsnap
-        if (links[index].snapTimer) {
-          clearTimeout (links[index].snapTimer);
+          // automatic unsnap
+          if (links[index].snapTimer) {
+            clearTimeout (links[index].snapTimer);
+          }
+
+          links[index].snapTimer = setTimeout (() => {
+            links[index].hasSnapped = false;
+            this.playNote ({
+              note: this.settings.outputByInput[inputNote],
+              color: this.settings.colors.red,
+            });
+          }, 800);
         }
 
-        links[index].snapTimer = setTimeout (() => {
-          links[index].hasSnapped = false;
+        if (links[index].hasSnapped && source.isEnabled) {
+          networkState.setWeight (index, value);
+          neuronCardUi.setWeight (index, value);
+          playgroundFacade.updateWeightsUI ();
+          this.playNote ({
+            note: this.settings.outputByInput[inputNote],
+            color: this.settings.colors.green,
+          });
+        }
+        else {
           this.playNote ({
             note: this.settings.outputByInput[inputNote],
             color: this.settings.colors.red,
           });
-        }, 800);
+        }
       }
-
-      if (links[index].hasSnapped && source.isEnabled) {
-        networkState.setWeight (index, value);
-        neuronCardUi.updateWeight (index, value);
-        playgroundFacade.updateWeightsUI ();
-        this.playNote ({
-          note: this.settings.outputByInput[inputNote],
-          color: this.settings.colors.green,
-        });
-      } else {
-        this.playNote ({
-          note: this.settings.outputByInput[inputNote],
-          color: this.settings.colors.red,
-        });
+      // biases
+      else {
+        const value = rangeMap (e.value, 0, 127, -1, 1);
+        if (value.toFixed (2) !== neuron.inputLinks[index].source.bias.toFixed (2)) {
+          neuron.inputLinks[index].source.bias = value;
+          neuronCardUi.setBias (index, value);
+          playgroundFacade.updateBiasesUI ();
+        }
       }
     }
   });

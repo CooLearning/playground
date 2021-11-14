@@ -111,7 +111,8 @@ class Player {
     if (this.isPlaying) {
       this.isPlaying = false;
       this.pause ();
-    } else {
+    }
+    else {
       this.isPlaying = true;
       if (iter === 0) {
         simulationStarted ();
@@ -256,25 +257,25 @@ function makeGUI () {
   d3.select (`canvas[data-regDataset=${regDatasetKey}]`)
     .classed ('selected', true);
 
-  d3.select ('#add-layers').on ('click', () => {
-    if (state.numHiddenLayers >= 6) {
-      return;
-    }
-    state.networkShape[state.numHiddenLayers] = 2;
-    state.numHiddenLayers++;
-    parametersChanged = true;
-    reset ();
-  });
+  // d3.select ('#add-layers').on ('click', () => {
+  //   if (state.numHiddenLayers >= 6) {
+  //     return;
+  //   }
+  //   state.networkShape[state.numHiddenLayers] = 2;
+  //   state.numHiddenLayers++;
+  //   parametersChanged = true;
+  //   reset ();
+  // });
 
-  d3.select ('#remove-layers').on ('click', () => {
-    if (state.numHiddenLayers <= 0) {
-      return;
-    }
-    state.numHiddenLayers--;
-    state.networkShape.splice (state.numHiddenLayers);
-    parametersChanged = true;
-    reset ();
-  });
+  // d3.select ('#remove-layers').on ('click', () => {
+  //   if (state.numHiddenLayers <= 0) {
+  //     return;
+  //   }
+  //   state.numHiddenLayers--;
+  //   state.networkShape.splice (state.numHiddenLayers);
+  //   parametersChanged = true;
+  //   reset ();
+  // });
 
   let showTestData = d3.select ('#show-test-data').on ('change', function () {
     state.showTestData = this.checked;
@@ -315,10 +316,12 @@ function makeGUI () {
   if (state.noise > currentMax) {
     if (state.noise <= 80) {
       noise.property ('max', state.noise);
-    } else {
+    }
+    else {
       state.noise = 50;
     }
-  } else if (state.noise < 0) {
+  }
+  else if (state.noise < 0) {
     state.noise = 0;
   }
   noise.property ('value', state.noise);
@@ -334,6 +337,9 @@ function makeGUI () {
   d3.select ('label[for=\'batchSize\'] .value').text (state.batchSize);
 
   let activationDropdown = d3.select ('#activations').on ('change', function () {
+    nn.forEachNode (network, true, (node) => {
+      node.activation = activations[this.value];
+    });
     state.activation = activations[this.value];
     parametersChanged = true;
     state.serialize ();
@@ -343,6 +349,9 @@ function makeGUI () {
     getKeyFromValue (activations, state.activation));
 
   let learningRate = d3.select ('#learningRate').on ('change', function () {
+    nn.forEachNode (network, true, (node) => {
+      node.learningRate = this.value;
+    });
     state.learningRate = +this.value;
     parametersChanged = true;
     state.serialize ();
@@ -351,6 +360,9 @@ function makeGUI () {
   learningRate.property ('value', state.learningRate);
 
   let regularDropdown = d3.select ('#regularizations').on ('change', function () {
+    nn.forEachNode (network, true, (node) => {
+      node.regularization = regularizations[this.value];
+    });
     state.regularization = regularizations[this.value];
     parametersChanged = true;
     state.serialize ();
@@ -360,6 +372,9 @@ function makeGUI () {
     getKeyFromValue (regularizations, state.regularization));
 
   let regularRate = d3.select ('#regularRate').on ('change', function () {
+    nn.forEachNode (network, true, (node) => {
+      node.regularizationRate = this.value;
+    });
     state.regularizationRate = +this.value;
     parametersChanged = true;
     state.serialize ();
@@ -408,7 +423,7 @@ function makeGUI () {
   }
 }
 
-function updateBiasesUI (network: nn.Node[][]) {
+export function updateBiasesUI (network: nn.Node[][]) {
   nn.forEachNode (network, true, node => {
     d3.select (`rect#bias-${node.id}`).style ('fill', colorScale (node.bias));
   });
@@ -485,7 +500,8 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
       if (label.substring (lastIndex)) {
         text.append ('tspan').text (label.substring (lastIndex));
       }
-    } else {
+    }
+    else {
       text.append ('tspan').text (label);
     }
     nodeGroup.classed (activeOrNotClass, true);
@@ -535,19 +551,25 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
     })
     .on ('mouseup', () => {
 
-      if (mouseTimer === null) return;
+      if (mouseTimer === null) {
+        return;
+      }
 
       clearTimeout (mouseTimer);
       mouseTimer = null;
 
-      if (div.classed ('disabled')) return;
+      if (div.classed ('disabled')) {
+        return;
+      }
 
       if (Number.isNaN (parseInt (nodeId))) {
         return;
-      } else {
+      }
+      else {
         if (!div.classed ('selected')) {
           networkUi.toggleNodeSelection (parseInt (nodeId), true);
-        } else {
+        }
+        else {
           networkUi.toggleNodeSelection (parseInt (nodeId), false);
         }
       }
@@ -696,42 +718,43 @@ function addPlusMinusControl (x: number, layerIdx: number) {
     .classed ('plus-minus-neurons', true)
     .style ('left', `${x - 10}px`);
 
-  let i = layerIdx - 1;
-  let firstRow = div.append ('div').attr ('class', `ui-numNodes${layerIdx}`);
-  firstRow.append ('button')
-    .attr ('class', 'mdl-button mdl-js-button mdl-button--icon')
-    .on ('click', () => {
-      let numNeurons = state.networkShape[i];
-      if (numNeurons >= 8) {
-        return;
-      }
-      state.networkShape[i]++;
-      parametersChanged = true;
-      reset ();
-    })
-    .append ('i')
-    .attr ('class', 'material-icons')
-    .text ('add');
+  // let i = layerIdx - 1;
+  // let firstRow = div.append ('div').attr ('class', `ui-numNodes${layerIdx}`);
+  // firstRow.append ('button')
+  //   .attr ('class', 'mdl-button mdl-js-button mdl-button--icon')
+  //   .on ('click', () => {
+  //     let numNeurons = state.networkShape[i];
+  //     if (numNeurons >= 8) {
+  //       return;
+  //     }
+  //     state.networkShape[i]++;
+  //     parametersChanged = true;
+  //     reset ();
+  //   })
+  //   .append ('i')
+  //   .attr ('class', 'material-icons')
+  //   .text ('add');
 
-  firstRow.append ('button')
-    .attr ('class', 'mdl-button mdl-js-button mdl-button--icon')
-    .on ('click', () => {
-      let numNeurons = state.networkShape[i];
-      if (numNeurons <= 1) {
-        return;
-      }
-      state.networkShape[i]--;
-      parametersChanged = true;
-      reset ();
-    })
-    .append ('i')
-    .attr ('class', 'material-icons')
-    .text ('remove');
+  // firstRow.append ('button')
+  //   .attr ('class', 'mdl-button mdl-js-button mdl-button--icon')
+  //   .on ('click', () => {
+  //     let numNeurons = state.networkShape[i];
+  //     if (numNeurons <= 1) {
+  //       return;
+  //     }
+  //     state.networkShape[i]--;
+  //     parametersChanged = true;
+  //     reset ();
+  //   })
+  //   .append ('i')
+  //   .attr ('class', 'material-icons')
+  //   .text ('remove');
 
-  let suffix = state.networkShape[i] > 1 ? 's' : '';
-  div.append ('div').text (
-    state.networkShape[i] + ' neuron' + suffix,
-  );
+  // let suffix = state.networkShape[i] > 1 ? 's' : '';
+  // div.append ('div').text (
+  //   state.networkShape[i] + ' neuron' + suffix,
+  // );
+  div.append ('div').text (`Layer ${layerIdx}`);
 }
 
 // noinspection JSUnusedLocalSymbols
@@ -751,7 +774,8 @@ function updateHoverCard (type: HoverType, nodeOrLink?: nn.Node | nn.Link,
       if (this.value != null && this.value !== '') {
         if (type === HoverType.WEIGHT) {
           (nodeOrLink as nn.Link).weight = +this.value;
-        } else {
+        }
+        else {
           (nodeOrLink as nn.Node).bias = +this.value;
         }
         updateUI ();
@@ -959,12 +983,7 @@ function oneStep (): void {
     nn.forwardProp (network, input);
     nn.backProp (network, point.label, nn.Errors.SQUARE);
     if ((i + 1) % state.batchSize === 0) {
-      nn.updateWeights ({
-        network,
-        learningRate: state.learningRate,
-        regularization: state.regularization,
-        regularizationRate: state.regularizationRate,
-      });
+      nn.updateWeights (network);
     }
   });
   // Compute the loss.
@@ -1004,9 +1023,12 @@ function reset (onStartup = false) {
   iter = 0;
   let numInputs = constructInput (0, 0).length;
   let shape = [numInputs].concat (state.networkShape).concat ([1]);
-  let outputActivation = (state.problem === Problem.REGRESSION) ?
-    nn.Activations.LINEAR : nn.Activations.TANH;
-  network = nn.buildNetwork (shape, state.activation, outputActivation, constructInputIds (), state.initZero);
+
+  let outputActivation = state.problem === Problem.REGRESSION
+    ? nn.Activations.LINEAR
+    : nn.Activations.TANH;
+
+  network = nn.buildNetwork (shape, state, state.activation, outputActivation, constructInputIds (), state.initZero);
   lossTrain = getLoss (network, trainData);
   lossTest = getLoss (network, testData);
   drawNetwork (network);

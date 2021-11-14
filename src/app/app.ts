@@ -1,5 +1,5 @@
-import { midi } from './midi/midi';
 import { ui } from './ui/ui';
+import { midi } from './midi/midi';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const packageJson = require ('../../package.json');

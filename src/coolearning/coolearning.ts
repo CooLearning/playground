@@ -9,7 +9,8 @@ export function Coolearning (): void {
   window.addEventListener ('load', () => {
     try {
       app.init ();
-    } catch (error) {
+    }
+    catch (error) {
       // eslint-disable-next-line no-console
       console.error (error);
       notificationsUi.notify (
