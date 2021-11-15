@@ -12,6 +12,7 @@ import {
 import { devicesUi } from '../ui/devices.ui';
 import { controllerDevice } from '../devices/controller.device';
 import { selectorDevice } from '../devices/selector.device';
+import { store } from '../store/store';
 
 enum Errors {
   PickNotFound = 'Picked device could not be found'
@@ -88,6 +89,7 @@ devicesState.pickController = function (name: string): void {
   const controller = this.pickDevice (name, this.controllers);
   this.pickedController = controller;
   controllerDevice.init (controller);
+  store.save ();
 };
 
 /**
@@ -99,6 +101,7 @@ devicesState.pickSelector = function (name: string): void {
   const selector = this.pickDevice (name, this.selectors);
   this.pickedSelector = selector;
   selectorDevice.init (selector);
+  store.save ();
 };
 
 type DeviceProperty = 'isController' | 'isSelector';
@@ -145,7 +148,8 @@ devicesState.unpickDevice = function (port) {
     this.pickedSelector.input.isPicked = false;
     this.pickedSelector.output.isPicked = false;
     this.pickedSelector = null;
-  } else if (port.isController) {
+  }
+  else if (port.isController) {
     this.pickedController.isPicked = false;
     this.pickedController.input.isPicked = false;
     this.pickedController.output.isPicked = false;

@@ -1,13 +1,10 @@
 import { ui } from './ui/ui';
 import { midi } from './midi/midi';
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const packageJson = require ('../../package.json');
+import { store } from './store/store';
 
 export const app = Object.create (null);
 
 app.isInitialized = false;
-app.version = packageJson.version;
 
 /**
  * Initialize app
@@ -17,11 +14,12 @@ app.init = async function (): Promise<void> {
     throw new Error ('app is already initialized');
   }
 
-  await ui.init ();
   await midi.init ();
+  store.init ();
+  await ui.init ();
 
   this.isInitialized = true;
 
   // eslint-disable-next-line no-console
-  console.log ({ version: app.version });
+  console.log ({ version: store.state.version });
 };

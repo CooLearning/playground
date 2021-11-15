@@ -45,10 +45,10 @@ controllerDevice.init = async function (device: any): Promise<void> {
   this.settings = device.settings;
 
   await this.runBootSequence ();
+  this.isInitialized = true;
+
   this.drawLights ();
   this.updateMode ();
-
-  this.isInitialized = true;
 };
 
 /**
