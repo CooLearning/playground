@@ -139,16 +139,17 @@ devicesState.getControllers = function () {
 };
 
 devicesState.unpickDevice = function (port) {
-  if (port.isSelector) {
+  if (port.isSelector && this.pickedSelector) {
     this.pickedSelector.isPicked = false;
     this.pickedSelector.input.isPicked = false;
     this.pickedSelector.output.isPicked = false;
     this.pickedSelector = null;
   }
-  else if (port.isController) {
+  else if (port.isController && this.pickedController) {
     this.pickedController.isPicked = false;
     this.pickedController.input.isPicked = false;
     this.pickedController.output.isPicked = false;
     this.pickedController = null;
   }
+  store.save ();
 };
