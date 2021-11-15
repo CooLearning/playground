@@ -692,9 +692,6 @@ limitations under the License.
   <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect devices">
     <i class="material-icons">usb</i>
   </button>
-  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect reset">
-    <i class="material-icons">settings_backup_restore</i>
-  </button>
   <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect help">
     <i class="material-icons">help_outline</i>
   </button>
@@ -703,29 +700,58 @@ limitations under the License.
 <!-- Imports/Exports Dialog -->
 <dialog class="mdl-dialog" id="imports-exports-dialog">
   <h4 class="mdl-dialog__title">
-    Imports/Exports
+    Imports - Exports
   </h4>
   <div class="mdl-dialog__content">
     <div>
-      <h4>Import / Load</h4>
-      <span>
-        No compatible controller has been detected.
-      </span>
+      <h4>Load</h4>
+      <div>
+        <textarea
+          aria-label="load textarea"
+          class="imports-exports-import__textarea"
+          placeholder=""
+        ></textarea>
+      </div>
+      <div>
+        <button
+          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect imports-exports-button"
+          id="imports-exports-import__button"
+        >
+          Import
+        </button>
+      </div>
     </div>
     <div>
-      <h4>Export / Save</h4>
-      <span>
-        A <code>.json</code> file will be downloaded to your computer.
-      </span>
+      <h4>Save</h4>
+      <div>
+        <span>
+          A <code>.json</code> file will be downloaded to your computer.
+        </span>
+      </div>
+      <div>
+        <button
+          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect imports-exports-button"
+          id="imports-exports-export__button"
+        >
+          Export
+        </button>
+      </div>
     </div>
     <div>
       <h4>Reset</h4>
-      <span>
-        Use this with caution to reset the app to its default state.
-      </span>
-      <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect reset">
-        <i class="material-icons">settings_backup_restore</i>
-      </button>
+      <div>
+        <span>
+          Use this with caution to reset the app to its default state.
+        </span>
+      </div>
+      <div>
+        <button
+          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect imports-exports-button"
+          id="imports-exports-reset__button"
+        >
+          Reset
+        </button>
+      </div>
     </div>
   </div>
   <div class="mdl-dialog__actions">

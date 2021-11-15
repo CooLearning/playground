@@ -1085,6 +1085,15 @@ Imports/Exports Dialog
   width: 80vw;
 }
 
+.imports-exports-import__textarea {
+  width: 100%;
+  height: 200px;
+}
+
+.imports-exports-button {
+  margin-top: 1em;
+}
+
 /**
 Cool cards
  */

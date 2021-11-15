@@ -1,4 +1,5 @@
 import { dialogPrototype } from './prototypes/dialog.prototype';
+import { store } from '../store/store';
 
 export const importsExportsUi = Object.create (dialogPrototype);
 
@@ -8,10 +9,12 @@ importsExportsUi.nodeSelectors = {
   node: '#imports-exports-dialog',
   closeButton: '.close-button',
   contentNode: '.mdl-dialog__content',
-  noSelector: '.no-selector',
-  noController: '.no-controller',
-  selectorOptions: '[title=selectors-options]',
-  controllerOptions: '[title=controllers-options]',
+  textarea: '.imports-exports-import__textarea',
+  button: {
+    import: '#imports-exports-import__button',
+    export: '#imports-exports-export__button',
+    reset: '#imports-exports-reset__button',
+  },
 };
 
 importsExportsUi.init = function () {
@@ -19,18 +22,55 @@ importsExportsUi.init = function () {
   this.content = this.node.querySelector (this.nodeSelectors.contentNode);
   this.closeButton = this.node.querySelector (this.nodeSelectors.closeButton);
 
-  this.noSelector = this.node.querySelector (this.nodeSelectors.noSelector);
-  this.noController = this.node.querySelector (this.nodeSelectors.noController);
+  this.textarea = this.node.querySelector (this.nodeSelectors.textarea);
 
-  this.selectorOptions = this.node.querySelector (this.nodeSelectors.selectorOptions);
-  this.controllerOptions = this.node.querySelector (this.nodeSelectors.controllerOptions);
+  this.button = {};
+  this.button.import = this.node.querySelector (this.nodeSelectors.button.import);
+  this.button.export = this.node.querySelector (this.nodeSelectors.button.export);
+  this.button.reset = this.node.querySelector (this.nodeSelectors.button.reset);
 
   this.isInitialized = true;
 
   this.attachEvents (this.closeButton);
-  this.render ();
+  this.attachButtons ();
 };
 
-importsExportsUi.render = function () {
-  console.log (this);
+importsExportsUi.attachButtons = function () {
+  this.attachImport ();
+  this.attachExport ();
+  this.attachReset ();
+};
+
+importsExportsUi.attachImport = function () {
+  this.button.import.onclick = () => {
+    try {
+      const json = JSON.parse (this.textarea.value);
+      store.import (json);
+      this.textarea.value = 'Done';
+    }
+    catch (error) {
+      this.textarea.value = null;
+      throw new Error ('Error while import data: ' + error);
+    }
+  };
+};
+
+importsExportsUi.attachExport = function () {
+  this.button.export.onclick = () => {
+    const string = JSON.stringify (store.state);
+    const anchor = document.createElement ('a');
+    document.body.appendChild (anchor);
+    anchor.style.display = 'none';
+    const dataPrefix = 'data:text/json;charset=utf-8,';
+    anchor.href = `${dataPrefix}${encodeURIComponent (string)}`;
+    anchor.download = 'coolearning-config.json';
+    anchor.click ();
+    document.body.removeChild (anchor);
+  };
+};
+
+importsExportsUi.attachReset = function () {
+  this.button.reset.onclick = () => {
+    store.reset ();
+  };
 };

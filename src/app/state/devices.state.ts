@@ -82,6 +82,10 @@ devicesState.pickDevice = function (name: string, devices: any): Device {
  * @param {string} name - controller name
  */
 devicesState.pickController = function (name: string): void {
+  if (typeof name === 'undefined') {
+    return;
+  }
+
   const controller = this.pickDevice (name, this.controllers);
   this.pickedController = controller;
   controllerDevice.init (controller);
@@ -94,6 +98,10 @@ devicesState.pickController = function (name: string): void {
  * @param {string} name - selector name
  */
 devicesState.pickSelector = function (name: string): void {
+  if (typeof name === 'undefined') {
+    return;
+  }
+
   const selector = this.pickDevice (name, this.selectors);
   this.pickedSelector = selector;
   selectorDevice.init (selector);
