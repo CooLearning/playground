@@ -1,18 +1,11 @@
-import { DeviceSettings, DeviceCategory } from '../device/device.types';
-
-export type NovationLaunchControlXl = DeviceSettings & {
-  rows: any;
-  outputByInput: {
-    [output: number]: number;
-  };
-}
+import { DeviceCategory, Controller } from '../device/device.types';
 
 /**
  * Novation Launch Control XL
  *
  * @see Programmer's Reference https://resource.novationmusic.com/sites/default/files/novation/downloads/9922/launch-control-xl-programmers-reference-guide.pdf
  */
-export const novationLaunchControlXl: NovationLaunchControlXl = {
+export const novationLaunchControlXl: Controller = {
   category: DeviceCategory.control,
   manufacturer: 'Focusrite A.E. Ltd',
   name: 'Launch Control XL',
@@ -39,6 +32,17 @@ export const novationLaunchControlXl: NovationLaunchControlXl = {
   get bootSequence () {
     return {
       color: this.colors.red,
+    };
+  },
+  get colorByState () {
+    return {
+      defaultMode: this.colors.black,
+      selectMode: this.colors.green,
+      layerMode: this.colors.amber,
+      feedback: this.colors.green,
+      shift: this.colors.amber,
+      unsnap: this.colors.red,
+      snap: this.colors.green,
     };
   },
   rows: {

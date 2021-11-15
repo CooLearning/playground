@@ -51,6 +51,18 @@ controllerDevice.init = async function (device: any): Promise<void> {
   this.updateMode ();
 };
 
+controllerDevice.getModeColor = function () {
+  if (networkState.isLayerMode) {
+    return this.settings.colorByState.layerMode;
+  }
+  else if (this.isSingleMode || this.isMultipleMode) {
+    return this.settings.colorByState.selectMode;
+  }
+  else {
+    return this.settings.colorByState.defaultMode;
+  }
+};
+
 /**
  * Draw all lights.
  */
@@ -59,21 +71,10 @@ controllerDevice.drawLights = function () {
     return;
   }
 
-  let color;
-  if (this.isDefaultMode) {
-    color = this.settings.colors.amber;
-  }
-  else if (this.isSingleMode) {
-    color = this.settings.colors.black;
-  }
-  else {
-    color = this.settings.colors.red;
-  }
-
   this.playNotes ({
     firstNote: this.settings.lights.first,
     lastNote: this.settings.lights.last,
-    color,
+    color: this.getModeColor (),
   });
 };
 
@@ -173,7 +174,7 @@ controllerDevice.attachButtonsDefault = function () {
     // draw feedback lights
     this.playNote ({
       note,
-      color: this.settings.colors.green,
+      color: this.settings.colorByState.feedback,
       duration: this.settings.time.defaultDuration,
     });
   });
@@ -203,7 +204,7 @@ controllerDevice.attachControlsDefault = function () {
     this.playNote ({
       note: this.settings.outputByInput[note],
       duration: this.settings.time.defaultDuration,
-      color: this.settings.colors.red,
+      color: this.settings.colorByState.feedback,
     });
   });
 };
@@ -216,7 +217,7 @@ controllerDevice.attachButtonsToNeuron = function (): void {
       this.shifted[index] = true;
       this.playNote ({
         note: inputNote,
-        color: this.settings.colors.amber,
+        color: this.settings.colorByState.shift,
       });
     }
   });
@@ -228,7 +229,7 @@ controllerDevice.attachButtonsToNeuron = function (): void {
       this.shifted[index] = false;
       this.playNote ({
         note: inputNote,
-        color: this.settings.colors.black,
+        color: this.settings.colorByState.selectMode,
       });
     }
   });
@@ -248,7 +249,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
     link.hasSnapped = false;
     this.playNote ({
       note: this.settings.rows.firstButtons[index],
-      color: this.settings.colors.red,
+      color: this.settings.colorByState.unsnap,
     });
   });
 
@@ -395,7 +396,7 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
             links[index].hasSnapped = false;
             this.playNote ({
               note: this.settings.outputByInput[inputNote],
-              color: this.settings.colors.red,
+              color: this.settings.colorByState.unsnap,
             });
           }, 800);
         }
@@ -406,13 +407,13 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
           playgroundFacade.updateWeightsUI ();
           this.playNote ({
             note: this.settings.outputByInput[inputNote],
-            color: this.settings.colors.green,
+            color: this.settings.colorByState.snap,
           });
         }
         else {
           this.playNote ({
             note: this.settings.outputByInput[inputNote],
-            color: this.settings.colors.red,
+            color: this.settings.colorByState.unsnap,
           });
         }
       }
@@ -458,7 +459,7 @@ controllerDevice.attachControlsToLayer = function (): void {
   this.playNotes ({
     firstNote: this.settings.lights.first,
     lastNote: this.settings.lights.last,
-    color: this.settings.colors.yellow,
+    color: this.settings.colorByState.layerMode,
   });
 
   this.addControlListener ((e) => {

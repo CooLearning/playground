@@ -1,24 +1,4 @@
-import { DeviceSettings, DeviceCategory } from '../device/device.types';
-
-export type NovationLaunchpadX = DeviceSettings & {
-  grid: number[][];
-  functionKeys: {
-    firstRow: number[];
-    lastColumn: number[];
-  };
-  colorByState: {
-    inputOn: number;
-    inputOff: number;
-    neuronOn: number;
-    neuronOff: number;
-    neuronSelected: number;
-    outputWeightOn: number;
-    outputWeightOff: number;
-    playbackOn: number;
-    playbackOff: number;
-    layer: number;
-  };
-}
+import { Selector, DeviceCategory } from '../device/device.types';
 
 /**
  * Novation Launchpad X
@@ -26,7 +6,7 @@ export type NovationLaunchpadX = DeviceSettings & {
  * @see Programmer's Reference https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20X%20-%20Programmers%20Reference%20Manual.pdf
  * @see User Guide https://www.kraftmusic.com/media/ownersmanual/Novation_Launchpad_X_User_Guide.pdf
  */
-export const novationLaunchpadX: NovationLaunchpadX = {
+export const novationLaunchpadX: Selector = {
   category: DeviceCategory.select,
   manufacturer: 'Focusrite - Novation',
   name: 'Launchpad X',
@@ -75,7 +55,7 @@ export const novationLaunchpadX: NovationLaunchpadX = {
   },
   get colorByState () {
     return {
-      inputOn: this.colors.yellow,
+      inputOn: this.colors.blue,
       inputOff: this.colors.gray,
       neuronOn: this.colors.lime,
       neuronOff: this.colors.gray,
@@ -84,7 +64,7 @@ export const novationLaunchpadX: NovationLaunchpadX = {
       outputWeightOff: this.colors.gray,
       playbackOn: this.colors.lime,
       playbackOff: this.colors.red,
-      layer: this.colors.blue,
+      layer: this.colors.yellow,
     };
   },
   time: {
