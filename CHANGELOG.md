@@ -1,3 +1,16 @@
+# [1.7.0](https://github.com/CooLearning/playground/compare/v1.6.1...v1.7.0) (2021-11-15)
+
+
+### Features
+
+* add LAYER mode (card + selector + controller) + add small various improvements ([f82122c](https://github.com/CooLearning/playground/commit/f82122c2b7a8e58893f9cc2bcc4bf3c4b1e1966a))
+
+
+### Performance Improvements
+
+* **device/prototype:** apply `stroustrup` code style + set default interval at `200` ms ([ad429bb](https://github.com/CooLearning/playground/commit/ad429bb8fa532e7eed311fce9d8f85cc2a7b5c0b))
+* **UI:** rename `neuron-card` to `select-card` ([276f543](https://github.com/CooLearning/playground/commit/276f5432c3136a5851809a16caefe7e9173e47a1))
+
 ## [1.6.1](https://github.com/CooLearning/playground/compare/v1.6.0...v1.6.1) (2021-11-14)
 
 
