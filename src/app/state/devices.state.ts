@@ -1,13 +1,9 @@
+import { knownDevices } from '../devices/known-devices/known-devices';
 import {
-  Controller,
-  knownDevices,
-  Selector,
-} from '../devices/known-devices/known-devices';
-import {
-  Controllers,
+  Controllers, Controller,
   Device,
   Devices,
-  Selectors,
+  Selectors, Selector,
 } from '../devices/device/device.types';
 import { devicesUi } from '../ui/devices.ui';
 import { controllerDevice } from '../devices/controller.device';

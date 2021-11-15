@@ -1,5 +1,4 @@
 import { Input, Output } from 'webmidi';
-import { Controller, Selector } from '../known-devices/known-devices';
 
 export enum DeviceCategory {
   select = 'Selector',
@@ -32,6 +31,42 @@ export type DeviceSettings = {
       manufacturer: number;
       data: number[];
     };
+  };
+}
+
+export type Selector = DeviceSettings & {
+  grid: number[][];
+  functionKeys: {
+    firstRow: number[];
+    lastColumn: number[];
+  };
+  colorByState: {
+    inputOn: number;
+    inputOff: number;
+    neuronOn: number;
+    neuronOff: number;
+    neuronSelected: number;
+    outputWeightOn: number;
+    outputWeightOff: number;
+    playbackOn: number;
+    playbackOff: number;
+    layer: number;
+  };
+}
+
+export type Controller = DeviceSettings & {
+  rows: any;
+  outputByInput: {
+    [output: number]: number;
+  };
+  colorByState: {
+    defaultMode: number;
+    selectMode: number;
+    layerMode: number;
+    feedback: number;
+    shift: number;
+    unsnap: number;
+    snap: number;
   };
 }
 
