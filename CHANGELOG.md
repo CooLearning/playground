@@ -1,3 +1,10 @@
+## [1.8.2](https://github.com/CooLearning/playground/compare/v1.8.1...v1.8.2) (2021-11-15)
+
+
+### Performance Improvements
+
+* **devices:** switch colors on selector for layers (now yellow) and inputs (now blue) to match with controller ([e908c0c](https://github.com/CooLearning/playground/commit/e908c0c9351e513b10084cddab12a13d7a5fa44d))
+
 ## [1.8.1](https://github.com/CooLearning/playground/compare/v1.8.0...v1.8.1) (2021-11-15)
 
 
