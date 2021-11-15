@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/CooLearning/playground/compare/v1.7.0...v1.8.0) (2021-11-15)
+
+
+### Features
+
+* add storage management + on the fly save/load for mappings and devices with UI sync + remove delays for faster device boot sequences + add reset method to device prototype ([80bb5aa](https://github.com/CooLearning/playground/commit/80bb5aaf5e335defb09d552bce31a2446284616b))
+
 # [1.7.0](https://github.com/CooLearning/playground/compare/v1.6.1...v1.7.0) (2021-11-15)
 
 
