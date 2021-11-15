@@ -244,13 +244,15 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
   const links = neuron.inputLinks;
 
   // first draw
-  links.forEach ((link, index) => {
-    link.hasSnapped = false;
-    this.playNote ({
-      note: this.settings.rows.firstButtons[index],
-      color: this.settings.colorByState.unsnap,
+  setTimeout (() => {
+    links.forEach ((link, index) => {
+      link.hasSnapped = false;
+      this.playNote ({
+        note: this.settings.rows.firstButtons[index],
+        color: this.settings.colorByState.unsnap,
+      });
     });
-  });
+  }, this.settings.time.wait);
 
   // listen to changes
   this.addControlListener ((e) => {
