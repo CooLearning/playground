@@ -1,3 +1,10 @@
+## [1.8.1](https://github.com/CooLearning/playground/compare/v1.8.0...v1.8.1) (2021-11-15)
+
+
+### Bug Fixes
+
+* **store:** remove infinite delete loop when store is not defined ([bf088f0](https://github.com/CooLearning/playground/commit/bf088f074050fdf3881e060d0bb92809cf2aaf39))
+
 # [1.8.0](https://github.com/CooLearning/playground/compare/v1.7.0...v1.8.0) (2021-11-15)
 
 
