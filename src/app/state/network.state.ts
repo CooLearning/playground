@@ -203,10 +203,33 @@ networkState.updateSourceLearningRate = function (index, value) {
   });
 };
 
+networkState.setLearningRate = function (index: number, value: number): void {
+  const { neuron } = this.getNeuron (index);
+  neuron.learningRate = value;
+};
+
 networkState.updateSourceActivation = function (index, value) {
   this.getSelectedNeurons ().forEach ((neuron) => {
     neuron.inputLinks[index].source.activation = activations[value];
   });
+};
+
+networkState.setActivation = function (index: number, name: string): void {
+  if (typeof index === 'undefined') {
+    throw new Error ('index must be defined');
+  }
+  if (typeof index !== 'number') {
+    throw new Error ('index must be a number');
+  }
+  if (typeof name === 'undefined') {
+    throw new Error ('name must be defined');
+  }
+  if (typeof name !== 'string') {
+    throw new Error ('name must be a string');
+  }
+
+  const { neuron } = this.getNeuron (index);
+  neuron.activation = activations[name];
 };
 
 networkState.updateSourceRegularization = function (index, value) {
@@ -215,8 +238,52 @@ networkState.updateSourceRegularization = function (index, value) {
   });
 };
 
+networkState.setRegularization = function (index: number, name: string) {
+  if (typeof index === 'undefined') {
+    throw new Error ('index must be defined');
+  }
+  if (typeof index !== 'number') {
+    throw new Error ('index must be a number');
+  }
+  if (typeof name === 'undefined') {
+    throw new Error ('name must be defined');
+  }
+  if (typeof name !== 'string') {
+    throw new Error ('name must be a string');
+  }
+  
+  const { neuron } = this.getNeuron (index);
+  neuron.regularization = regularizations[name];
+};
+
 networkState.updateSourceRegularizationRate = function (index, value) {
   this.getSelectedNeurons ().forEach ((neuron) => {
     neuron.inputLinks[index].source.regularizationRate = value;
   });
 };
+
+networkState.setRegularizationRate = function (index: number, value: number) {
+  if (typeof index === 'undefined') {
+    throw new Error ('index must be defined');
+  }
+  if (typeof index !== 'number') {
+    throw new Error ('index must be a number');
+  }
+  if (typeof value === 'undefined') {
+    throw new Error ('value must be defined');
+  }
+  if (typeof value !== 'number') {
+    throw new Error ('value must be a number');
+  }
+
+  const { neuron } = this.getNeuron (index);
+  neuron.regularizationRate = value;
+};
+
+networkState.selectedLayerIndex = null;
+
+Object.defineProperty (networkState, 'isLayerMode', {
+  get () {
+    return this.selectedLayerIndex !== null;
+  },
+});

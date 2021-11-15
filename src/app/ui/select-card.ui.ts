@@ -2,10 +2,10 @@ import * as d3 from 'd3';
 import { playgroundFacade } from '../facades/playground.facade';
 import { networkState } from '../state/network.state';
 
-export const neuronCardUi = Object.create (null);
+export const selectCardUi = Object.create (null);
 
-neuronCardUi.nodeSelectors = {
-  node: '#neuron-card',
+selectCardUi.nodeSelectors = {
+  node: '#select-card',
   row: 'div.row:not(.header)',
   weight: 'input.weight',
   bias: 'input.bias',
@@ -15,20 +15,20 @@ neuronCardUi.nodeSelectors = {
   regularizationRate: 'div.regularization-rate',
 };
 
-neuronCardUi.placeholders = {
+selectCardUi.placeholders = {
   undefined: 'ø',
   multi: 'multi.',
   disabled: 'disabled',
 };
 
-neuronCardUi.options = {
+selectCardUi.options = {
   learningRate: [0.00001, 0.0001, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
   activation: ['relu', 'tanh', 'sigmoid', 'linear'],
   regularization: ['none', 'L1', 'L2'],
   regularizationRate: [0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
 };
 
-neuronCardUi.init = function () {
+selectCardUi.init = function () {
   this.fetchCard ();
   this.createLearningRates ();
   this.createActivations ();
@@ -37,18 +37,18 @@ neuronCardUi.init = function () {
   this.attachEvents ();
 };
 
-neuronCardUi.fetchCard = function () {
+selectCardUi.fetchCard = function () {
   this.node = d3.select (this.nodeSelectors.node);
   this.rows = this.node.selectAll (this.nodeSelectors.row)[0];
-  this.weights = this.node.selectAll (this.nodeSelectors.weight)[0];
-  this.biases = this.node.selectAll (this.nodeSelectors.bias)[0];
+  this.weights = this.node.selectAll (this.nodeSelectors.weight)[0] || [];
+  this.biases = this.node.selectAll (this.nodeSelectors.bias)[0] || [];
   this.learningRates = this.node.selectAll (this.nodeSelectors.learningRate)[0];
   this.activations = this.node.selectAll (this.nodeSelectors.activation)[0];
   this.regularizations = this.node.selectAll (this.nodeSelectors.regularization)[0];
   this.regularizationRates = this.node.selectAll (this.nodeSelectors.regularizationRate)[0];
 };
 
-neuronCardUi.createOptions = function (parent, options) {
+selectCardUi.createOptions = function (parent, options) {
   const select = document.createElement ('select');
 
   options.forEach ((option) => {
@@ -61,38 +61,38 @@ neuronCardUi.createOptions = function (parent, options) {
   parent.appendChild (select);
 };
 
-neuronCardUi.createLearningRates = function () {
+selectCardUi.createLearningRates = function () {
   this.learningRates.forEach ((learningRate) => {
     this.createOptions (learningRate, this.options.learningRate);
   });
 };
 
-neuronCardUi.createActivations = function () {
+selectCardUi.createActivations = function () {
   this.activations.forEach ((activation) => {
     this.createOptions (activation, this.options.activation);
   });
 };
 
-neuronCardUi.createRegularizations = function () {
+selectCardUi.createRegularizations = function () {
   this.regularizations.forEach ((regularization) => {
     this.createOptions (regularization, this.options.regularization);
   });
 };
 
-neuronCardUi.createRegularizationRates = function () {
+selectCardUi.createRegularizationRates = function () {
   this.regularizationRates.forEach ((regularizationRate) => {
     this.createOptions (regularizationRate, this.options.regularizationRate);
   });
 };
 
-neuronCardUi.updateCard = function () {
+selectCardUi.updateCard = function () {
   const { selectedNodes } = playgroundFacade;
   if (selectedNodes.length === 0) {
     this.node.style ('display', 'none');
     return;
   }
 
-  this.node.style ('display', 'block');
+  this.node.style ('display', 'flex');
 
   this.rows.forEach ((row, index) => {
     // single selection
@@ -146,7 +146,7 @@ neuronCardUi.updateCard = function () {
   }
 };
 
-neuronCardUi.attachEvents = function () {
+selectCardUi.attachEvents = function () {
   if (this.weights) {
     this.weights.forEach ((weight, index) => {
       weight.onchange = (e: InputEvent) => {
@@ -195,7 +195,7 @@ neuronCardUi.attachEvents = function () {
   }
 };
 
-neuronCardUi.setInput = function (pool, index, payload) {
+selectCardUi.setInput = function (pool, index, payload) {
   const isFocused = pool[index] === document.activeElement;
   if (isFocused) {
     return;
@@ -215,15 +215,15 @@ neuronCardUi.setInput = function (pool, index, payload) {
   }
 };
 
-neuronCardUi.setWeight = function (index, weight?) {
+selectCardUi.setWeight = function (index, weight?) {
   this.setInput (this.weights, index, weight);
 };
 
-neuronCardUi.setBias = function (index, bias?) {
+selectCardUi.setBias = function (index, bias?) {
   this.setInput (this.biases, index, bias);
 };
 
-neuronCardUi.setDropdown = function (pool, index, payload) {
+selectCardUi.setDropdown = function (pool, index, payload) {
   const didNotChange = pool[index].children[0].value === payload;
   if (didNotChange) {
     return;
@@ -243,18 +243,18 @@ neuronCardUi.setDropdown = function (pool, index, payload) {
   }
 };
 
-neuronCardUi.setLearningRate = function (index, learningRate?) {
+selectCardUi.setLearningRate = function (index, learningRate?) {
   this.setDropdown (this.learningRates, index, learningRate);
 };
 
-neuronCardUi.setActivation = function (index, activation?) {
+selectCardUi.setActivation = function (index, activation?) {
   this.setDropdown (this.activations, index, activation);
 };
 
-neuronCardUi.setRegularization = function (index, regularization?) {
+selectCardUi.setRegularization = function (index, regularization?) {
   this.setDropdown (this.regularizations, index, regularization);
 };
 
-neuronCardUi.setRegularizationRate = function (index, regularizationRate?) {
+selectCardUi.setRegularizationRate = function (index, regularizationRate?) {
   this.setDropdown (this.regularizationRates, index, regularizationRate);
 };

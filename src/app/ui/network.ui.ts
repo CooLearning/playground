@@ -2,7 +2,7 @@ import * as d3 from 'd3';
 import { networkState } from '../state/network.state';
 import { selectorDevice } from '../devices/selector.device';
 import { playgroundFacade } from '../facades/playground.facade';
-import { neuronCardUi } from './neuron-card.ui';
+import { selectCardUi } from './select-card.ui';
 import { controllerDevice } from '../devices/controller.device';
 
 /**
@@ -11,6 +11,10 @@ import { controllerDevice } from '../devices/controller.device';
 export const networkUi = Object.create (null);
 
 networkUi.toggleNeuron = function (index: number) {
+  if (networkState.isLayerMode) {
+    return;
+  }
+  
   const { isEnabled } = networkState.getNeuron (index);
   const nextEnabled = !isEnabled;
   const canvas = d3.select (`#canvas-${index}`);
@@ -22,7 +26,7 @@ networkUi.toggleNeuron = function (index: number) {
 
   networkState.toggleNeuron (index);
 
-  neuronCardUi.updateCard ();
+  selectCardUi.updateCard ();
   playgroundFacade.updateWeightsUI ();
 
   selectorDevice.setNeuronLight ({
@@ -31,15 +35,16 @@ networkUi.toggleNeuron = function (index: number) {
   });
 };
 
-networkUi.toggleInput = function (slug: string, render = false) {
+networkUi.toggleInput = function (slug: string) {
+  if (networkState.isLayerMode) {
+    return;
+  }
+
   const input = networkState.toggleInput (slug);
 
   // DOM
-  if (render) {
-    // todo to deprecate
-    const canvas = d3.select (`#canvas-${slug}`);
-    canvas.classed ('disabled', !input.isEnabled);
-  }
+  const canvas = d3.select (`#canvas-${slug}`);
+  canvas.classed ('disabled', !input.isEnabled);
 
   playgroundFacade.updateWeightsUI ();
 
@@ -50,6 +55,10 @@ networkUi.toggleInput = function (slug: string, render = false) {
 };
 
 networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean) {
+  if (networkState.isLayerMode) {
+    return;
+  }
+
   if (typeof nodeIndex !== 'number') {
     throw new Error ('nodeId is not a number');
   }
@@ -66,7 +75,7 @@ networkUi.toggleNodeSelection = function (nodeIndex: number, isSelected: boolean
   const canvas = d3.select (`#canvas-${nodeIndex}`);
   canvas.classed ('selected', isSelected);
 
-  neuronCardUi.updateCard ();
+  selectCardUi.updateCard ();
 
   selectorDevice.setNeuronLight ({ index: nodeIndex, isSelected });
   controllerDevice.onSelectionEvent ();

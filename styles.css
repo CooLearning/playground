@@ -1079,15 +1079,19 @@ Help Dialog
 }
 
 /**
-Neuron card
+Cool cards
  */
-#neuron-card {
+.cool-card {
   display: none;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 
   position: absolute;
   left: 50%;
   top: 5px;
+
+  height: 195px;
   transform: translate(-50%, 0);
 
   z-index: 1000;
@@ -1103,16 +1107,16 @@ Neuron card
   text-align: center;
 }
 
-#neuron-card .row {
+.cool-card .row {
   display: grid;
   grid-gap: 5px;
   grid-template-columns: 40px repeat(6, 70px);
 }
 
-#neuron-card .header {
+.cool-card .header {
   font-style: italic;
 }
 
-#neuron-card input {
+.cool-card input {
   width: 60px;
 }
