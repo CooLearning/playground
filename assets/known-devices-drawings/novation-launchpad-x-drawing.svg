@@ -39,13 +39,13 @@
      inkscape:window-height="1016"
      id="namedview178"
      showgrid="false"
-     inkscape:zoom="0.68210066"
-     inkscape:cx="261.61329"
-     inkscape:cy="360.606"
+     inkscape:zoom="0.482318"
+     inkscape:cx="1264.8819"
+     inkscape:cy="551.28643"
      inkscape:window-x="42"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     inkscape:current-layer="layer8" />
+     inkscape:current-layer="layer1" />
   <defs
      id="defs4">
     <marker
@@ -390,7 +390,7 @@
        width="50.310001"
        height="50.200001"
        id="rect14"
-       style="fill:#0000ff;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
+       style="fill:#ffff00;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
     <rect
        class="cls-3"
        x="302.93445"
@@ -398,7 +398,7 @@
        width="50.310001"
        height="50.200001"
        id="rect16"
-       style="fill:#0000ff;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
+       style="fill:#ffff00;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
     <rect
        class="cls-3"
        x="366.69446"
@@ -406,7 +406,7 @@
        width="50.310001"
        height="50.200001"
        id="rect18"
-       style="fill:#0000ff;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
+       style="fill:#ffff00;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
     <rect
        class="cls-3"
        x="430.46445"
@@ -414,7 +414,7 @@
        width="50.310001"
        height="50.200001"
        id="rect20"
-       style="fill:#0000ff;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
+       style="fill:#ffff00;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
     <rect
        class="cls-3"
        x="494.23444"
@@ -422,7 +422,7 @@
        width="50.310001"
        height="50.200001"
        id="rect22"
-       style="fill:#0000ff;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
+       style="fill:#ffff00;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
     <rect
        class="cls-3"
        x="558.11444"
@@ -430,7 +430,7 @@
        width="50.310001"
        height="50.200001"
        id="rect24"
-       style="fill:#0000ff;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
+       style="fill:#ffff00;stroke:#ffffff;stroke-width:2px;stroke-miterlimit:10" />
     <rect
        class="cls-3 confirm-firmware-update"
        x="621.88446"
@@ -511,7 +511,7 @@
        height="50.200001"
        rx="2.6300001"
        id="rect44"
-       style="fill:#ffff00" />
+       style="fill:#0000ff" />
     <rect
        class="cls-2"
        x="239.16444"
@@ -583,7 +583,7 @@
        height="50.200001"
        rx="2.45"
        id="rect60"
-       style="fill:#ffff00" />
+       style="fill:#0000ff" />
     <rect
        class="cls-2"
        x="239.16444"
@@ -655,7 +655,7 @@
        height="50.200001"
        rx="2.49"
        id="rect76"
-       style="fill:#ffff00" />
+       style="fill:#0000ff" />
     <rect
        class="cls-2"
        x="239.16444"
@@ -727,7 +727,7 @@
        height="50.200001"
        rx="2.3399999"
        id="rect92"
-       style="fill:#ffff00" />
+       style="fill:#0000ff" />
     <rect
        class="cls-2"
        x="239.16444"
@@ -793,7 +793,7 @@
        height="50.200001"
        rx="2.3900001"
        id="rect108"
-       style="fill:#ffff00" />
+       style="fill:#0000ff" />
     <rect
        class="cls-2"
        x="239.16444"
@@ -859,7 +859,7 @@
        height="50.200001"
        rx="2.48"
        id="rect124"
-       style="fill:#ffff00" />
+       style="fill:#0000ff" />
     <rect
        class="cls-2"
        x="239.16444"
@@ -931,7 +931,7 @@
        height="50.200001"
        rx="2.48"
        id="rect140"
-       style="fill:#ffff00" />
+       style="fill:#0000ff" />
     <rect
        class="cls-2"
        x="239.16444"
