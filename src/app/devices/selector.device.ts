@@ -309,55 +309,17 @@ selectorDevice.attachNavigation = function () {
 
 selectorDevice.attachLayers = function () {
   const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
-  const layersCount = networkState.neurons.length;
 
   // first draw
-  for (let i = 0; i < layersCount; ++i) {
-    this.playOrBlinkNote ({
-      note: layerPads[i],
-      color: this.settings.colorByState.layer,
-    });
-  }
+  this.renderLayers ();
 
   // listen for changes
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
     if (layerPads.indexOf (inputNote) !== -1) {
       const index = layerPads.indexOf (inputNote);
-
-      // no layer selected
-      if (networkState.selectedLayerIndex === null) {
-        networkState.selectedLayerIndex = index;
-        this.playOrBlinkNote ({
-          note: inputNote,
-          color: this.settings.colorByState.layer,
-        });
-      }
-      // switch layer
-      else if (index !== networkState.selectedLayerIndex) {
-        // unselect previous layer
-        const previousLayer = layerPads[networkState.selectedLayerIndex];
-        this.playOrBlinkNote ({
-          note: previousLayer,
-          color: this.settings.colorByState.layer,
-        });
-
-        // select new layer
-        networkState.selectedLayerIndex = index;
-        this.playOrBlinkNote ({
-          note: inputNote,
-          color: this.settings.colorByState.layer,
-        });
-      }
-      // toggle layer
-      else {
-        networkState.selectedLayerIndex = null;
-        this.playOrBlinkNote ({
-          note: inputNote,
-          color: this.settings.colorByState.layer,
-        });
-      }
-
+      networkState.setLayer (index);
+      this.renderLayers ();
       controllerDevice.updateMode ();
       layerCardUi.updateCard ();
       playgroundUi.renderLayers ();
@@ -377,5 +339,25 @@ selectorDevice.updateLightPlayback = function () {
     color: isPlaying
       ? this.settings.colorByState.playbackOn
       : this.settings.colorByState.playbackOff,
+  });
+};
+
+selectorDevice.renderLayers = function () {
+  const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
+  const index = networkState.selectedLayerIndex;
+
+  layerPads.forEach ((_pad, pad) => {
+    if (index === pad) {
+      this.playNote ({
+        note: _pad,
+        color: this.settings.colorByState.layerOn,
+      });
+    }
+    else {
+      this.playNote ({
+        note: _pad,
+        color: this.settings.colorByState.layerOff,
+      });
+    }
   });
 };

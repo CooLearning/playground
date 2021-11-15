@@ -64,7 +64,8 @@ export const novationLaunchpadX: Selector = {
       outputWeightOff: this.colors.gray,
       playbackOn: this.colors.lime,
       playbackOff: this.colors.red,
-      layer: this.colors.yellow,
+      layerOn: this.colors.yellow,
+      layerOff: this.colors.gray,
     };
   },
   time: {

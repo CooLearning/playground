@@ -251,7 +251,7 @@ networkState.setRegularization = function (index: number, name: string) {
   if (typeof name !== 'string') {
     throw new Error ('name must be a string');
   }
-  
+
   const { neuron } = this.getNeuron (index);
   neuron.regularization = regularizations[name];
 };
@@ -287,3 +287,19 @@ Object.defineProperty (networkState, 'isLayerMode', {
     return this.selectedLayerIndex !== null;
   },
 });
+
+networkState.setLayer = function (index: number) {
+  if (this.selectedLayerIndex === null) {
+    // no layer selected
+    this.selectedLayerIndex = index;
+  }
+  else if (index !== this.selectedLayerIndex) {
+    // switch layer
+    this.selectedLayerIndex = index;
+  }
+  else {
+    // toggle layer
+    this.selectedLayerIndex = null;
+  }
+  return this.selectedLayerIndex;
+};
