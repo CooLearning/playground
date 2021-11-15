@@ -1079,6 +1079,13 @@ Help Dialog
 }
 
 /**
+Imports/Exports Dialog
+ */
+#imports-exports-dialog {
+  width: 80vw;
+}
+
+/**
 Cool cards
  */
 .cool-card {
