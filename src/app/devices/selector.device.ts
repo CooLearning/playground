@@ -4,6 +4,7 @@ import { networkState } from '../state/network.state';
 import { networkUi } from '../ui/network.ui';
 import { layerCardUi } from '../ui/layer-card.ui';
 import { controllerDevice } from './controller.device';
+import { playgroundUi } from '../ui/playground.ui';
 
 export const selectorDevice = Object.create (devicePrototype);
 
@@ -359,6 +360,7 @@ selectorDevice.attachLayers = function () {
 
       controllerDevice.updateMode ();
       layerCardUi.updateCard ();
+      playgroundUi.renderLayers ();
     }
   }, true);
 };
