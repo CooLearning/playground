@@ -11,20 +11,50 @@ store.state = {
 };
 
 store.load = function () {
-  if (this.state.devices.selector) {
+  if (this.state?.devices?.selector) {
     devicesState.pickSelector (this.state.devices.selector);
   }
-  if (this.state.devices.controller) {
+  if (this.state?.devices?.controller) {
     devicesState.pickController (this.state.devices.controller);
   }
-  if (this.state.mappings.controlByParameter) {
+  if (this.state?.mappings?.controlByParameter) {
     mappingsState.controlByParameter = {
       ...this.state.mappings.controlByParameter,
     };
   }
-  if (this.state.mappings.parametersByControl) {
+  if (this.state?.mappings?.parametersByControl) {
     mappingsState.parametersByControl = {
       ...this.state.mappings.parametersByControl,
+    };
+  }
+};
+
+/**
+ * @todo define strategy for overwrite
+ * @param {object} state - The imported state already parsed.
+ */
+store.import = function (state) {
+  if (typeof state === 'undefined') {
+    throw new Error ('store/import: state must be defined');
+  }
+  if (state.version !== this.state.version) {
+    throw new Error ('store/import: versions does not match');
+  }
+
+  if (state?.devices?.selector) {
+    devicesState.pickSelector (state.devices.selector);
+  }
+  if (state?.devices?.controller) {
+    devicesState.pickController (state.devices.controller);
+  }
+  if (state?.mappings?.controlByParameter) {
+    mappingsState.controlByParameter = {
+      ...state.mappings.controlByParameter,
+    };
+  }
+  if (state?.mappings?.parametersByControl) {
+    mappingsState.parametersByControl = {
+      ...state.mappings.parametersByControl,
     };
   }
 };

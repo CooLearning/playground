@@ -5,6 +5,8 @@ import { selectCardUi } from './select-card.ui';
 import { devicesUi } from './devices.ui';
 import { helpUi } from './help.ui';
 import { layerCardUi } from './layer-card.ui';
+import { importsExportsUi } from './imports-exports.ui';
+import { playgroundUi } from './playground.ui';
 
 export const ui = Object.create (null);
 
@@ -21,6 +23,8 @@ ui.init = async function () {
   layerCardUi.init ();
   devicesUi.init ();
   helpUi.init ();
+  importsExportsUi.init ();
+  playgroundUi.init ();
 };
 
 /**

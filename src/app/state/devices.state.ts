@@ -82,6 +82,10 @@ devicesState.pickDevice = function (name: string, devices: any): Device {
  * @param {string} name - controller name
  */
 devicesState.pickController = function (name: string): void {
+  if (typeof name === 'undefined') {
+    return;
+  }
+
   const controller = this.pickDevice (name, this.controllers);
   this.pickedController = controller;
   controllerDevice.init (controller);
@@ -94,6 +98,10 @@ devicesState.pickController = function (name: string): void {
  * @param {string} name - selector name
  */
 devicesState.pickSelector = function (name: string): void {
+  if (typeof name === 'undefined') {
+    return;
+  }
+
   const selector = this.pickDevice (name, this.selectors);
   this.pickedSelector = selector;
   selectorDevice.init (selector);
@@ -139,16 +147,17 @@ devicesState.getControllers = function () {
 };
 
 devicesState.unpickDevice = function (port) {
-  if (port.isSelector) {
+  if (port.isSelector && this.pickedSelector) {
     this.pickedSelector.isPicked = false;
     this.pickedSelector.input.isPicked = false;
     this.pickedSelector.output.isPicked = false;
     this.pickedSelector = null;
   }
-  else if (port.isController) {
+  else if (port.isController && this.pickedController) {
     this.pickedController.isPicked = false;
     this.pickedController.input.isPicked = false;
     this.pickedController.output.isPicked = false;
     this.pickedController = null;
   }
+  store.save ();
 };

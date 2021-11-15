@@ -47,7 +47,6 @@ controllerDevice.init = async function (device: any): Promise<void> {
   await this.runBootSequence ();
   this.isInitialized = true;
 
-  this.drawLights ();
   this.updateMode ();
 };
 
@@ -87,6 +86,7 @@ controllerDevice.updateMode = function () {
   }
 
   this.removeListeners ();
+  this.drawLights ();
 
   if (networkState.isLayerMode) {
     this.setLayerMode ();
@@ -138,7 +138,6 @@ controllerDevice.onSelectionEvent = function () {
     return;
   }
 
-  this.drawLights ();
   setTimeout (() => {
     this.updateMode ();
   }, this.settings.time.wait);
@@ -245,13 +244,15 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
   const links = neuron.inputLinks;
 
   // first draw
-  links.forEach ((link, index) => {
-    link.hasSnapped = false;
-    this.playNote ({
-      note: this.settings.rows.firstButtons[index],
-      color: this.settings.colorByState.unsnap,
+  setTimeout (() => {
+    links.forEach ((link, index) => {
+      link.hasSnapped = false;
+      this.playNote ({
+        note: this.settings.rows.firstButtons[index],
+        color: this.settings.colorByState.unsnap,
+      });
     });
-  });
+  }, this.settings.time.wait);
 
   // listen to changes
   this.addControlListener ((e) => {
