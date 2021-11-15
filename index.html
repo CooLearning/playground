@@ -682,10 +682,9 @@ limitations under the License.
 </footer>
 
 <!-- App Buttons -->
-
 <div id="buttons">
-  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect settings">
-    <i class="material-icons">settings</i>
+  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect imports-exports">
+    <i class="material-icons">import_export</i>
   </button>
   <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect mappings">
     <i class="material-icons">link</i>
@@ -693,16 +692,76 @@ limitations under the License.
   <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect devices">
     <i class="material-icons">usb</i>
   </button>
-  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect reset">
-    <i class="material-icons">settings_backup_restore</i>
-  </button>
   <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect help">
     <i class="material-icons">help_outline</i>
   </button>
 </div>
 
-<!-- Mappings Dialog -->
+<!-- Imports/Exports Dialog -->
+<dialog class="mdl-dialog" id="imports-exports-dialog">
+  <h4 class="mdl-dialog__title">
+    Imports - Exports
+  </h4>
+  <div class="mdl-dialog__content">
+    <div>
+      <h4>Load</h4>
+      <div>
+        <textarea
+          aria-label="load textarea"
+          class="imports-exports-import__textarea"
+          placeholder=""
+        ></textarea>
+      </div>
+      <div>
+        <button
+          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect imports-exports-button"
+          id="imports-exports-import__button"
+        >
+          Import
+        </button>
+      </div>
+    </div>
+    <div>
+      <h4>Save</h4>
+      <div>
+        <span>
+          A <code>.json</code> file will be downloaded to your computer.
+        </span>
+      </div>
+      <div>
+        <button
+          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect imports-exports-button"
+          id="imports-exports-export__button"
+        >
+          Export
+        </button>
+      </div>
+    </div>
+    <div>
+      <h4>Reset</h4>
+      <div>
+        <span>
+          Use this with caution to reset the app to its default state.
+        </span>
+      </div>
+      <div>
+        <button
+          class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect imports-exports-button"
+          id="imports-exports-reset__button"
+        >
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button class="mdl-button close-button" type="button">
+      close
+    </button>
+  </div>
+</dialog>
 
+<!-- Mappings Dialog -->
 <dialog class="mdl-dialog" id="mappings">
   <h4 class="mdl-dialog__title">
     Mappings
@@ -728,7 +787,6 @@ limitations under the License.
 </dialog>
 
 <!-- Devices Dialog -->
-
 <dialog class="mdl-dialog" id="devices">
   <h4 class="mdl-dialog__title">
     Devices
@@ -762,7 +820,6 @@ limitations under the License.
 </dialog>
 
 <!-- Help Dialog -->
-
 <dialog class="mdl-dialog" id="help">
   <h4 class="mdl-dialog__title">
     Help
@@ -794,7 +851,7 @@ limitations under the License.
 </dialog>
 
 <!-- Select Card -->
-<div id="select-card" class="cool-card">
+<div class="cool-card" id="select-card">
   <div class="row header">
     <span>Source</span>
     <span>Weight</span>
@@ -911,7 +968,7 @@ limitations under the License.
 </div>
 
 <!-- Layer Card -->
-<div id="layer-card" class="cool-card">
+<div class="cool-card" id="layer-card">
   <div class="row header">
     <span>Neuron</span>
     <span>Bias</span>
