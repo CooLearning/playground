@@ -46,19 +46,15 @@ There are two main categories of devices you can attach.
 
 This device usually provides a **grid of colored backlit pads**.
 
-- Use the grid to display the inputs, neurons and output of the current neural
-  network
-  - Color code:
-    - `gray` disabled node
-    - `yellow` input (enabled)
-    - `green` neuron (enabled)
-    - `blue` neuron (selected)
-    - `purple` output's input link / weight
-  - Short press action:
-    - `enable` or `disable` inputs or output input weights
-    - `select` or `unselect` neurons
-  - Long press action:
-    - `enable` or `disable` neurons
+Use the grid to display the inputs, neurons and output of the current neural
+network.
+
+- **Short press** action:
+  - `enable/disable` inputs and output links
+  - `select/unselect` neurons
+  - `select/unselect` layer
+- **Long press** action:
+  - `enable/disable` neurons
 
 ### 🎛️ Controller
 
