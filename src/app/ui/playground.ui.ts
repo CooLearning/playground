@@ -1,6 +1,8 @@
 import { isTabActive } from '../utils/is-tab-active';
 import { rangeMap } from '../utils/range-map';
 import { mappingsUi } from './mappings.ui';
+import { networkState } from '../state/network.state';
+import { layerCardUi } from './layer-card.ui';
 
 export const playgroundUi = Object.create (null);
 
@@ -76,4 +78,54 @@ playgroundUi.updateParameter = function (name: string, value: number): void {
     default:
       throw new Error (`${parameter.tagName} target not handled`);
   }
+};
+
+// -----------------------------------------------------------------------------
+
+playgroundUi.nodeSelectors = {
+  layer: '.plus-minus-neurons', // origin playground name
+};
+
+playgroundUi.init = function () {
+  this.fetchLayers ();
+  this.attachLayers ();
+  this.renderLayers ();
+};
+
+playgroundUi.fetchLayers = function () {
+  this.layers = Array.from (document.querySelectorAll (this.nodeSelectors.layer));
+};
+
+playgroundUi.renderLayers = function () {
+  this.layers.forEach ((layer, index) => {
+    layer.style.outline = '1px solid black';
+    layer.style.cursor = 'pointer';
+    layer.style.userSelect = 'none';
+    layer.style.height = '28px';
+    layer.children[0].style.height = '100%';
+    if (index === networkState.selectedLayerIndex) {
+      layer.style.backgroundColor = 'yellow';
+    }
+    else {
+      layer.style.backgroundColor = null;
+    }
+  });
+};
+
+playgroundUi.attachLayers = function () {
+  this.layers.forEach ((layer, index) => {
+    layer.onclick = () => {
+      if (index === networkState.selectedLayerIndex) {
+        // repeat => toggle
+        networkState.selectedLayerIndex = null;
+      }
+      else {
+        // set
+        networkState.selectedLayerIndex = index;
+      }
+
+      this.renderLayers ();
+      layerCardUi.updateCard ();
+    };
+  });
 };
