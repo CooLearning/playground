@@ -1,3 +1,5 @@
+import { store } from '../store/store';
+
 /**
  * State object for the mappings.
  */
@@ -7,17 +9,6 @@ mappingsState.isLearning = false;
 mappingsState.learningParameter = null;
 mappingsState.controlByParameter = {};
 mappingsState.parametersByControl = {};
-
-mappingsState.state = {
-  get state () {
-    return {
-      isLearning: this.isLearning,
-      learningParameter: this.learningParameter,
-      controlByParameter: this.controlByParameter,
-      parametersByControl: this.parametersByControl,
-    };
-  },
-};
 
 type LearnOptions = {
   parameter: string;
@@ -62,11 +53,13 @@ mappingsState.setParameterMaps = function ({
   // reverse map
   if (this.parametersByControl[control] === undefined) {
     this.parametersByControl[control] = [parameter];
-  } else {
+  }
+  else {
     this.parametersByControl[control].push (parameter);
   }
 
   this.disableLearningMode ();
+  store.save ();
 };
 
 /**
@@ -81,7 +74,8 @@ mappingsState.unsetParameterMaps = function (parameter: string) {
 
   if (parameters.length === 1) {
     delete this.parametersByControl[control];
-  } else {
+  }
+  else {
     const index = parameters.indexOf (parameter);
     if (index !== -1) {
       parameters.splice (index, 1);

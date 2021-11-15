@@ -34,7 +34,6 @@ export const novationLaunchControlXl: NovationLaunchControlXl = {
   },
   time: {
     wait: 200,
-    deviceReady: 2000,
     defaultDuration: 500,
   },
   get bootSequence () {

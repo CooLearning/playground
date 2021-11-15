@@ -16,7 +16,7 @@ selectorDevice.grid = null as number[][];
  */
 selectorDevice.init = async function (device: any): Promise<void> {
   if (this.isInitialized) {
-    this.removeListeners ();
+    this.reset ();
   }
 
   this.isInitialized = false;

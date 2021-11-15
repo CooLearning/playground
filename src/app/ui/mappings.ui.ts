@@ -52,12 +52,24 @@ mappingsUi.init = function () {
   this.content = this.node.querySelector (this.nodeSelectors.content);
   this.tableContent = this.node.querySelector (this.nodeSelectors.tableContent);
   this.buildTableContent ();
+  this.loadInitialMappings ();
   this.attachEvents (this.closeButton);
 };
 
 mappingsUi.buildTableContent = function () {
   Object.keys (this.parameterQueries).forEach ((parameterName) => {
     this.tableContent.appendChild (this.createContentRow (parameterName));
+  });
+};
+
+mappingsUi.loadInitialMappings = function () {
+  const parameters = mappingsState.controlByParameter;
+  Object.keys (parameters).forEach ((parameter) => {
+    this.chips[parameter].update ({
+      icon: parameters[parameter].type,
+      content: parameters[parameter].control,
+      isLearned: true,
+    });
   });
 };
 

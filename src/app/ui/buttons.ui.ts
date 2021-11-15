@@ -1,6 +1,7 @@
 import { devicesUi } from './devices.ui';
 import { mappingsUi } from './mappings.ui';
 import { helpUi } from './help.ui';
+import { store } from '../store/store';
 
 export const buttonsUi = Object.create (null);
 
@@ -24,9 +25,8 @@ buttonsUi.init = function () {
   this.mappings.onclick = () => mappingsUi.show ();
   this.devices.onclick = () => devicesUi.show ();
   this.help.onclick = () => helpUi.show ();
+  this.reset.onclick = () => store.reset ();
 
   // eslint-disable-next-line no-console
   this.settings.onclick = () => console.log ('settings');
-  // eslint-disable-next-line no-console
-  this.reset.onclick = () => console.log ('reset');
 };

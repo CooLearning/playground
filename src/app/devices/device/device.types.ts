@@ -23,7 +23,6 @@ export type DeviceSettings = {
   };
   time: {
     wait: number;
-    deviceReady: number;
     defaultDuration: number;
     [other: string]: number;
   };

@@ -4,6 +4,8 @@ import { Device } from '../devices/device/device.types';
 
 export const devicesUi = Object.create (dialogPrototype);
 
+devicesUi.isInitialized = false;
+
 devicesUi.nodeSelectors = {
   node: '#devices',
   closeButton: '.close-button',
@@ -25,6 +27,8 @@ devicesUi.init = function () {
   this.selectorOptions = this.node.querySelector (this.nodeSelectors.selectorOptions);
   this.controllerOptions = this.node.querySelector (this.nodeSelectors.controllerOptions);
 
+  this.isInitialized = true;
+
   this.attachEvents (this.closeButton);
   this.render ();
 };
@@ -42,7 +46,8 @@ devicesUi.shouldRender = function (): ShouldRender {
       selectors: false,
       controllers: false,
     };
-  } else {
+  }
+  else {
     return {
       selectors: Object.keys (selectors).length !== 0,
       controllers: Object.keys (controllers).length !== 0,
@@ -51,6 +56,10 @@ devicesUi.shouldRender = function (): ShouldRender {
 };
 
 devicesUi.render = function () {
+  if (!this.isInitialized) {
+    return;
+  }
+  
   const shouldRender = this.shouldRender ();
 
   // selectors
@@ -72,11 +81,13 @@ devicesUi.renderOptions = function (target: string) {
     targetNode = this.selectorOptions;
     options = devicesState.selectors;
     pickedDevice = devicesState.pickedSelector;
-  } else if (target === 'controller') {
+  }
+  else if (target === 'controller') {
     targetNode = this.controllerOptions;
     options = devicesState.controllers;
     pickedDevice = devicesState.pickedController;
-  } else {
+  }
+  else {
     throw new Error ('target node is undefined while render options');
   }
 
@@ -107,7 +118,8 @@ devicesUi.renderOptions = function (target: string) {
   // add events
   if (target === 'selector') {
     targetNode.onchange = (e) => devicesState.pickSelector (e.target.value);
-  } else if (target === 'controller') {
+  }
+  else if (target === 'controller') {
     targetNode.onchange = (e) => devicesState.pickController (e.target.value);
   }
 };

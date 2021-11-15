@@ -9,6 +9,15 @@ devicePrototype.settings = null as DeviceSettings;
 devicePrototype.network = null as any;
 devicePrototype.blinkingNotes = {};
 
+devicePrototype.reset = function () {
+  this.removeListeners ();
+  this.isInitialized = false as boolean;
+  this.device = null as Device;
+  this.settings = null as DeviceSettings;
+  this.network = null as any;
+  this.blinkingNotes = {};
+};
+
 /**
  * Run the boot sequence
  */
@@ -25,24 +34,19 @@ devicePrototype.runBootSequence = async function (): Promise<void> {
     }
 
     // flash the lights
-    setTimeout (() => {
-      this.playNotes ({
-        firstNote: this.settings.lights.first,
-        lastNote: this.settings.lights.last,
-        color,
-        duration: this.settings.time.defaultDuration,
-      });
-    },
-    this.settings.time.deviceReady,
-    );
+    this.playNotes ({
+      firstNote: this.settings.lights.first,
+      lastNote: this.settings.lights.last,
+      color,
+      duration: this.settings.time.defaultDuration,
+    });
 
     // resolve
     setTimeout (() => {
       resolve ();
     },
-    this.settings.time.deviceReady
-      + this.settings.time.defaultDuration
-      + this.settings.time.wait,
+    this.settings.time.defaultDuration
+    + this.settings.time.wait,
     );
   });
 };
