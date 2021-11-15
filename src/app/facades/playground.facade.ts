@@ -9,6 +9,7 @@ import {
   updateWeightsUI,
   updateBiasesUI,
 } from '../../playground/playground';
+import { selectorDevice } from '../devices/selector.device';
 
 export const playgroundFacade = Object.create (null);
 
@@ -62,5 +63,6 @@ Object.defineProperty (playgroundFacade, 'isPlaying', {
 
 playgroundFacade.togglePlayback = function () {
   player.playOrPause ();
+  selectorDevice.updateLightPlayback ();
   return this.isPlaying;
 };

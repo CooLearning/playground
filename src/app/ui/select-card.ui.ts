@@ -40,8 +40,8 @@ selectCardUi.init = function () {
 selectCardUi.fetchCard = function () {
   this.node = d3.select (this.nodeSelectors.node);
   this.rows = this.node.selectAll (this.nodeSelectors.row)[0];
-  this.weights = this.node.selectAll (this.nodeSelectors.weight)[0];
-  this.biases = this.node.selectAll (this.nodeSelectors.bias)[0];
+  this.weights = this.node.selectAll (this.nodeSelectors.weight)[0] || [];
+  this.biases = this.node.selectAll (this.nodeSelectors.bias)[0] || [];
   this.learningRates = this.node.selectAll (this.nodeSelectors.learningRate)[0];
   this.activations = this.node.selectAll (this.nodeSelectors.activation)[0];
   this.regularizations = this.node.selectAll (this.nodeSelectors.regularization)[0];
@@ -92,7 +92,7 @@ selectCardUi.updateCard = function () {
     return;
   }
 
-  this.node.style ('display', 'block');
+  this.node.style ('display', 'flex');
 
   this.rows.forEach ((row, index) => {
     // single selection

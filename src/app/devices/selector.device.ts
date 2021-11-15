@@ -2,6 +2,8 @@ import { devicePrototype } from './device/device.prototype';
 import { playgroundFacade } from '../facades/playground.facade';
 import { networkState } from '../state/network.state';
 import { networkUi } from '../ui/network.ui';
+import { layerCardUi } from '../ui/layer-card.ui';
+import { controllerDevice } from './controller.device';
 
 export const selectorDevice = Object.create (devicePrototype);
 
@@ -68,6 +70,10 @@ selectorDevice.drawInputs = function (): void {
  */
 selectorDevice.attachInputs = function (): void {
   this.addNoteListener ('on', (e) => {
+    if (networkState.isLayerMode) {
+      return;
+    }
+
     const flatIndex = this.getGridFlatIndex (e.note.number);
 
     if (!(flatIndex >= 0 && flatIndex <= 6)) {
@@ -75,7 +81,7 @@ selectorDevice.attachInputs = function (): void {
     }
 
     const { id } = networkState.getInputByIndex (flatIndex);
-    networkUi.toggleInput (id, true);
+    networkUi.toggleInput (id);
   });
 };
 
@@ -134,8 +140,11 @@ selectorDevice.drawNeurons = function (): void {
  */
 selectorDevice.attachNeurons = function (): void {
   this.addNoteListener ('on', (e) => {
-    const flatIndex = this.getGridFlatIndex (e.note.number);
+    if (networkState.isLayerMode) {
+      return;
+    }
 
+    const flatIndex = this.getGridFlatIndex (e.note.number);
     if (!(flatIndex >= 8 && flatIndex <= 55)) {
       return;
     }
@@ -238,8 +247,11 @@ selectorDevice.drawOutputWeights = function (): void {
  */
 selectorDevice.attachOutputWeights = function (): void {
   this.addNoteListener ('on', (e) => {
-    const flatIndex = this.getGridFlatIndex (e.note.number);
+    if (networkState.isLayerMode) {
+      return;
+    }
 
+    const flatIndex = this.getGridFlatIndex (e.note.number);
     if (!(flatIndex >= 56 && flatIndex <= 63)) {
       return;
     }
@@ -309,11 +321,44 @@ selectorDevice.attachLayers = function () {
   // listen for changes
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
-    if (layerPads.includes (inputNote)) {
-      this.playOrBlinkNote ({
-        note: inputNote,
-        color: this.settings.colorByState.layer,
-      });
+    if (layerPads.indexOf (inputNote) !== -1) {
+      const index = layerPads.indexOf (inputNote);
+
+      // no layer selected
+      if (networkState.selectedLayerIndex === null) {
+        networkState.selectedLayerIndex = index;
+        this.playOrBlinkNote ({
+          note: inputNote,
+          color: this.settings.colorByState.layer,
+        });
+      }
+      // switch layer
+      else if (index !== networkState.selectedLayerIndex) {
+        // unselect previous layer
+        const previousLayer = layerPads[networkState.selectedLayerIndex];
+        this.playOrBlinkNote ({
+          note: previousLayer,
+          color: this.settings.colorByState.layer,
+        });
+
+        // select new layer
+        networkState.selectedLayerIndex = index;
+        this.playOrBlinkNote ({
+          note: inputNote,
+          color: this.settings.colorByState.layer,
+        });
+      }
+      // toggle layer
+      else {
+        networkState.selectedLayerIndex = null;
+        this.playOrBlinkNote ({
+          note: inputNote,
+          color: this.settings.colorByState.layer,
+        });
+      }
+
+      controllerDevice.updateMode ();
+      layerCardUi.updateCard ();
     }
   }, true);
 };

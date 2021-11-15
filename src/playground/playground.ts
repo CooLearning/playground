@@ -30,7 +30,7 @@ import { AppendingLineChart } from './linechart';
 import * as d3 from 'd3';
 import { Coolearning } from '../coolearning/coolearning';
 import { networkUi } from '../app/ui/network.ui';
-import { playgroundUi } from '../app/ui/playground.ui';
+import { playgroundFacade } from '../app/facades/playground.facade';
 
 Coolearning ();
 
@@ -198,7 +198,7 @@ function makeGUI () {
   d3.select ('#play-pause-button').on ('click', function () {
     // Change the button's content.
     userHasInteracted ();
-    playgroundUi.togglePlayback ();
+    playgroundFacade.togglePlayback ();
   });
 
   player.onPlayPause (isPlaying => {
@@ -578,7 +578,6 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
   if (isInput) {
     div.on ('click', function () {
       networkUi.toggleInput (nodeId);
-      div.classed ('disabled', !div.classed ('disabled'));
     });
   }
   if (isInput) {

@@ -1,8 +1,6 @@
 import { isTabActive } from '../utils/is-tab-active';
 import { rangeMap } from '../utils/range-map';
 import { mappingsUi } from './mappings.ui';
-import { playgroundFacade } from '../facades/playground.facade';
-import { selectorDevice } from '../devices/selector.device';
 
 export const playgroundUi = Object.create (null);
 
@@ -78,9 +76,4 @@ playgroundUi.updateParameter = function (name: string, value: number): void {
     default:
       throw new Error (`${parameter.tagName} target not handled`);
   }
-};
-
-playgroundUi.togglePlayback = function () {
-  playgroundFacade.togglePlayback ();
-  selectorDevice.updateLightPlayback ();
 };

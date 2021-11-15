@@ -4,6 +4,7 @@ import { notificationsUi } from './notifications.ui';
 import { selectCardUi } from './select-card.ui';
 import { devicesUi } from './devices.ui';
 import { helpUi } from './help.ui';
+import { layerCardUi } from './layer-card.ui';
 
 export const ui = Object.create (null);
 
@@ -17,6 +18,7 @@ ui.init = async function () {
   mappingsUi.init ();
   buttonsUi.init ();
   selectCardUi.init ();
+  layerCardUi.init ();
   devicesUi.init ();
   helpUi.init ();
 };
