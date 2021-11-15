@@ -73,8 +73,7 @@ store.init = function () {
     }
   }
   catch (error) {
-    // reset
-    this.reset ();
+    // do nothing
   }
 };
 
