@@ -1,3 +1,25 @@
+# [1.9.0](https://github.com/CooLearning/playground/compare/v1.8.2...v1.9.0) (2021-11-15)
+
+
+### Bug Fixes
+
+* **devices/controller:** draw unsnapped for select modes after waiting the first draw ([5682a37](https://github.com/CooLearning/playground/commit/5682a3791816a16070800aca3aa76dcdc9b51543))
+* make the selector device re-render the layer buttons on the playground UI ([cb1f150](https://github.com/CooLearning/playground/commit/cb1f1503675f065aec5b4cea398206fbe189ada5))
+* **state/devices:** save store when unpicking device ([ddb07e9](https://github.com/CooLearning/playground/commit/ddb07e9efb017b6bc5ff4c9d484bbb38c6814d89))
+
+
+### Features
+
+* add imports-exports ui + remove old reset button + add very basic import logic without overwriting strategy ([714b107](https://github.com/CooLearning/playground/commit/714b10763b21862b159133c3f81e2a0cf11ca339))
+* add new imports/exports dialog (work in progress) ([84c5d6a](https://github.com/CooLearning/playground/commit/84c5d6a73614e77cca686653d0c451628b91effc))
+* allow layers to interact with the mouse ([d8af52c](https://github.com/CooLearning/playground/commit/d8af52cc1310dfc579906abfc77ce8645f5438e1))
+
+
+### Performance Improvements
+
+* **devices/controller:** better lights management ([3281729](https://github.com/CooLearning/playground/commit/3281729a62de6d6b25bb5127f2152cfc7d18b4f5))
+* **devices:** set blinking interval to 400ms ([d084899](https://github.com/CooLearning/playground/commit/d084899387f989396de9eba48f989f6304418133))
+
 ## [1.8.2](https://github.com/CooLearning/playground/compare/v1.8.1...v1.8.2) (2021-11-15)
 
 
