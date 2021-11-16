@@ -1,3 +1,23 @@
+# [1.12.0](https://github.com/CooLearning/playground/compare/v1.11.2...v1.12.0) (2021-11-16)
+
+
+### Bug Fixes
+
+* **controller:** in layer mode, show active neurons in green instead of selected ([a03eff3](https://github.com/CooLearning/playground/commit/a03eff3fe6a6eb0b5d5e5a098a449f0f2e1d4ee2))
+* make the controller update when mouse click on layer button ([666981e](https://github.com/CooLearning/playground/commit/666981e571ea3d5f0bc8209bdb98a9279f63c468))
+* **selector:** add self check before rendering layer buttons ([e024c73](https://github.com/CooLearning/playground/commit/e024c73ff3284d36be100db3fa0ca108742dbb1c))
+* **selector:** should exit layer mode when long pressing a layer button ([aa8d1e5](https://github.com/CooLearning/playground/commit/aa8d1e5969b5d778fe623f0f4a7ddc8b41b51846))
+
+
+### Features
+
+* **device:** add new `novation-launchpad-mini` ([855e610](https://github.com/CooLearning/playground/commit/855e61083a281427485802593de097155697c987))
+
+
+### Performance Improvements
+
+* **controller/layer-mode:** add green color buttons for neurons that are selected within the selected layer ([a7db018](https://github.com/CooLearning/playground/commit/a7db018f8fa9c29f72e429bc85d27d95b57915de))
+
 ## [1.11.2](https://github.com/CooLearning/playground/compare/v1.11.1...v1.11.2) (2021-11-16)
 
 
