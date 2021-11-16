@@ -268,6 +268,8 @@ selectorDevice.attachOutputWeights = function (): void {
       note: e.note.number,
       color: isEnabled ? this.settings.colorByState.outputWeightOn : this.settings.colorByState.outputWeightOff,
     });
+
+    playgroundFacade.updateWeightsUI ();
   });
 };
 
