@@ -1151,10 +1151,12 @@ function simulationStarted () {
 }
 
 export const addToSelectedNodes = function (nodeIndex: number) {
-  selectedNodes = [
-    ...selectedNodes,
-    nodeIndex,
-  ];
+  if (selectedNodes.indexOf (nodeIndex) === -1) {
+    selectedNodes = [
+      ...selectedNodes,
+      nodeIndex,
+    ];
+  }
 };
 
 export const removeFromSelectedNodes = function (nodeIndex: number) {
