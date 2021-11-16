@@ -315,18 +315,42 @@ selectorDevice.attachLayers = function () {
   // first draw
   this.renderLayers ();
 
+  let clickTimer;
   // listen for changes
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
+    const inputOn = e.value !== 0;
+    const inputOff = e.value === 0;
     if (layerPads.indexOf (inputNote) !== -1) {
-      const index = layerPads.indexOf (inputNote);
-      networkState.setLayer (index);
-      this.renderLayers ();
-      controllerDevice.updateMode ();
-      layerCardUi.updateCard ();
-      playgroundUi.renderLayers ();
+      if (inputOn) {
+        // short click
+        const index = layerPads.indexOf (inputNote);
+        networkState.setLayer (index);
+        this.renderLayers ();
+        controllerDevice.updateMode ();
+        layerCardUi.updateCard ();
+        playgroundUi.renderLayers ();
+
+        // long click
+        clickTimer = setTimeout (() => {
+          // clear
+          clearTimeout (clickTimer);
+          clickTimer = null;
+          // payload
+          networkState.toggleLayer (index);
+        }, this.settings.time.longClick);
+      }
+
+      if (inputOff) {
+        if (clickTimer === null) {
+          return;
+        }
+        clearTimeout (clickTimer);
+        clickTimer = null;
+        this.removeNoteListeners ('off');
+      }
     }
-  }, true);
+  });
 };
 
 selectorDevice.updateLightPlayback = function () {

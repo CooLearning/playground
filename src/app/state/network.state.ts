@@ -1,6 +1,7 @@
 import { playgroundFacade } from '../facades/playground.facade';
 import { Link } from './network.state.types';
 import { activations, regularizations } from '../../playground/state';
+import { selectorDevice } from '../devices/selector.device';
 
 /**
  * State object for the network.
@@ -145,6 +146,19 @@ networkState.toggleNeuron = function (nodeIndex: number): void {
       link.savedWeight = link.weight;
       link.weight = 0;
     }
+  });
+};
+
+networkState.toggleLayer = function (index: number): void {
+  const neurons = this.neurons[index];
+  neurons.forEach ((neuron) => {
+    const nodeIndex = parseInt (neuron.id);
+    this.toggleNeuron (nodeIndex);
+    selectorDevice.setNeuronLight ({
+      index: nodeIndex,
+      isDisabled: !neuron.isEnabled,
+    });
+    playgroundFacade.updateUI ();
   });
 };
 
