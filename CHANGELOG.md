@@ -1,3 +1,10 @@
+## [1.11.2](https://github.com/CooLearning/playground/compare/v1.11.1...v1.11.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* flip back in place the output Y axis ([944de87](https://github.com/CooLearning/playground/commit/944de87002ffb872d54be1ad3712484efe3d8e34))
+
 ## [1.11.1](https://github.com/CooLearning/playground/compare/v1.11.0...v1.11.1) (2021-11-16)
 
 
