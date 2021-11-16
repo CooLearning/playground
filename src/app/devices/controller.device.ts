@@ -450,18 +450,67 @@ Object.defineProperty (controllerDevice, 'isMultipleMode', {
 });
 
 controllerDevice.setLayerMode = function () {
-  this.attachButtonsToNeuron ();
+  this.initializeLayerMode ();
+  this.attachButtonsToLayer ();
   this.attachControlsToLayer ();
 };
 
-controllerDevice.attachControlsToLayer = function (): void {
-  const neurons = networkState.neurons[networkState.selectedLayerIndex];
-
+controllerDevice.initializeLayerMode = function () {
+  // all nodes
   this.playNotes ({
     firstNote: this.settings.lights.first,
     lastNote: this.settings.lights.last,
     color: this.settings.colorByState.layerMode,
   });
+
+  // selected nodes in green
+  setTimeout (() => {
+    playgroundFacade.selectedNodes.forEach ((nodeIndex) => {
+      const { layerIndex: layerNumber, neuronIndex: neuronNumber } = networkState.getNeuronAndLayerIndexes (nodeIndex);
+      const layerIndex = layerNumber - 1;
+      const neuronIndex = neuronNumber - 1;
+      if (layerIndex === networkState.selectedLayerIndex) {
+        this.playNote ({
+          note: this.settings.rows.firstButtons[neuronIndex],
+          color: this.settings.colorByState.selectMode,
+        });
+        this.playNote ({
+          note: this.settings.rows.secondButtons[neuronIndex],
+          color: this.settings.colorByState.selectMode,
+        });
+      }
+    });
+  }, this.settings.time.wait);
+};
+
+controllerDevice.attachButtonsToLayer = function (): void {
+  this.addNoteListener ('on', (e) => {
+    const inputNote = parseInt (e.note.number);
+    const index = this.settings.rows.secondButtons.indexOf (inputNote);
+    if (index !== -1) {
+      this.shifted[index] = true;
+      this.playNote ({
+        note: inputNote,
+        color: this.settings.colorByState.shift,
+      });
+    }
+  });
+
+  this.addNoteListener ('off', (e) => {
+    const inputNote = parseInt (e.note.number);
+    const index = this.settings.rows.secondButtons.indexOf (inputNote);
+    if (index !== -1) {
+      this.shifted[index] = false;
+      this.playNote ({
+        note: inputNote,
+        color: this.settings.colorByState.layerMode,
+      });
+    }
+  });
+};
+
+controllerDevice.attachControlsToLayer = function (): void {
+  const neurons = networkState.neurons[networkState.selectedLayerIndex];
 
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
