@@ -336,8 +336,14 @@ selectorDevice.attachLayers = function () {
           // clear
           clearTimeout (clickTimer);
           clickTimer = null;
-          // payload
           networkState.toggleLayer (index);
+          if (networkState.selectedLayerIndex !== null) {
+            networkState.resetLayerSelection ();
+            this.renderLayers ();
+            controllerDevice.updateMode ();
+            layerCardUi.updateCard ();
+            playgroundUi.renderLayers ();
+          }
         }, this.settings.time.longClick);
       }
 
