@@ -3,6 +3,7 @@ import { rangeMap } from '../utils/range-map';
 import { mappingsUi } from './mappings.ui';
 import { networkState } from '../state/network.state';
 import { layerCardUi } from './layer-card.ui';
+import { selectorDevice } from '../devices/selector.device';
 
 export const playgroundUi = Object.create (null);
 
@@ -115,17 +116,10 @@ playgroundUi.renderLayers = function () {
 playgroundUi.attachLayers = function () {
   this.layers.forEach ((layer, index) => {
     layer.onclick = () => {
-      if (index === networkState.selectedLayerIndex) {
-        // repeat => toggle
-        networkState.selectedLayerIndex = null;
-      }
-      else {
-        // set
-        networkState.selectedLayerIndex = index;
-      }
-
+      networkState.setLayer (index);
       this.renderLayers ();
       layerCardUi.updateCard ();
+      selectorDevice.renderLayers ();
     };
   });
 };

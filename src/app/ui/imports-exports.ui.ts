@@ -57,7 +57,7 @@ importsExportsUi.attachImport = function () {
 
 importsExportsUi.attachExport = function () {
   this.button.export.onclick = () => {
-    const string = JSON.stringify (store.state);
+    const string = JSON.stringify (store.state, undefined, 2);
     const anchor = document.createElement ('a');
     document.body.appendChild (anchor);
     anchor.style.display = 'none';
@@ -73,4 +73,9 @@ importsExportsUi.attachReset = function () {
   this.button.reset.onclick = () => {
     store.reset ();
   };
+};
+
+importsExportsUi.show = function () {
+  this.textarea.value = JSON.stringify (store.state, undefined, 2);
+  this.node.showModal ();
 };

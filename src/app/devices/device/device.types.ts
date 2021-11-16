@@ -50,7 +50,8 @@ export type Selector = DeviceSettings & {
     outputWeightOff: number;
     playbackOn: number;
     playbackOff: number;
-    layer: number;
+    layerOn: number;
+    layerOff: number;
   };
 }
 
