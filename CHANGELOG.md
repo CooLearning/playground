@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/CooLearning/playground/compare/v1.10.0...v1.11.0) (2021-11-16)
+
+
+### Features
+
+* **selector:** long press on layer button toggle all its neurons ([532e08c](https://github.com/CooLearning/playground/commit/532e08ca24ea39df678e37ab01c2d0e0fbd94455))
+
 # [1.10.0](https://github.com/CooLearning/playground/compare/v1.9.0...v1.10.0) (2021-11-16)
 
 
