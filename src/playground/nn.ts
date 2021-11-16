@@ -412,21 +412,7 @@ export function updateNode (node: Node): void {
       link.weight = link.weight - (learningRate / link.numAccumulatedDers) * link.accErrorDer;
 
       // Further update the weight based on regularization.
-      let newLinkWeight = link.weight - (learningRate * regularizationRate) * regulDer;
-
-      // todo investigate
-      if (
-        regularization === RegularizationFunction.L1
-        && link.weight * newLinkWeight < 0
-      ) {
-        // The weight crossed 0 due to the regularization term. Set it to 0.
-        link.weight = 0;
-        link.isDead = true;
-      }
-      else {
-        link.weight = newLinkWeight;
-      }
-
+      link.weight = link.weight - (learningRate * regularizationRate) * regulDer;
       link.accErrorDer = 0;
       link.numAccumulatedDers = 0;
     }
