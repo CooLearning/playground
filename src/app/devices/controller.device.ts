@@ -463,19 +463,18 @@ controllerDevice.initializeLayerMode = function () {
     color: this.settings.colorByState.layerMode,
   });
 
-  // selected nodes in green
+  // color enabled neurons in green
   setTimeout (() => {
-    playgroundFacade.selectedNodes.forEach ((nodeIndex) => {
-      const { layerIndex: layerNumber, neuronIndex: neuronNumber } = networkState.getNeuronAndLayerIndexes (nodeIndex);
-      const layerIndex = layerNumber - 1;
-      const neuronIndex = neuronNumber - 1;
-      if (layerIndex === networkState.selectedLayerIndex) {
+    const neurons = networkState.neurons[networkState.selectedLayerIndex];
+    neurons.forEach ((neuron) => {
+      if (neuron.isEnabled === true) {
+        const { neuronIndex } = networkState.getNeuronAndLayerIndexes (parseInt (neuron.id));
         this.playNote ({
-          note: this.settings.rows.firstButtons[neuronIndex],
+          note: this.settings.rows.firstButtons[neuronIndex - 1],
           color: this.settings.colorByState.selectMode,
         });
         this.playNote ({
-          note: this.settings.rows.secondButtons[neuronIndex],
+          note: this.settings.rows.secondButtons[neuronIndex - 1],
           color: this.settings.colorByState.selectMode,
         });
       }
@@ -533,7 +532,7 @@ controllerDevice.attachControlsToLayer = function (): void {
       );
 
       const learningRate = selectCardUi.options.learningRate[learningRateOptionIndex];
-      
+
       if (learningRate !== neurons[index].learningRate) {
         networkState.setLearningRate (parseInt (neurons[index].id), learningRate);
         layerCardUi.setLearningRate (index, learningRate);
