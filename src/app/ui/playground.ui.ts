@@ -4,6 +4,7 @@ import { mappingsUi } from './mappings.ui';
 import { networkState } from '../state/network.state';
 import { layerCardUi } from './layer-card.ui';
 import { selectorDevice } from '../devices/selector.device';
+import { controllerDevice } from '../devices/controller.device';
 
 export const playgroundUi = Object.create (null);
 
@@ -120,6 +121,7 @@ playgroundUi.attachLayers = function () {
       this.renderLayers ();
       layerCardUi.updateCard ();
       selectorDevice.renderLayers ();
+      controllerDevice.updateMode ();
     };
   });
 };
