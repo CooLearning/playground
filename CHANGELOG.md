@@ -1,3 +1,10 @@
+## [1.11.1](https://github.com/CooLearning/playground/compare/v1.11.0...v1.11.1) (2021-11-16)
+
+
+### Bug Fixes
+
+* do not kill weight due to L1 regularization type ([202d484](https://github.com/CooLearning/playground/commit/202d484cec814bdcc6d5bcb98ca881f1b985b8d3))
+
 # [1.11.0](https://github.com/CooLearning/playground/compare/v1.10.0...v1.11.0) (2021-11-16)
 
 
