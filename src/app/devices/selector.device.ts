@@ -369,6 +369,10 @@ selectorDevice.updateLightPlayback = function () {
 };
 
 selectorDevice.renderLayers = function () {
+  if (!this.isInitialized) {
+    return;
+  }
+
   const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
   const index = networkState.selectedLayerIndex;
 
