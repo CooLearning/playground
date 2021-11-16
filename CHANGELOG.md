@@ -1,3 +1,16 @@
+# [1.10.0](https://github.com/CooLearning/playground/compare/v1.9.0...v1.10.0) (2021-11-16)
+
+
+### Bug Fixes
+
+* **selector:** update UI after output weight interaction ([58a7f1f](https://github.com/CooLearning/playground/commit/58a7f1f9c79c9e6feac49ad91dde2bd9f494b50f))
+* **UI/imports-exports:** show current state in textarea ([a9931ef](https://github.com/CooLearning/playground/commit/a9931ef39510f09cdb459ee59bf7a3c5b7bb0e73))
+
+
+### Features
+
+* replace blinking layer buttons by on/off buttons + split renderers from event loops ([d515ea5](https://github.com/CooLearning/playground/commit/d515ea56de9079b6866dc34f69933574a1d94f8d))
+
 # [1.9.0](https://github.com/CooLearning/playground/compare/v1.8.2...v1.9.0) (2021-11-15)
 
 
