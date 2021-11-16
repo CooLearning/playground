@@ -153,9 +153,9 @@ controllerDevice.attachButtonsDefault = function () {
     }
 
     const note = parseInt (e.note.number);
+    const { isLearning, learningParameter } = mappingsState;
 
     // learning a new mapping
-    const { isLearning, learningParameter } = mappingsState;
     if (isLearning && learningParameter) {
       mappingsUi.learn ({
         parameter: learningParameter,
@@ -163,12 +163,13 @@ controllerDevice.attachButtonsDefault = function () {
         type: 'button',
       });
     }
-
     // update targets of already mapped parameters
-    const mappedParameters = mappingsState.getParametersByControl (note);
-    mappedParameters.forEach ((parameter) => {
-      playgroundUi.updateParameter (parameter, 1);
-    });
+    else {
+      const mappedParameters = mappingsState.getParametersByControl (note);
+      mappedParameters.forEach ((parameter) => {
+        playgroundUi.updateParameter (parameter, 1);
+      });
+    }
 
     // draw feedback lights
     this.playNote ({
