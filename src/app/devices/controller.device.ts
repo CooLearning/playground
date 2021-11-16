@@ -450,18 +450,66 @@ Object.defineProperty (controllerDevice, 'isMultipleMode', {
 });
 
 controllerDevice.setLayerMode = function () {
-  this.attachButtonsToNeuron ();
+  this.initializeLayerMode ();
+  this.attachButtonsToLayer ();
   this.attachControlsToLayer ();
 };
 
-controllerDevice.attachControlsToLayer = function (): void {
-  const neurons = networkState.neurons[networkState.selectedLayerIndex];
-
+controllerDevice.initializeLayerMode = function () {
+  // all nodes
   this.playNotes ({
     firstNote: this.settings.lights.first,
     lastNote: this.settings.lights.last,
     color: this.settings.colorByState.layerMode,
   });
+
+  // color enabled neurons in green
+  setTimeout (() => {
+    const neurons = networkState.neurons[networkState.selectedLayerIndex];
+    neurons.forEach ((neuron) => {
+      if (neuron.isEnabled === true) {
+        const { neuronIndex } = networkState.getNeuronAndLayerIndexes (parseInt (neuron.id));
+        this.playNote ({
+          note: this.settings.rows.firstButtons[neuronIndex - 1],
+          color: this.settings.colorByState.selectMode,
+        });
+        this.playNote ({
+          note: this.settings.rows.secondButtons[neuronIndex - 1],
+          color: this.settings.colorByState.selectMode,
+        });
+      }
+    });
+  }, this.settings.time.wait);
+};
+
+controllerDevice.attachButtonsToLayer = function (): void {
+  this.addNoteListener ('on', (e) => {
+    const inputNote = parseInt (e.note.number);
+    const index = this.settings.rows.secondButtons.indexOf (inputNote);
+    if (index !== -1) {
+      this.shifted[index] = true;
+      this.playNote ({
+        note: inputNote,
+        color: this.settings.colorByState.shift,
+      });
+    }
+  });
+
+  this.addNoteListener ('off', (e) => {
+    const inputNote = parseInt (e.note.number);
+    const index = this.settings.rows.secondButtons.indexOf (inputNote);
+    if (index !== -1) {
+      this.shifted[index] = false;
+      this.playNote ({
+        note: inputNote,
+        color: this.settings.colorByState.layerMode,
+      });
+    }
+  });
+};
+
+controllerDevice.attachControlsToLayer = function (): void {
+  const neurons = networkState.neurons[networkState.selectedLayerIndex];
 
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
@@ -484,7 +532,7 @@ controllerDevice.attachControlsToLayer = function (): void {
       );
 
       const learningRate = selectCardUi.options.learningRate[learningRateOptionIndex];
-      
+
       if (learningRate !== neurons[index].learningRate) {
         networkState.setLearningRate (parseInt (neurons[index].id), learningRate);
         layerCardUi.setLearningRate (index, learningRate);

@@ -317,3 +317,7 @@ networkState.setLayer = function (index: number) {
   }
   return this.selectedLayerIndex;
 };
+
+networkState.resetLayerSelection = function () {
+  this.selectedLayerIndex = null;
+};
