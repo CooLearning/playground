@@ -1,3 +1,20 @@
+# [1.13.0](https://github.com/CooLearning/playground/compare/v1.12.0...v1.13.0) (2021-11-17)
+
+
+### Bug Fixes
+
+* add unicity check before adding a node to selected nodes ([6859ce5](https://github.com/CooLearning/playground/commit/6859ce537f13a9180b833d0ea0cb1113dfc2804f))
+* **cards:** return change status from state mutation to trigger cards and UI updates + attach mouse events for layer-card ([a1e8487](https://github.com/CooLearning/playground/commit/a1e848730a1f0fd5a1ffa333172baf4a575a6963))
+* **device/novation-launchpad-mini:** specify the right notes for the first row of function buttons (still can't get them to light up though) ([7ce274c](https://github.com/CooLearning/playground/commit/7ce274ca34e65e4c59124a936f80bfe2f0c6a001))
+* **mappings:** do not update parameter right after having learned a new control ([7c3bee8](https://github.com/CooLearning/playground/commit/7c3bee8b08c7cc49b4bfaf4b0b06f095fb058d54))
+* **select-card:** add bias `onchange` event + rename mutation functions with explicit wording ([0a1e4ff](https://github.com/CooLearning/playground/commit/0a1e4ffe439167ab5b3b4bddaf9c913c6ab36776))
+
+
+### Features
+
+* add learning-rate option `0` ([06632de](https://github.com/CooLearning/playground/commit/06632de9ed87ea03f1c3088542f3c1c1e0206ff6))
+* **select-card:** color the cell in red for out-of-bounds values (-1, 1) for `weight` and `bias` ([4c2b36d](https://github.com/CooLearning/playground/commit/4c2b36dc0f607e4ded673f50d033c5532ab16970))
+
 # [1.12.0](https://github.com/CooLearning/playground/compare/v1.11.2...v1.12.0) (2021-11-16)
 
 
