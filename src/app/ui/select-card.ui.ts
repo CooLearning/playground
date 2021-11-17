@@ -22,7 +22,7 @@ selectCardUi.placeholders = {
 };
 
 selectCardUi.options = {
-  learningRate: [0.00001, 0.0001, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
+  learningRate: [0, 0.00001, 0.0001, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
   activation: ['relu', 'tanh', 'sigmoid', 'linear'],
   regularization: ['none', 'L1', 'L2'],
   regularizationRate: [0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
