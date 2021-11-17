@@ -30,7 +30,7 @@ export const novationLaunchpadMini: Selector = {
     [7, 23, 39, 55, 71, 87, 103, 119],
   ],
   functionKeys: {
-    firstRow: [91, 92, 93, 94, 95, 96, 97, 98], // not available
+    firstRow: [104, 105, 106, 107, 108, 109, 110, 111],
     lastColumn: [8, 24, 40, 56, 72, 88, 104, 120],
   },
   colors: {
