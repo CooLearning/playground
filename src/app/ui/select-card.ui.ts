@@ -160,8 +160,10 @@ selectCardUi.attachSourceWeightsEvents = function () {
     this.weights.forEach ((weight, index) => {
       weight.onchange = (e: InputEvent) => {
         const value = parseFloat ((e.target as HTMLInputElement).value);
-        networkState.setSourceWeight (index, value);
-        playgroundFacade.updateWeightsUI ();
+        const hasChanged = networkState.setSourceWeight (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateWeightsUI ();
+        }
         weight.blur ();
       };
     });
@@ -173,8 +175,10 @@ selectCardUi.attachSourceBiasesEvents = function () {
     this.biases.forEach ((bias, index) => {
       bias.onchange = (e: InputEvent) => {
         const value = parseFloat ((e.target as HTMLInputElement).value);
-        networkState.setSourceBias (index, value);
-        playgroundFacade.updateBiasesUI ();
+        const hasChanged = networkState.setSourceBias (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateBiasesUI ();
+        }
         bias.blur ();
       };
     });
@@ -186,8 +190,10 @@ selectCardUi.attachSourceLearningRatesEvents = function () {
     this.learningRates.forEach ((learningRate, index) => {
       learningRate.children[0].onchange = (e: InputEvent) => {
         const value = parseFloat ((e.target as HTMLInputElement).value);
-        networkState.setSourceLearningRate (index, value);
-        playgroundFacade.updateUI ();
+        const hasChanged = networkState.setSourceLearningRate (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
       };
     });
   }
@@ -198,8 +204,10 @@ selectCardUi.attachSourceActivationsEvents = function () {
     this.activations.forEach ((activation, index) => {
       activation.children[0].onchange = (e: InputEvent) => {
         const value = (e.target as HTMLInputElement).value;
-        networkState.setSourceActivation (index, value);
-        playgroundFacade.updateUI ();
+        const hasChanged = networkState.setSourceActivation (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
       };
     });
   }
@@ -210,8 +218,10 @@ selectCardUi.attachSourceRegularizationTypesEvents = function () {
     this.regularizations.forEach ((regularization, index) => {
       regularization.children[0].onchange = (e: InputEvent) => {
         const value = (e.target as HTMLInputElement).value;
-        networkState.setSourceRegularizationType (index, value);
-        playgroundFacade.updateUI ();
+        const hasChanged = networkState.setSourceRegularizationType (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
       };
     });
   }
@@ -222,8 +232,10 @@ selectCardUi.attachSourceRegularizationRatesEvents = function () {
     this.regularizationRates.forEach ((regularizationRate, index) => {
       regularizationRate.children[0].onchange = (e: InputEvent) => {
         const value = parseFloat ((e.target as HTMLInputElement).value);
-        networkState.setSourceRegularizationRate (index, value);
-        playgroundFacade.updateUI ();
+        const hasChanged = networkState.setSourceRegularizationRate (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
       };
     });
   }

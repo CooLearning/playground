@@ -202,151 +202,222 @@ networkState.getSelectedNeurons = function () {
   return targets;
 };
 
-networkState.setSourceWeight = function (index, value) {
-  this.getSelectedNeurons ().forEach ((neuron) => {
+networkState.setSourceWeight = function (index, value): boolean {
+  let hasChanged = false;
+
+  const selectedNeurons = this.getSelectedNeurons ();
+  selectedNeurons.forEach ((neuron) => {
     const link = neuron.inputLinks?.[index];
-    if (typeof link === 'undefined') {
-      return;
-    }
-    if (link?.isDead) {
+    if (
+      typeof link === 'undefined'
+      || link?.isDead
+      || typeof link?.weight === 'undefined'
+    ) {
       return;
     }
 
-    if (typeof link?.weight !== 'undefined') {
-      link.weight = value;
-    }
+    link.weight = value;
+    hasChanged = true;
   });
+
+  return hasChanged;
 };
 
-networkState.setSourceBias = function (index, value) {
-  this.getSelectedNeurons ().forEach ((neuron) => {
+networkState.setSourceBias = function (index, value): boolean {
+  let hasChanged = false;
+
+  const selectedNeurons = this.getSelectedNeurons ();
+  selectedNeurons.forEach ((neuron) => {
     const link = neuron.inputLinks?.[index];
-    if (typeof link === 'undefined') {
-      return;
-    }
-    if (link?.isDead) {
+    if (
+      typeof link === 'undefined'
+      || link?.isDead
+      || typeof link?.source?.bias === 'undefined'
+    ) {
       return;
     }
 
-    if (typeof link?.source?.bias !== 'undefined') {
-      link.source.bias = value;
-    }
+    link.source.bias = value;
+    hasChanged = true;
   });
+
+  return hasChanged;
 };
 
-networkState.setSourceLearningRate = function (index, value) {
-  this.getSelectedNeurons ().forEach ((neuron) => {
+networkState.setSourceLearningRate = function (index, value): boolean {
+  let hasChanged = false;
+
+  const selectedNeurons = this.getSelectedNeurons ();
+  selectedNeurons.forEach ((neuron) => {
     const link = neuron.inputLinks?.[index];
-    if (typeof link === 'undefined') {
-      return;
-    }
-    if (link?.isDead) {
+    if (
+      typeof link === 'undefined'
+      || link?.isDead
+      || value === link.source.learningRate
+    ) {
       return;
     }
 
     link.source.learningRate = value;
+    hasChanged = true;
   });
+
+  return hasChanged;
 };
 
-networkState.setSourceActivation = function (index, value) {
-  this.getSelectedNeurons ().forEach ((neuron) => {
+networkState.setSourceActivation = function (index, name): boolean {
+  let hasChanged = false;
+
+  const selectedNeurons = this.getSelectedNeurons ();
+  selectedNeurons.forEach ((neuron) => {
     const link = neuron.inputLinks?.[index];
-    if (typeof link === 'undefined') {
-      return;
-    }
-    if (link?.isDead) {
+    if (
+      typeof link === 'undefined'
+      || link?.isDead
+      || name === link.source.activation.name
+    ) {
       return;
     }
 
-    link.source.activation = activations[value];
+    link.source.activation = activations[name];
+    hasChanged = true;
   });
+
+  return hasChanged;
 };
 
-networkState.setSourceRegularizationType = function (index, value) {
-  this.getSelectedNeurons ().forEach ((neuron) => {
+networkState.setSourceRegularizationType = function (index, name): boolean {
+  let hasChanged = false;
+
+  const selectedNeurons = this.getSelectedNeurons ();
+  selectedNeurons.forEach ((neuron) => {
     const link = neuron.inputLinks?.[index];
-    if (typeof link === 'undefined') {
-      return;
-    }
-    if (link?.isDead) {
+    if (
+      typeof link === 'undefined'
+      || link?.isDead
+      || name === link.source.regularization.name
+    ) {
       return;
     }
 
-    link.source.regularization = regularizations[value];
+    link.source.regularization = regularizations[name];
+    hasChanged = true;
   });
+
+  return hasChanged;
 };
 
-networkState.setSourceRegularizationRate = function (index, value) {
-  this.getSelectedNeurons ().forEach ((neuron) => {
+networkState.setSourceRegularizationRate = function (index, value): boolean {
+  let hasChanged = false;
+
+  const selectedNeurons = this.getSelectedNeurons ();
+  selectedNeurons.forEach ((neuron) => {
     const link = neuron.inputLinks?.[index];
-    if (typeof link === 'undefined') {
-      return;
-    }
-    if (link?.isDead) {
+    if (
+      typeof link === 'undefined'
+      || link?.isDead
+      || value === link.source.regularizationRate
+    ) {
       return;
     }
 
     link.source.regularizationRate = value;
+    hasChanged = true;
   });
+
+  return hasChanged;
 };
 
-networkState.setLearningRate = function (index: number, value: number): void {
-  const { neuron } = this.getNeuron (index);
+networkState.setBias = function (index: number, value: number): boolean {
+  let hasChanged = false;
+  const neurons = this.neurons[this.selectedLayerIndex];
+  const neuron = neurons[index];
+
+  if (
+    neuron.isEnabled === false
+    || typeof neuron?.bias === 'undefined'
+    || value === neuron?.bias
+  ) {
+    return hasChanged;
+  }
+
+  neuron.bias = value;
+
+  hasChanged = true;
+  return hasChanged;
+};
+
+networkState.setLearningRate = function (index: number, value: number): boolean {
+  let hasChanged = false;
+  const neurons = this.neurons[this.selectedLayerIndex];
+  const neuron = neurons[index];
+
+  if (
+    neuron.isEnabled === false
+    || value === neuron.learningRate
+  ) {
+    return hasChanged;
+  }
+
   neuron.learningRate = value;
+
+  hasChanged = true;
+  return hasChanged;
 };
 
-networkState.setActivation = function (index: number, name: string): void {
-  if (typeof index === 'undefined') {
-    throw new Error ('index must be defined');
-  }
-  if (typeof index !== 'number') {
-    throw new Error ('index must be a number');
-  }
-  if (typeof name === 'undefined') {
-    throw new Error ('name must be defined');
-  }
-  if (typeof name !== 'string') {
-    throw new Error ('name must be a string');
+networkState.setActivation = function (index: number, name: string): boolean {
+  let hasChanged = false;
+  const neurons = this.neurons[this.selectedLayerIndex];
+  const neuron = neurons[index];
+
+  if (
+    neuron.isEnabled === false
+    || name === neuron.activation.name
+  ) {
+    return hasChanged;
   }
 
-  const { neuron } = this.getNeuron (index);
   neuron.activation = activations[name];
+
+  hasChanged = true;
+  return hasChanged;
 };
 
-networkState.setRegularization = function (index: number, name: string) {
-  if (typeof index === 'undefined') {
-    throw new Error ('index must be defined');
-  }
-  if (typeof index !== 'number') {
-    throw new Error ('index must be a number');
-  }
-  if (typeof name === 'undefined') {
-    throw new Error ('name must be defined');
-  }
-  if (typeof name !== 'string') {
-    throw new Error ('name must be a string');
+networkState.setRegularizationType = function (index: number, name: string): boolean {
+  let hasChanged = false;
+  const neurons = this.neurons[this.selectedLayerIndex];
+  const neuron = neurons[index];
+
+  if (
+    neuron.isEnabled === false
+    || name === neuron.regularization.name
+  ) {
+    return hasChanged;
   }
 
-  const { neuron } = this.getNeuron (index);
   neuron.regularization = regularizations[name];
+
+  hasChanged = true;
+  return hasChanged;
 };
 
-networkState.setRegularizationRate = function (index: number, value: number) {
-  if (typeof index === 'undefined') {
-    throw new Error ('index must be defined');
-  }
-  if (typeof index !== 'number') {
-    throw new Error ('index must be a number');
-  }
-  if (typeof value === 'undefined') {
-    throw new Error ('value must be defined');
-  }
-  if (typeof value !== 'number') {
-    throw new Error ('value must be a number');
+networkState.setRegularizationRate = function (index: number, value: number): boolean {
+  let hasChanged = false;
+  const neurons = this.neurons[this.selectedLayerIndex];
+  const neuron = neurons[index];
+
+  if (
+    neuron.isEnabled === false
+    || typeof neuron?.regularizationRate === 'undefined'
+    || value === neuron?.regularizationRate
+  ) {
+    return hasChanged;
   }
 
-  const { neuron } = this.getNeuron (index);
   neuron.regularizationRate = value;
+
+  hasChanged = true;
+  return hasChanged;
 };
 
 networkState.selectedLayerIndex = null;
