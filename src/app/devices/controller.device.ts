@@ -153,9 +153,9 @@ controllerDevice.attachButtonsDefault = function () {
     }
 
     const note = parseInt (e.note.number);
+    const { isLearning, learningParameter } = mappingsState;
 
     // learning a new mapping
-    const { isLearning, learningParameter } = mappingsState;
     if (isLearning && learningParameter) {
       mappingsUi.learn ({
         parameter: learningParameter,
@@ -163,12 +163,13 @@ controllerDevice.attachButtonsDefault = function () {
         type: 'button',
       });
     }
-
     // update targets of already mapped parameters
-    const mappedParameters = mappingsState.getParametersByControl (note);
-    mappedParameters.forEach ((parameter) => {
-      playgroundUi.updateParameter (parameter, 1);
-    });
+    else {
+      const mappedParameters = mappingsState.getParametersByControl (note);
+      mappedParameters.forEach ((parameter) => {
+        playgroundUi.updateParameter (parameter, 1);
+      });
+    }
 
     // draw feedback lights
     this.playNote ({
@@ -280,9 +281,9 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
       const learningRate = selectCardUi.options.learningRate[learningRateOptionIndex];
 
-      if (learningRate !== links[index].source.learningRate) {
-        networkState.updateSourceLearningRate (index, learningRate);
-        selectCardUi.setLearningRate (index, learningRate);
+      const hasChanged = networkState.setSourceLearningRate (index, learningRate);
+      if (hasChanged) {
+        selectCardUi.updateSourceLearningRate (index, learningRate);
         playgroundFacade.updateUI ();
       }
     }
@@ -308,9 +309,9 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
       const activation = selectCardUi.options.activation[activationOptionIndex];
 
-      if (activation !== links[index].source.activation.name) {
-        networkState.updateSourceActivation (index, activation);
-        selectCardUi.setActivation (index, activation);
+      const hasChanged = networkState.setSourceActivation (index, activation);
+      if (hasChanged) {
+        selectCardUi.updateSourceActivation (index, activation);
         playgroundFacade.updateUI ();
       }
     }
@@ -337,10 +338,9 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
         );
 
         const regularization = selectCardUi.options.regularization[regularizationOptionIndex];
-
-        if (regularization !== links[index].source.regularization.name) {
-          networkState.updateSourceRegularization (index, regularization);
-          selectCardUi.setRegularization (index, regularization);
+        const hasChanged = networkState.setSourceRegularizationType (index, regularization);
+        if (hasChanged) {
+          selectCardUi.updateSourceRegularizationType (index, regularization);
           playgroundFacade.updateUI ();
         }
       }
@@ -358,9 +358,9 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
 
         const regularizationRate = selectCardUi.options.regularizationRate[regularizationRateOptionIndex];
 
-        if (regularizationRate !== links[index].source.regularizationRate) {
-          networkState.updateSourceRegularizationRate (index, regularizationRate);
-          selectCardUi.setRegularizationRate (index, regularizationRate);
+        const hasChanged = networkState.setSourceRegularizationRate (index, regularizationRate);
+        if (hasChanged) {
+          selectCardUi.updateSourceRegularizationRate (index, regularizationRate);
           playgroundFacade.updateUI ();
         }
       }
@@ -403,9 +403,11 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
         }
 
         if (links[index].hasSnapped) {
-          networkState.setWeight (index, value);
-          selectCardUi.setWeight (index, value);
-          playgroundFacade.updateWeightsUI ();
+          const hasChanged = networkState.setSourceWeight (index, value);
+          if (hasChanged) {
+            selectCardUi.updateSourceWeight (index, value);
+            playgroundFacade.updateWeightsUI ();
+          }
           this.playNote ({
             note: this.settings.outputByInput[inputNote],
             color: this.settings.colorByState.snap,
@@ -421,9 +423,9 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
       // biases
       else {
         const value = rangeMap (e.value, 0, 127, -1, 1);
-        if (value.toFixed (2) !== links[index].source.bias.toFixed (2)) {
-          links[index].source.bias = value;
-          selectCardUi.setBias (index, value);
+        const hasChanged = networkState.setSourceBias (index, value);
+        if (hasChanged) {
+          selectCardUi.updateSourceBias (index, value);
           playgroundFacade.updateBiasesUI ();
         }
       }
@@ -514,7 +516,7 @@ controllerDevice.attachControlsToLayer = function (): void {
   this.addControlListener ((e) => {
     const inputNote = e.controller.number;
 
-    // first row: learning rate
+    // learning rate
     if (this.settings.rows.firstPots.indexOf (inputNote) !== -1) {
       const index = this.settings.rows.firstPots.indexOf (inputNote);
       if (neurons[index].isEnabled === false) {
@@ -533,11 +535,13 @@ controllerDevice.attachControlsToLayer = function (): void {
 
       const learningRate = selectCardUi.options.learningRate[learningRateOptionIndex];
 
-      if (learningRate !== neurons[index].learningRate) {
-        networkState.setLearningRate (parseInt (neurons[index].id), learningRate);
-        layerCardUi.setLearningRate (index, learningRate);
+      const hasChanged = networkState.setLearningRate (index, learningRate);
+      if (hasChanged) {
+        layerCardUi.updateLearningRate (index, learningRate);
+        playgroundFacade.updateUI ();
       }
     }
+    // activation
     else if (this.settings.rows.secondPots.indexOf (inputNote) !== -1) {
       const index = this.settings.rows.secondPots.indexOf (inputNote);
       if (neurons[index].isEnabled === false) {
@@ -556,9 +560,10 @@ controllerDevice.attachControlsToLayer = function (): void {
 
       const activation = selectCardUi.options.activation[activationOptionIndex];
 
-      if (activation !== neurons[index].activation.name) {
-        networkState.setActivation (parseInt (neurons[index].id), activation);
-        layerCardUi.setActivation (index, activation);
+      const hasChanged = networkState.setActivation (index, activation);
+      if (hasChanged) {
+        layerCardUi.updateActivation (index);
+        playgroundFacade.updateUI ();
       }
     }
     else if (this.settings.rows.thirdPots.indexOf (inputNote) !== -1) {
@@ -567,7 +572,7 @@ controllerDevice.attachControlsToLayer = function (): void {
         return;
       }
 
-      // regularization (shifted)
+      // regularization type (shifted)
       if (this.shifted[index] === true) {
         const regularizationOptionIndex = parseInt (
           rangeMap (
@@ -581,9 +586,10 @@ controllerDevice.attachControlsToLayer = function (): void {
 
         const regularization = selectCardUi.options.regularization[regularizationOptionIndex];
 
-        if (regularization !== neurons[index].regularization.name) {
-          networkState.setRegularization (parseInt (neurons[index].id), regularization);
-          layerCardUi.setRegularization (index, regularization);
+        const hasChanged = networkState.setRegularizationType (index, regularization);
+        if (hasChanged) {
+          layerCardUi.updateRegularizationType (index);
+          playgroundFacade.updateUI ();
         }
       }
       // regularization rate
@@ -600,21 +606,23 @@ controllerDevice.attachControlsToLayer = function (): void {
 
         const regularizationRate = selectCardUi.options.regularizationRate[regularizationRateOptionIndex];
 
-        if (regularizationRate !== neurons[index].regularizationRate) {
-          networkState.setRegularizationRate (parseInt (neurons[index].id), regularizationRate);
-          layerCardUi.setRegularizationRate (index, regularizationRate);
+        const hasChanged = networkState.setRegularizationRate (index, regularizationRate);
+        if (hasChanged) {
+          layerCardUi.updateRegularizationRate (index);
+          playgroundFacade.updateUI ();
         }
       }
     }
+    // bias
     else if (this.settings.rows.faders.indexOf (inputNote) !== -1) {
       const index = this.settings.rows.faders.indexOf (inputNote);
       if (neurons[index].isEnabled === false) {
         return;
       }
       const value = rangeMap (e.value, 0, 127, -1, 1);
-      if (value.toFixed (2) !== neurons[index].bias.toFixed (2)) {
-        neurons[index].bias = value;
-        layerCardUi.setBias (index, value);
+      const hasChanged = networkState.setBias (index, value);
+      if (hasChanged) {
+        layerCardUi.updateBias (index);
         playgroundFacade.updateBiasesUI ();
       }
     }

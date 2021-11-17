@@ -22,7 +22,7 @@ selectCardUi.placeholders = {
 };
 
 selectCardUi.options = {
-  learningRate: [0.00001, 0.0001, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
+  learningRate: [0, 0.00001, 0.0001, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
   activation: ['relu', 'tanh', 'sigmoid', 'linear'],
   regularization: ['none', 'L1', 'L2'],
   regularizationRate: [0, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10],
@@ -100,12 +100,12 @@ selectCardUi.updateCard = function () {
       const link = networkState.getNeuron (selectedNodes[0]).neuron.inputLinks[index];
 
       if (typeof link === 'undefined') {
-        this.setWeight (index);
-        this.setBias (index);
-        this.setLearningRate (index);
-        this.setActivation (index);
-        this.setRegularization (index);
-        this.setRegularizationRate (index);
+        this.updateSourceWeight (index);
+        this.updateSourceBias (index);
+        this.updateSourceLearningRate (index);
+        this.updateSourceActivation (index);
+        this.updateSourceRegularizationType (index);
+        this.updateSourceRegularizationRate (index);
         return;
       }
 
@@ -113,30 +113,30 @@ selectCardUi.updateCard = function () {
       const bias = link.source.bias;
 
       if (link.isDead === true) {
-        this.setWeight (index);
-        this.setBias (index);
-        this.setLearningRate (index);
-        this.setActivation (index);
-        this.setRegularization (index);
-        this.setRegularizationRate (index);
+        this.updateSourceWeight (index);
+        this.updateSourceBias (index);
+        this.updateSourceLearningRate (index);
+        this.updateSourceActivation (index);
+        this.updateSourceRegularizationType (index);
+        this.updateSourceRegularizationRate (index);
       }
       else {
-        this.setWeight (index, weight);
-        this.setBias (index, bias);
-        this.setLearningRate (index, link.source.learningRate);
-        this.setActivation (index, link.source.activation.name);
-        this.setRegularization (index, link.source.regularization.name);
-        this.setRegularizationRate (index, link.source.regularizationRate);
+        this.updateSourceWeight (index, weight);
+        this.updateSourceBias (index, bias);
+        this.updateSourceLearningRate (index, link.source.learningRate);
+        this.updateSourceActivation (index, link.source.activation.name);
+        this.updateSourceRegularizationType (index, link.source.regularization.name);
+        this.updateSourceRegularizationRate (index, link.source.regularizationRate);
       }
     }
     // multi selection
     else {
-      this.setWeight (index, null);
-      this.setBias (index, null);
-      this.setLearningRate (index, null);
-      this.setActivation (index, null);
-      this.setRegularization (index, null);
-      this.setRegularizationRate (index, null);
+      this.updateSourceWeight (index, null);
+      this.updateSourceBias (index, null);
+      this.updateSourceLearningRate (index, null);
+      this.updateSourceActivation (index, null);
+      this.updateSourceRegularizationType (index, null);
+      this.updateSourceRegularizationRate (index, null);
     }
   });
 
@@ -147,55 +147,137 @@ selectCardUi.updateCard = function () {
 };
 
 selectCardUi.attachEvents = function () {
+  this.attachSourceWeightsEvents ();
+  this.attachSourceBiasesEvents ();
+  this.attachSourceLearningRatesEvents ();
+  this.attachSourceActivationsEvents ();
+  this.attachSourceRegularizationTypesEvents ();
+  this.attachSourceRegularizationRatesEvents ();
+};
+
+selectCardUi.attachSourceWeightsEvents = function () {
   if (this.weights) {
     this.weights.forEach ((weight, index) => {
       weight.onchange = (e: InputEvent) => {
         const value = parseFloat ((e.target as HTMLInputElement).value);
-        networkState.setWeight (index, value);
-        playgroundFacade.updateUI ();
+        const hasChanged = networkState.setSourceWeight (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateWeightsUI ();
+        }
         weight.blur ();
-      };
-    });
-  }
-
-  if (this.learningRates) {
-    this.learningRates.forEach ((learningRate, index) => {
-      learningRate.children[0].onchange = (e: InputEvent) => {
-        const value = parseFloat ((e.target as HTMLInputElement).value);
-        networkState.updateSourceLearningRate (index, value);
-      };
-    });
-  }
-
-  if (this.activations) {
-    this.activations.forEach ((activation, index) => {
-      activation.children[0].onchange = (e: InputEvent) => {
-        const value = (e.target as HTMLInputElement).value;
-        networkState.updateSourceActivation (index, value);
-      };
-    });
-  }
-
-  if (this.regularizations) {
-    this.regularizations.forEach ((regularization, index) => {
-      regularization.children[0].onchange = (e: InputEvent) => {
-        const value = (e.target as HTMLInputElement).value;
-        networkState.updateSourceRegularization (index, value);
-      };
-    });
-  }
-
-  if (this.regularizationRates) {
-    this.regularizationRates.forEach ((regularizationRate, index) => {
-      regularizationRate.children[0].onchange = (e: InputEvent) => {
-        const value = parseFloat ((e.target as HTMLInputElement).value);
-        networkState.updateSourceRegularizationRate (index, value);
       };
     });
   }
 };
 
-selectCardUi.setInput = function (pool, index, payload) {
+selectCardUi.attachSourceBiasesEvents = function () {
+  if (this.biases) {
+    this.biases.forEach ((bias, index) => {
+      bias.onchange = (e: InputEvent) => {
+        const value = parseFloat ((e.target as HTMLInputElement).value);
+        const hasChanged = networkState.setSourceBias (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateBiasesUI ();
+        }
+        bias.blur ();
+      };
+    });
+  }
+};
+
+selectCardUi.attachSourceLearningRatesEvents = function () {
+  if (this.learningRates) {
+    this.learningRates.forEach ((learningRate, index) => {
+      learningRate.children[0].onchange = (e: InputEvent) => {
+        const value = parseFloat ((e.target as HTMLInputElement).value);
+        const hasChanged = networkState.setSourceLearningRate (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
+      };
+    });
+  }
+};
+
+selectCardUi.attachSourceActivationsEvents = function () {
+  if (this.activations) {
+    this.activations.forEach ((activation, index) => {
+      activation.children[0].onchange = (e: InputEvent) => {
+        const value = (e.target as HTMLInputElement).value;
+        const hasChanged = networkState.setSourceActivation (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
+      };
+    });
+  }
+};
+
+selectCardUi.attachSourceRegularizationTypesEvents = function () {
+  if (this.regularizations) {
+    this.regularizations.forEach ((regularization, index) => {
+      regularization.children[0].onchange = (e: InputEvent) => {
+        const value = (e.target as HTMLInputElement).value;
+        const hasChanged = networkState.setSourceRegularizationType (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
+      };
+    });
+  }
+};
+
+selectCardUi.attachSourceRegularizationRatesEvents = function () {
+  if (this.regularizationRates) {
+    this.regularizationRates.forEach ((regularizationRate, index) => {
+      regularizationRate.children[0].onchange = (e: InputEvent) => {
+        const value = parseFloat ((e.target as HTMLInputElement).value);
+        const hasChanged = networkState.setSourceRegularizationRate (index, value);
+        if (hasChanged) {
+          playgroundFacade.updateUI ();
+        }
+      };
+    });
+  }
+};
+
+selectCardUi.updateSourceWeight = function (index, weight?) {
+  this.updateSourceInput (this.weights, index, weight);
+  if (weight > 1 || weight < -1) {
+    this.weights[index].style.backgroundColor = 'rgba(255,0,0,.2)';
+  }
+  else {
+    this.weights[index].style.backgroundColor = null;
+  }
+};
+
+selectCardUi.updateSourceBias = function (index, bias?) {
+  this.updateSourceInput (this.biases, index, bias);
+  if (bias > 1 || bias < -1) {
+    this.biases[index].style.backgroundColor = 'rgba(255,0,0,.2)';
+  }
+  else {
+    this.biases[index].style.backgroundColor = null;
+  }
+};
+
+selectCardUi.updateSourceLearningRate = function (index, learningRate?) {
+  this.updateSourceDropdown (this.learningRates, index, learningRate);
+};
+
+selectCardUi.updateSourceActivation = function (index, activation?) {
+  this.updateSourceDropdown (this.activations, index, activation);
+};
+
+selectCardUi.updateSourceRegularizationType = function (index, regularization?) {
+  this.updateSourceDropdown (this.regularizations, index, regularization);
+};
+
+selectCardUi.updateSourceRegularizationRate = function (index, regularizationRate?) {
+  this.updateSourceDropdown (this.regularizationRates, index, regularizationRate);
+};
+
+selectCardUi.updateSourceInput = function (pool, index, payload) {
   const isFocused = pool[index] === document.activeElement;
   if (isFocused) {
     return;
@@ -215,15 +297,7 @@ selectCardUi.setInput = function (pool, index, payload) {
   }
 };
 
-selectCardUi.setWeight = function (index, weight?) {
-  this.setInput (this.weights, index, weight);
-};
-
-selectCardUi.setBias = function (index, bias?) {
-  this.setInput (this.biases, index, bias);
-};
-
-selectCardUi.setDropdown = function (pool, index, payload) {
+selectCardUi.updateSourceDropdown = function (pool, index, payload) {
   const didNotChange = pool[index].children[0].value === payload;
   if (didNotChange) {
     return;
@@ -241,20 +315,4 @@ selectCardUi.setDropdown = function (pool, index, payload) {
     pool[index].children[0].disabled = false;
     pool[index].children[0].value = payload;
   }
-};
-
-selectCardUi.setLearningRate = function (index, learningRate?) {
-  this.setDropdown (this.learningRates, index, learningRate);
-};
-
-selectCardUi.setActivation = function (index, activation?) {
-  this.setDropdown (this.activations, index, activation);
-};
-
-selectCardUi.setRegularization = function (index, regularization?) {
-  this.setDropdown (this.regularizations, index, regularization);
-};
-
-selectCardUi.setRegularizationRate = function (index, regularizationRate?) {
-  this.setDropdown (this.regularizationRates, index, regularizationRate);
 };
