@@ -243,10 +243,22 @@ selectCardUi.attachSourceRegularizationRatesEvents = function () {
 
 selectCardUi.updateSourceWeight = function (index, weight?) {
   this.updateSourceInput (this.weights, index, weight);
+  if (weight > 1 || weight < -1) {
+    this.weights[index].style.backgroundColor = 'rgba(255,0,0,.2)';
+  }
+  else {
+    this.weights[index].style.backgroundColor = null;
+  }
 };
 
 selectCardUi.updateSourceBias = function (index, bias?) {
   this.updateSourceInput (this.biases, index, bias);
+  if (bias > 1 || bias < -1) {
+    this.biases[index].style.backgroundColor = 'rgba(255,0,0,.2)';
+  }
+  else {
+    this.biases[index].style.backgroundColor = null;
+  }
 };
 
 selectCardUi.updateSourceLearningRate = function (index, learningRate?) {
