@@ -1,3 +1,11 @@
+## [1.14.4](https://github.com/CooLearning/playground/compare/v1.14.3...v1.14.4) (2021-11-18)
+
+
+### Bug Fixes
+
+* **presets:** inject the current preset shown as `numHiddenLayers` ([bae4677](https://github.com/CooLearning/playground/commit/bae46778911ea31cd7a10d05cec0b8ae04eba30b))
+* **presets:** use optional chaining for current preset possibly undefined ([ae1698e](https://github.com/CooLearning/playground/commit/ae1698e8bfa15cf14146b18a4ab59b2e84fd9803))
+
 ## [1.14.3](https://github.com/CooLearning/playground/compare/v1.14.2...v1.14.3) (2021-11-18)
 
 
