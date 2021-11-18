@@ -2,15 +2,11 @@
 
 ## 📖 Context
 
-This project is based
-on [tensorflow/playground](https://github.com/tensorflow/playground).
+This project is based on [tensorflow/playground](https://github.com/tensorflow/playground).
 
-It aims to bring interactivity to the user interface with USB controllers by
-using WebMIDI.
+It aims to bring interactivity to the user interface with USB controllers by using WebMIDI.
 
-It has been authored
-at [CREATIS Laboratory](https://www.creatis.insa-lyon.fr/site7/fr) (Lyon,
-France).
+It has been authored at [CREATIS Laboratory](https://www.creatis.insa-lyon.fr/site7/fr) (Lyon, France).
 
 ## 🚀 Use
 
@@ -27,8 +23,11 @@ Available [here](https://coolearning.github.io/playground).
 
 ### 🔨 Development environment
 
-Publishing and versioning is automatic upon any changes done to the `master`
-branch.
+Automatic publishing and versioning are enabled on the master branch and handled
+by [semantic-release](https://github.com/semantic-release/semantic-release).
+
+Commit messages are expected to be formatted following
+the [Angular Conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#-git-commit-guidelines).
 
 ```shell
 git clone https://github.com/coolearning/playground.git
@@ -46,8 +45,7 @@ There are two main categories of devices you can attach.
 
 This device usually provides a **grid of colored backlit pads**.
 
-Use the grid to display the inputs, neurons and output of the current neural
-network.
+Use the grid to display the inputs, neurons and output of the current neural network.
 
 - **Short press** action:
   - `enable/disable` inputs and output links
@@ -63,7 +61,8 @@ This device usually provides **faders, potentiometers and buttons**.
 A controller has 3 main modes:
 
 - **Default** mode:
-  - When nothing is selected, you can bind controls to parameters through the **mappings UI**
+  - When nothing is selected, you can bind controls to parameters through the **
+    mappings UI**
 - **Selection** mode:
   - When neurons are selected, you can change their:
     - Source weights
