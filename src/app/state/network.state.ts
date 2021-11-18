@@ -89,24 +89,21 @@ networkState.getNeuron = function (nodeIndex: number): GetNeuron {
 };
 
 networkState.toggleOutput = function (outputIndex: number): void {
-  const inputLink = this.output.inputLinks[outputIndex];
+  const link = this.output.inputLinks[outputIndex];
+  const willDie = !link.isDead;
 
-  if (!inputLink.source.isEnabled) {
-    inputLink.isDead = true;
-    inputLink.weight = 0;
-    return;
+  if (link.source.isEnabled === true) {
+    link.isDead = willDie;
+
+    if (willDie === true) {
+      link.savedWeight = link.weight;
+      link.weight = 0;
+    }
+    else {
+      link.isDead = false;
+      link.weight = link.savedWeight || Math.random () - 0.5;
+    }
   }
-
-  if (!inputLink.source.isEnabled) {
-    inputLink.isDead = true;
-    inputLink.weight = 0;
-    return;
-  }
-
-  inputLink.isDead = !inputLink.isDead;
-  inputLink.weight = !inputLink.isDead
-    ? Math.random () - 0.5
-    : 0;
 };
 
 networkState.toggleNeuron = function (nodeIndex: number): void {
