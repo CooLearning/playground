@@ -1027,6 +1027,8 @@ App Buttons
   display: flex;
   justify-content: flex-start;
   grid-gap: 6px;
+
+  z-index: 1000;
 }
 
 /**
@@ -1102,6 +1104,13 @@ Imports/Exports Dialog
 
 .imports-exports-button {
   margin-top: 1em;
+}
+
+/**
+Presets dialog
+ */
+#presets {
+  width: 50vw;
 }
 
 /**

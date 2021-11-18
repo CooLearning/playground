@@ -63,7 +63,7 @@ limitations under the License.
 <!-- GitHub link -->
 <a
   class="github-link"
-  href="https://github.com/tensorflow/playground"
+  href="https://github.com/CooLearning/playground"
   target="_blank"
   title="Source on GitHub"
 >
@@ -382,20 +382,6 @@ limitations under the License.
   <!-- Hidden Layers Column -->
   <div class="column hidden-layers">
     <h4>
-      <div class="ui-numHiddenLayers">
-        <button
-          class="mdl-button mdl-js-button mdl-button--icon"
-          id="add-layers"
-        >
-          <i class="material-icons">add</i>
-        </button>
-        <button
-          class="mdl-button mdl-js-button mdl-button--icon"
-          id="remove-layers"
-        >
-          <i class="material-icons">remove</i>
-        </button>
-      </div>
       <span id="num-layers"></span>
       <span id="layers-label"></span>
     </h4>
@@ -675,7 +661,7 @@ limitations under the License.
         </svg>
     </a>
     <div class="links">
-      <a href="https://github.com/tensorflow/playground">Source on
+      <a href="https://github.com/CooLearning/playground">Source on
                                                          GitHub
       </a>
     </div>
@@ -684,6 +670,9 @@ limitations under the License.
 
 <!-- App Buttons -->
 <div id="buttons">
+  <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect presets">
+    <i class="material-icons">bookmarks</i>
+  </button>
   <button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-js-ripple-effect imports-exports">
     <i class="material-icons">import_export</i>
   </button>
@@ -842,6 +831,26 @@ limitations under the License.
           src="assets/known-devices-drawings/novation-launch-control-xl-drawing.svg"
         >
       </div>
+    </div>
+  </div>
+  <div class="mdl-dialog__actions">
+    <button class="mdl-button close-button" type="button">
+      close
+    </button>
+  </div>
+</dialog>
+
+<!-- Presets Dialog -->
+<dialog class="mdl-dialog" id="presets">
+  <h4 class="mdl-dialog__title">
+    Presets
+  </h4>
+  <div class="mdl-dialog__content">
+    <div>
+      <span>
+        Application will reload on preset change.
+      </span>
+      <select title="preset"></select>
     </div>
   </div>
   <div class="mdl-dialog__actions">
