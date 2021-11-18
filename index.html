@@ -382,20 +382,6 @@ limitations under the License.
   <!-- Hidden Layers Column -->
   <div class="column hidden-layers">
     <h4>
-      <div class="ui-numHiddenLayers">
-        <button
-          class="mdl-button mdl-js-button mdl-button--icon"
-          id="add-layers"
-        >
-          <i class="material-icons">add</i>
-        </button>
-        <button
-          class="mdl-button mdl-js-button mdl-button--icon"
-          id="remove-layers"
-        >
-          <i class="material-icons">remove</i>
-        </button>
-      </div>
       <span id="num-layers"></span>
       <span id="layers-label"></span>
     </h4>
@@ -861,7 +847,10 @@ limitations under the License.
   </h4>
   <div class="mdl-dialog__content">
     <div>
-      <span>Please choose a preset to load</span>
+      <span>
+        Application will reload on preset change.
+      </span>
+      <select title="preset"></select>
     </div>
   </div>
   <div class="mdl-dialog__actions">

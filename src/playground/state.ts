@@ -124,7 +124,7 @@ export class State {
     {name: 'regularizationRate', type: Type.NUMBER},
     {name: 'noise', type: Type.NUMBER},
     // {name: 'networkShape', type: Type.ARRAY_NUMBER},
-    {name: 'networkPreset', type: Type.ARRAY_NUMBER},
+    {name: 'networkPreset', type: Type.STRING},
     {name: 'seed', type: Type.STRING},
     {name: 'showTestData', type: Type.BOOLEAN},
     {name: 'discretize', type: Type.BOOLEAN},
@@ -162,7 +162,7 @@ export class State {
   numHiddenLayers = 1;
   hiddenLayerControls: any[] = [];
   // networkShape: number[] = [8, 8, 8, 8, 8, 8];
-  networkPreset: number[];
+  networkPreset: string;
   x = true;
   y = true;
   xTimesY = true;
