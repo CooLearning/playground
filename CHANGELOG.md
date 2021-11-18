@@ -1,3 +1,10 @@
+## [1.14.3](https://github.com/CooLearning/playground/compare/v1.14.2...v1.14.3) (2021-11-18)
+
+
+### Performance Improvements
+
+* add small improvements + style + jsdoc ([cf1dc95](https://github.com/CooLearning/playground/commit/cf1dc9513e0b4d88295df5eb63bb561ce4469249))
+
 ## [1.14.2](https://github.com/CooLearning/playground/compare/v1.14.1...v1.14.2) (2021-11-18)
 
 
