@@ -91,7 +91,8 @@ midi.handleConnectedPort = function (port): void {
     port.isController = port.isController || isController;
     port.isSelector = port.isSelector || isSelector;
     port.settings = port.settings || settings;
-  } else {
+  }
+  else {
     port.isKnown = false;
   }
 };
@@ -113,7 +114,7 @@ midi.handleDisconnectedPort = function (port) {
 /**
  * Set known devices
  */
-midi.setPorts = function () {
+midi.setPorts = function (): void {
   const knownInputs = this.inputs.filter ((input) => input.isKnown);
   const knownInputsByName = this.sortPortsByName (knownInputs);
 

@@ -10,10 +10,6 @@ import { layerCardUi } from '../ui/layer-card.ui';
 
 /**
  * Controller is a unique device that controls the playground.
- * It has 3 layout modes:
- *   - Default `0`
- *   - Single selection `1`
- *   - Multiple selection `2`
  */
 export const controllerDevice = Object.create (devicePrototype);
 
@@ -50,7 +46,12 @@ controllerDevice.init = async function (device: any): Promise<void> {
   this.updateMode ();
 };
 
-controllerDevice.getModeColor = function () {
+/**
+ * Get the current mode color.
+ *
+ * @returns {number} Color value.
+ */
+controllerDevice.getModeColor = function (): number {
   if (networkState.isLayerMode) {
     return this.settings.colorByState.layerMode;
   }
@@ -65,7 +66,7 @@ controllerDevice.getModeColor = function () {
 /**
  * Draw all lights.
  */
-controllerDevice.drawLights = function () {
+controllerDevice.drawLights = function (): void {
   if (!this.isInitialized) {
     return;
   }
@@ -80,7 +81,7 @@ controllerDevice.drawLights = function () {
 /**
  * Set the mode of the controller.
  */
-controllerDevice.updateMode = function () {
+controllerDevice.updateMode = function (): void {
   if (!this.isInitialized) {
     return;
   }
@@ -105,7 +106,7 @@ controllerDevice.updateMode = function () {
 /**
  * Set the default mode.
  */
-controllerDevice.setDefaultMode = function () {
+controllerDevice.setDefaultMode = function (): void {
   this.attachButtonsDefault ();
   this.attachControlsDefault ();
 };
@@ -113,7 +114,7 @@ controllerDevice.setDefaultMode = function () {
 /**
  * Set the single mode.
  */
-controllerDevice.setSingleMode = function () {
+controllerDevice.setSingleMode = function (): void {
   const node = playgroundFacade.selectedNodes[0];
   this.attachButtonsToNeuron ();
   this.attachControlsToNeuron (node);
@@ -122,7 +123,7 @@ controllerDevice.setSingleMode = function () {
 /**
  * Set the multiple mode.
  */
-controllerDevice.setMultipleMode = function () {
+controllerDevice.setMultipleMode = function (): void {
   const { selectedNodes } = playgroundFacade;
   selectedNodes.forEach ((node) => {
     this.attachButtonsToNeuron ();
@@ -133,7 +134,7 @@ controllerDevice.setMultipleMode = function () {
 /**
  * This is called when selection is made.
  */
-controllerDevice.onSelectionEvent = function () {
+controllerDevice.onSelectionEvent = function (): void {
   if (!this.isInitialized) {
     return;
   }
@@ -146,7 +147,7 @@ controllerDevice.onSelectionEvent = function () {
 /**
  * Attach buttons for the default mode.
  */
-controllerDevice.attachButtonsDefault = function () {
+controllerDevice.attachButtonsDefault = function (): void {
   this.addNoteListener ('on', (e) => {
     if (!this.isDefaultMode) {
       return;
@@ -183,7 +184,7 @@ controllerDevice.attachButtonsDefault = function () {
 /**
  * Attach controls for the default mode.
  */
-controllerDevice.attachControlsDefault = function () {
+controllerDevice.attachControlsDefault = function (): void {
   this.addControlListener ((e) => {
     const note = parseInt (e.controller.number);
     const { isLearning, learningParameter } = mappingsState;
@@ -209,6 +210,9 @@ controllerDevice.attachControlsDefault = function () {
   });
 };
 
+/**
+ * Attach buttons to a neuron. (select mode)
+ */
 controllerDevice.attachButtonsToNeuron = function (): void {
   this.addNoteListener ('on', (e) => {
     const inputNote = parseInt (e.note.number);
@@ -433,31 +437,46 @@ controllerDevice.attachControlsToNeuron = function (selectedNode: number): void 
   });
 };
 
+/**
+ * Returns true if the default mode is active.
+ */
 Object.defineProperty (controllerDevice, 'isDefaultMode', {
   get () {
     return playgroundFacade.selectedNodes.length === 0;
   },
 });
 
+/**
+ * Returns true if the single (select) mode is active.
+ */
 Object.defineProperty (controllerDevice, 'isSingleMode', {
   get () {
     return playgroundFacade.selectedNodes.length === 1;
   },
 });
 
+/**
+ * Returns true if the multiple (select) mode is active.
+ */
 Object.defineProperty (controllerDevice, 'isMultipleMode', {
   get () {
     return playgroundFacade.selectedNodes.length > 1;
   },
 });
 
-controllerDevice.setLayerMode = function () {
+/**
+ * Set the device to layer mode.
+ */
+controllerDevice.setLayerMode = function (): void {
   this.initializeLayerMode ();
   this.attachButtonsToLayer ();
   this.attachControlsToLayer ();
 };
 
-controllerDevice.initializeLayerMode = function () {
+/**
+ * Initialize the layer mode.
+ */
+controllerDevice.initializeLayerMode = function (): void {
   // all nodes
   this.playNotes ({
     firstNote: this.settings.lights.first,
@@ -484,6 +503,9 @@ controllerDevice.initializeLayerMode = function () {
   }, this.settings.time.wait);
 };
 
+/**
+ * Attach button events to layer mode.
+ */
 controllerDevice.attachButtonsToLayer = function (): void {
   this.addNoteListener ('on', (e) => {
     const inputNote = parseInt (e.note.number);
@@ -510,6 +532,9 @@ controllerDevice.attachButtonsToLayer = function (): void {
   });
 };
 
+/**
+ * Attach control events to layer mode.
+ */
 controllerDevice.attachControlsToLayer = function (): void {
   const neurons = networkState.neurons[networkState.selectedLayerIndex];
 

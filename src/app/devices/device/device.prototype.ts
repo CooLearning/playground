@@ -46,7 +46,7 @@ devicePrototype.runBootSequence = async function (): Promise<void> {
       resolve ();
     },
     this.settings.time.defaultDuration
-    + this.settings.time.wait,
+      + this.settings.time.wait,
     );
   });
 };
@@ -112,18 +112,37 @@ devicePrototype.playNotes = function (
   }
 };
 
-devicePrototype.clearBlinkingNote = function (note) {
+/**
+ * Utility function to clear a given blinking note
+ *
+ * @param {number} note - The blinking note to clear
+ */
+devicePrototype.clearBlinkingNote = function (note): void {
   if (typeof this.blinkingNotes?.[note] === 'number') {
     clearTimeout (this.blinkingNotes[note]);
     this.blinkingNotes[note] = null;
   }
 };
 
+type BlinkNoteOptions = {
+  note: number;
+  color: number;
+  interval: number;
+}
+
+/**
+ * Utility function to blink a given note
+ *
+ * @param {BlinkNoteOptions} options - The options
+ * @param {number} options.note - The note to blink
+ * @param {number} options.color - The color of the note (velocity)
+ * @param {number} [options.interval=400] - The blinking interval
+ */
 devicePrototype.blinkNote = function ({
   note,
   color,
   interval = 400,
-}): void {
+}: BlinkNoteOptions): void {
   this.clearBlinkingNote (note);
   this.blinkingNotes[note] = setInterval (() => {
     this.playNote ({
@@ -134,12 +153,28 @@ devicePrototype.blinkNote = function ({
   }, interval);
 };
 
+type PlayOrBlinkNoteOptions = {
+  note: number;
+  color: number;
+  interval: number;
+  duration: number;
+}
+
+/**
+ * Utility function to play or blink a given note
+ *
+ * @param {PlayOrBlinkNoteOptions} options - The options
+ * @param {number} options.note - The note to play or blink
+ * @param {number} options.color - The color of the note (velocity)
+ * @param {number} options.interval - The blinking interval
+ * @param {number} options.duration - The duration of the note
+ */
 devicePrototype.playOrBlinkNote = function ({
   note,
   color,
   interval = 400,
   duration = 3600000,
-}) {
+}: PlayOrBlinkNoteOptions): void {
   if (typeof this.blinkingNotes?.[note] === 'undefined') {
     // first time
     this.blinkingNotes[note] = null;

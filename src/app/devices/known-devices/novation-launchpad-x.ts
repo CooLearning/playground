@@ -7,7 +7,7 @@ import { Selector, DeviceCategory } from '../device/device.types';
  * @see User Guide https://www.kraftmusic.com/media/ownersmanual/Novation_Launchpad_X_User_Guide.pdf
  */
 export const novationLaunchpadX: Selector = {
-  category: DeviceCategory.select,
+  category: DeviceCategory.selector,
   manufacturer: 'Focusrite - Novation',
   name: 'Launchpad X',
   channels: {

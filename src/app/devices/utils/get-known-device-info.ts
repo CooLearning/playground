@@ -25,11 +25,12 @@ export function getKnownDeviceInfo (manufacturer: string, name: string): GetKnow
   if (device) {
     return {
       isKnown: true,
-      isController: device.category === DeviceCategory.control,
-      isSelector: device.category === DeviceCategory.select,
+      isController: device.category === DeviceCategory.controller,
+      isSelector: device.category === DeviceCategory.selector,
       settings: device,
     };
-  } else {
+  }
+  else {
     return {
       isKnown: false,
     };

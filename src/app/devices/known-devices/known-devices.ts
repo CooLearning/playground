@@ -3,7 +3,10 @@ import { novationLaunchpadX } from './novation-launchpad-x';
 import { novationLaunchControlXl } from './novation-launch-control-xl';
 import { novationLaunchpadMini } from './novation-launchpad-mini';
 
-export const knownDevices: (Selector|Controller)[] = [
+/**
+ * List of known devices.
+ */
+export const knownDevices: (Selector | Controller)[] = [
   novationLaunchpadX,
   novationLaunchControlXl,
   novationLaunchpadMini,

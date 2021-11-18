@@ -283,7 +283,10 @@ selectorDevice.getGridFlatIndex = function (note: number): number {
   return this.grid.flat ().indexOf (note);
 };
 
-selectorDevice.attachNavigation = function () {
+/**
+ * Attach navigation button
+ */
+selectorDevice.attachNavigation = function (): void {
   const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
 
   // first draw
@@ -309,7 +312,10 @@ selectorDevice.attachNavigation = function () {
   }, true);
 };
 
-selectorDevice.attachLayers = function () {
+/**
+ * Attach layer buttons
+ */
+selectorDevice.attachLayers = function (): void {
   const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
 
   // first draw
@@ -359,7 +365,10 @@ selectorDevice.attachLayers = function () {
   });
 };
 
-selectorDevice.updateLightPlayback = function () {
+/**
+ * Update the light for playback button
+ */
+selectorDevice.updateLightPlayback = function (): void {
   if (!this.isInitialized) {
     return;
   }
@@ -374,7 +383,10 @@ selectorDevice.updateLightPlayback = function () {
   });
 };
 
-selectorDevice.renderLayers = function () {
+/**
+ * Render the layer buttons
+ */
+selectorDevice.renderLayers = function (): void {
   if (!this.isInitialized) {
     return;
   }

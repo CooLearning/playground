@@ -1,10 +1,16 @@
 import { Input, Output } from 'webmidi';
 
+/**
+ * Enumerate device categories.
+ */
 export enum DeviceCategory {
-  select = 'Selector',
-  control = 'Controller',
+  selector = 'Selector',
+  controller = 'Controller',
 }
 
+/**
+ * Settings for a generic device.
+ */
 export type DeviceSettings = {
   category: DeviceCategory;
   manufacturer: string;
@@ -34,6 +40,9 @@ export type DeviceSettings = {
   };
 }
 
+/**
+ * Specific settings for selector devices.
+ */
 export type Selector = DeviceSettings & {
   grid: number[][];
   functionKeys: {
@@ -55,6 +64,9 @@ export type Selector = DeviceSettings & {
   };
 }
 
+/**
+ * Specific settings for controller devices.
+ */
 export type Controller = DeviceSettings & {
   rows: any;
   outputByInput: {
@@ -71,6 +83,9 @@ export type Controller = DeviceSettings & {
   };
 }
 
+/**
+ * Shape of a device.
+ */
 export type Device = {
   name: string;
   isController: boolean;
@@ -81,14 +96,23 @@ export type Device = {
   settings: DeviceSettings;
 }
 
+/**
+ * Shape for a list of generic devices.
+ */
 export type Devices = {
   [name: string]: Device;
 }
 
+/**
+ * Shape for a list of controller devices.
+ */
 export type Controllers = {
   [name: string]: Controller;
 }
 
+/**
+ * Shape for a list of selector devices.
+ */
 export type Selectors = {
   [name: string]: Selector;
 }

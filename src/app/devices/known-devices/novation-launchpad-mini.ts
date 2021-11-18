@@ -6,7 +6,7 @@ import { Selector, DeviceCategory } from '../device/device.types';
  * @see http://leemans.ch/latex/doc_launchpad-programmers-reference.pdf
  */
 export const novationLaunchpadMini: Selector = {
-  category: DeviceCategory.select,
+  category: DeviceCategory.selector,
   manufacturer: 'Focusrite A.E. Ltd',
   name: 'Launchpad Mini',
   channels: {
