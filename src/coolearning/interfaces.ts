@@ -33,4 +33,6 @@ interface Navigator {
 
 interface HTMLDialogElement {
   close (): void;
+
+  showModal (): void;
 }

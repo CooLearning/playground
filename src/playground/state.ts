@@ -15,6 +15,7 @@ limitations under the License.
 
 import * as nn from './nn';
 import * as dataset from './dataset';
+import { getNetworkShape } from '../app/utils/get-network-shape';
 
 /** Suffix added to the state when storing if a control is hidden or not. */
 const HIDE_STATE_SUFFIX = '_hide';
@@ -46,6 +47,16 @@ export let datasets: { [key: string]: dataset.DataGenerator } = {
 export let regDatasets: { [key: string]: dataset.DataGenerator } = {
   'reg-plane': dataset.regressPlane,
   'reg-gauss': dataset.regressGaussian,
+};
+
+export let presets: { [key: string]: number[] } = {
+  'allOn': [8, 8, 8, 8, 8, 8],
+  'allOff': [0, 0, 0, 0, 0, 0],
+  '8-6-2-4-6': [8, 6, 4, 2, 4, 6],
+  '8-6-4-2': [8, 6, 4, 2],
+  '2-4-6-8': [2, 4, 6, 8],
+  '2-2': [2, 2],
+  '2': [2],
 };
 
 export function getKeyFromValue (obj: any, value: any): string {
@@ -112,7 +123,8 @@ export class State {
     {name: 'learningRate', type: Type.NUMBER},
     {name: 'regularizationRate', type: Type.NUMBER},
     {name: 'noise', type: Type.NUMBER},
-    {name: 'networkShape', type: Type.ARRAY_NUMBER},
+    // {name: 'networkShape', type: Type.ARRAY_NUMBER},
+    {name: 'networkPreset', type: Type.STRING},
     {name: 'seed', type: Type.STRING},
     {name: 'showTestData', type: Type.BOOLEAN},
     {name: 'discretize', type: Type.BOOLEAN},
@@ -149,7 +161,8 @@ export class State {
   collectStats = false;
   numHiddenLayers = 1;
   hiddenLayerControls: any[] = [];
-  networkShape: number[] = [8, 8, 8, 8, 8, 8];
+  // networkShape: number[] = [8, 8, 8, 8, 8, 8];
+  networkPreset: string;
   x = true;
   y = true;
   xTimesY = true;
@@ -229,7 +242,8 @@ export class State {
     getHideProps (map).forEach (prop => {
       state[prop] = (map[prop] === 'true');
     });
-    state.numHiddenLayers = state.networkShape.length;
+    // state.numHiddenLayers = state.networkShape.length;
+    state.numHiddenLayers = getNetworkShape (presets['2-2']).length;
     if (state.seed == null) {
       state.seed = Math.random ().toFixed (5);
     }
@@ -251,7 +265,8 @@ export class State {
       }
       if (type === Type.OBJECT) {
         value = getKeyFromValue (keyMap, value);
-      } else if (type === Type.ARRAY_NUMBER ||
+      }
+      else if (type === Type.ARRAY_NUMBER ||
         type === Type.ARRAY_STRING) {
         value = value.join (',');
       }

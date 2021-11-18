@@ -127,7 +127,7 @@ selectorDevice.drawNeurons = function (): void {
     } = networkState.getNeuronAndLayerIndexes (i);
     const shiftedIndex = (layerIndex - 1) + 1; // reset, then move to the right
     const note = this.grid[shiftedIndex][neuronIndex - 1];
-    const { isEnabled } = networkState.getNeuron (neuronIndex);
+    const { isEnabled } = networkState.getNeuron (i);
 
     this.playNote ({
       note,

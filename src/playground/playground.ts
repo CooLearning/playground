@@ -18,7 +18,7 @@ import { HeatMap, reduceMatrix } from './heatmap';
 import {
   activations,
   datasets,
-  getKeyFromValue,
+  getKeyFromValue, presets,
   Problem,
   problems,
   regDatasets,
@@ -32,6 +32,10 @@ import { Coolearning } from '../coolearning/coolearning';
 import { networkUi } from '../app/ui/network.ui';
 import { playgroundFacade } from '../app/facades/playground.facade';
 import { playgroundUi } from '../app/ui/playground.ui';
+import { getNetworkShape } from '../app/utils/get-network-shape';
+import { selectorDevice } from '../app/devices/selector.device';
+import { controllerDevice } from '../app/devices/controller.device';
+import { devicesState } from '../app/state/devices.state';
 
 Coolearning ();
 
@@ -154,7 +158,7 @@ class Player {
   }
 }
 
-let state = State.deserializeState ();
+export let state = State.deserializeState ();
 
 // Filter out inputs that are hidden.
 state.getHiddenProps ().forEach (prop => {
@@ -257,26 +261,6 @@ function makeGUI () {
   // Select the dataset according to the current state.
   d3.select (`canvas[data-regDataset=${regDatasetKey}]`)
     .classed ('selected', true);
-
-  // d3.select ('#add-layers').on ('click', () => {
-  //   if (state.numHiddenLayers >= 6) {
-  //     return;
-  //   }
-  //   state.networkShape[state.numHiddenLayers] = 2;
-  //   state.numHiddenLayers++;
-  //   parametersChanged = true;
-  //   reset ();
-  // });
-
-  // d3.select ('#remove-layers').on ('click', () => {
-  //   if (state.numHiddenLayers <= 0) {
-  //     return;
-  //   }
-  //   state.numHiddenLayers--;
-  //   state.networkShape.splice (state.numHiddenLayers);
-  //   parametersChanged = true;
-  //   reset ();
-  // });
 
   let showTestData = d3.select ('#show-test-data').on ('change', function () {
     state.showTestData = this.checked;
@@ -525,6 +509,10 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
     // })
   }
 
+  const nodeDisabled = typeof _node?.isEnabled === 'undefined'
+    ? false
+    : !_node.isEnabled;
+
   // Draw the node's canvas.
   let div = d3.select ('#network').insert ('div', ':first-child')
     .attr ({
@@ -537,6 +525,7 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
       top: `${y + 3}px`,
     })
     .style ('cursor', 'pointer')
+    .classed ('disabled', nodeDisabled)
     .on ('mousedown', () => {
       mouseTimer = setTimeout (() => {
         if (isInput) {
@@ -986,17 +975,33 @@ function reset (onStartup = false) {
   // Make a simple network.
   iter = 0;
   let numInputs = constructInput (0, 0).length;
-  let shape = [numInputs].concat (state.networkShape).concat ([1]);
+  const preset = presets[state.networkPreset] || presets['allOn'];
+  let shape = [numInputs].concat (getNetworkShape (preset)).concat ([1]);
 
   let outputActivation = state.problem === Problem.REGRESSION
     ? nn.Activations.LINEAR
     : nn.Activations.TANH;
 
-  network = nn.buildNetwork (shape, state, state.activation, outputActivation, constructInputIds (), state.initZero);
+  network = nn.buildNetwork (
+    shape,
+    state,
+    state.activation,
+    outputActivation,
+    constructInputIds (),
+    preset,
+    state.initZero,
+  );
+
   lossTrain = getLoss (network, trainData);
   lossTest = getLoss (network, testData);
   drawNetwork (network);
   updateUI (true);
+  if (devicesState.pickedSelector) {
+    selectorDevice.drawNeurons ();
+  }
+  if (devicesState.pickedController) {
+    controllerDevice.updateMode ();
+  }
 }
 
 function initTutorial () {
