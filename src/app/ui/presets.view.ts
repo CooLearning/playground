@@ -73,7 +73,7 @@ export class PresetsView {
   }
 
   populateDropdownOptions (): void {
-    const currentPreset = state.networkPreset || 'allOn';
+    const currentPreset = state?.networkPreset || 'allOn';
     Object.keys (presets).forEach ((presetName) => {
       const option = document.createElement ('option');
       option.value = presetName;
