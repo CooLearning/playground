@@ -1,3 +1,10 @@
+## [1.14.2](https://github.com/CooLearning/playground/compare/v1.14.1...v1.14.2) (2021-11-18)
+
+
+### Bug Fixes
+
+* **presets:** define fallback / default option for dropdown selected item on first state initialization ([caeb895](https://github.com/CooLearning/playground/commit/caeb8957fea1e3237502bde8a9145ba47858c5eb))
+
 ## [1.14.1](https://github.com/CooLearning/playground/compare/v1.14.0...v1.14.1) (2021-11-18)
 
 
