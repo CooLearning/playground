@@ -1,3 +1,16 @@
+# [1.14.0](https://github.com/CooLearning/playground/compare/v1.13.0...v1.14.0) (2021-11-18)
+
+
+### Bug Fixes
+
+* **selector-device:** pass the correct nodeIndex when drawing neurons ([4f7c929](https://github.com/CooLearning/playground/commit/4f7c929bf9dc819edc699d75751c553690407e3b))
+
+
+### Features
+
+* **preset:** finish work in progress on new `presets` feature (add presets view + add state serialization + inject preset on network build) ([e25e402](https://github.com/CooLearning/playground/commit/e25e402be0dd2b5de21a40fb32f4fccebeddc6b7))
+* **presets:** work on future `presets` feature ([96020f2](https://github.com/CooLearning/playground/commit/96020f2d22330538690af363c9616bc55973e7ed))
+
 # [1.13.0](https://github.com/CooLearning/playground/compare/v1.12.0...v1.13.0) (2021-11-17)
 
 
