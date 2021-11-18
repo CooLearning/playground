@@ -242,8 +242,8 @@ export class State {
     getHideProps (map).forEach (prop => {
       state[prop] = (map[prop] === 'true');
     });
-    // state.numHiddenLayers = state.networkShape.length;
-    state.numHiddenLayers = getNetworkShape (presets['2-2']).length;
+    const currentPreset = state?.networkPreset || 'allOn';
+    state.numHiddenLayers = getNetworkShape (presets[currentPreset]).length;
     if (state.seed == null) {
       state.seed = Math.random ().toFixed (5);
     }
