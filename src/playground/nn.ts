@@ -194,6 +194,7 @@ export class Link {
   accErrorDer = 0;
   /** Number of accumulated derivatives since the last update. */
   numAccumulatedDers = 0;
+  savedWeight: number;
 
   /**
    * Constructs a link in the neural network initialized with random weight.
@@ -222,6 +223,7 @@ export class Link {
  * @param activation The activation function of every hidden node.
  * @param outputActivation The activation function for the output nodes.
  * @param inputIds List of ids for the input nodes.
+ * @param preset The preset to use.
  * @param initZero
  */
 export function buildNetwork (
@@ -230,6 +232,7 @@ export function buildNetwork (
   activation: ActivationFunction,
   outputActivation: ActivationFunction,
   inputIds: string[],
+  preset,
   initZero?: boolean,
 ): Node[][] {
   let numLayers = networkShape.length;
@@ -241,6 +244,7 @@ export function buildNetwork (
     let isInputLayer = layerIdx === 0;
     let currentLayer: Node[] = [];
     network.push (currentLayer);
+    // let numNodes = networkShape[layerIdx];
     let numNodes = networkShape[layerIdx];
     for (let i = 0; i < numNodes; i++) {
       let nodeId = id.toString ();
@@ -276,6 +280,29 @@ export function buildNetwork (
       }
     }
   }
+
+  // initial neuron state
+  const layers = network.slice (1, -1);
+  layers.forEach ((layer, layerIndex) => {
+    layer.forEach ((neuron, nodeIndex) => {
+      if (nodeIndex + 1 > preset[layerIndex]) {
+        neuron.isEnabled = false;
+
+        neuron.inputLinks.forEach ((link: Link) => {
+          link.isDead = true;
+          link.savedWeight = link.weight;
+          link.weight = 0;
+        });
+
+        neuron.outputs.forEach ((link: Link) => {
+          link.isDead = true;
+          link.savedWeight = link.weight;
+          link.weight = 0;
+        });
+      }
+    });
+  });
+
   return network;
 }
 

@@ -18,7 +18,7 @@ import { HeatMap, reduceMatrix } from './heatmap';
 import {
   activations,
   datasets,
-  getKeyFromValue,
+  getKeyFromValue, presets,
   Problem,
   problems,
   regDatasets,
@@ -32,6 +32,7 @@ import { Coolearning } from '../coolearning/coolearning';
 import { networkUi } from '../app/ui/network.ui';
 import { playgroundFacade } from '../app/facades/playground.facade';
 import { playgroundUi } from '../app/ui/playground.ui';
+import { getNetworkShape } from '../app/utils/get-network-shape';
 
 Coolearning ();
 
@@ -525,6 +526,10 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
     // })
   }
 
+  const nodeDisabled = typeof _node?.isEnabled === 'undefined'
+    ? false
+    : !_node.isEnabled;
+
   // Draw the node's canvas.
   let div = d3.select ('#network').insert ('div', ':first-child')
     .attr ({
@@ -537,6 +542,7 @@ function drawNode (cx: number, cy: number, nodeId: string, isInput: boolean,
       top: `${y + 3}px`,
     })
     .style ('cursor', 'pointer')
+    .classed ('disabled', nodeDisabled)
     .on ('mousedown', () => {
       mouseTimer = setTimeout (() => {
         if (isInput) {
@@ -986,13 +992,25 @@ function reset (onStartup = false) {
   // Make a simple network.
   iter = 0;
   let numInputs = constructInput (0, 0).length;
-  let shape = [numInputs].concat (state.networkShape).concat ([1]);
+  const preset = presets['2-2'];
+  let shape = [numInputs].concat (getNetworkShape (preset)).concat ([1]);
+  console.log (shape);
 
   let outputActivation = state.problem === Problem.REGRESSION
     ? nn.Activations.LINEAR
     : nn.Activations.TANH;
 
-  network = nn.buildNetwork (shape, state, state.activation, outputActivation, constructInputIds (), state.initZero);
+  network = nn.buildNetwork (
+    shape,
+    state,
+    state.activation,
+    outputActivation,
+    constructInputIds (),
+    preset,
+    state.initZero,
+  );
+
+  console.log (network);
   lossTrain = getLoss (network, trainData);
   lossTest = getLoss (network, testData);
   drawNetwork (network);

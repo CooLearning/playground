@@ -7,6 +7,7 @@ import { helpUi } from './help.ui';
 import { layerCardUi } from './layer-card.ui';
 import { importsExportsUi } from './imports-exports.ui';
 import { playgroundUi } from './playground.ui';
+import { PresetsView } from './presets.view';
 
 export const ui = Object.create (null);
 
@@ -25,6 +26,7 @@ ui.init = async function () {
   helpUi.init ();
   importsExportsUi.init ();
   playgroundUi.init ();
+  this.presetsView = new PresetsView ();
 };
 
 /**
