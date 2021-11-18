@@ -1,3 +1,10 @@
+## [1.14.1](https://github.com/CooLearning/playground/compare/v1.14.0...v1.14.1) (2021-11-18)
+
+
+### Bug Fixes
+
+* **output-weights:** make the output weights remember their weight when toggling ([8024cd6](https://github.com/CooLearning/playground/commit/8024cd63e8c6606b07b38fe3b67f02fc34050b6c))
+
 # [1.14.0](https://github.com/CooLearning/playground/compare/v1.13.0...v1.14.0) (2021-11-18)
 
 
