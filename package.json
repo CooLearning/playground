@@ -23,7 +23,7 @@
     "build:prepare": "./bin/prepare-release.sh"
   },
   "devDependencies": {
-    "@bamdadsabbagh/eslint-config": "^1.18.0",
+    "@bamdadsabbagh/eslint-config": "^2.0.21",
     "@types/d3": "^3.5.34",
     "concat": "^1.0.3",
     "concurrently": "6.3.0",
