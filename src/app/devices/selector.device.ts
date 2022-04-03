@@ -284,32 +284,44 @@ selectorDevice.getGridFlatIndex = function(note: number): number {
 };
 
 /**
- * Attach navigation button
+ * Attach navigation buttons
  */
 selectorDevice.attachNavigation = function(): void {
-  const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
+  this.attachPlayPauseButton();
+};
 
-  // first draw
-  this.playNote({
-    note: playbackPad,
+selectorDevice.attachPlayPauseButton = function() {
+  const playPauseButton = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
+
+  // handler
+  const handlePlayPause = (note) => {
+    const isPlaying = playgroundFacade.togglePlayback();
+    this.playNote({
+      note,
+      color: isPlaying
+        ? this.settings.colorByState.playbackOn
+        : this.settings.colorByState.playbackOff,
+    });
+  };
+
+  // events
+  // can be either depending on the device (regular launchpad send controller event while mini launchpad sends note event)
+  this.addControlListener((e) => {
+    const inputNote = e.controller.number;
+    if (inputNote === playPauseButton) {
+      handlePlayPause(inputNote);
+    }
+  }, true);
+
+  this.addNoteListener_NEW({
+    note: playPauseButton,
     color: playgroundFacade.isPlaying
       ? this.settings.colorByState.playbackOn
       : this.settings.colorByState.playbackOff,
+    callback: (e) => {
+      handlePlayPause(e.note.number);
+    },
   });
-
-  // listen for changes
-  this.addControlListener((e) => {
-    const inputNote = e.controller.number;
-    if (inputNote === playbackPad) {
-      const isPlaying = playgroundFacade.togglePlayback();
-      this.playNote({
-        note: inputNote,
-        color: isPlaying
-          ? this.settings.colorByState.playbackOn
-          : this.settings.colorByState.playbackOff,
-      });
-    }
-  }, true);
 };
 
 /**
