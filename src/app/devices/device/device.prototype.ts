@@ -233,6 +233,35 @@ devicePrototype.addNoteListener = function(
   );
 };
 
+interface AddNoteListenerNewOptions {
+  note: number;
+  color: number;
+  callback: (e: InputEventNoteon | InputEventNoteoff) => void;
+}
+
+devicePrototype.addNoteListener_NEW = function({
+  note,
+  color = undefined,
+  callback,
+}: AddNoteListenerNewOptions): void {
+  const message = 'noteon';
+  const channel = this.settings.channels.input;
+
+  if (color) {
+    this.playNote({note, color});
+  }
+
+  const filterThenInvokeCallback = (e: InputEventNoteon | InputEventNoteoff) => {
+    if (note !== e.note.number) {
+      return;
+    }
+
+    callback(e);
+  };
+
+  this.device.input.addListener(message, channel, filterThenInvokeCallback);
+};
+
 /**
  * Utility function to remove an input event from the device
  *
