@@ -19,7 +19,7 @@
     "build": "yarn prep && yarn build-js && yarn build-css && yarn build-html",
     "watch": "yarn prep && concurrently 'yarn watch-js' 'yarn watch-css' 'yarn watch-html'",
     "serve:old": "npx serve dist/",
-    "serve": "npx browser-sync start --server dist/ --files 'dist/bundle.js'",
+    "serve": "npx browser-sync start --server dist/ --files 'dist/bundle.js' --no-open",
     "serve-watch": "concurrently \"yarn serve\" \"yarn watch\"",
     "build:archive": "./bin/archive-release.sh",
     "build:prepare": "./bin/prepare-release.sh"
