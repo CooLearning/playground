@@ -204,12 +204,6 @@ selectorDevice.setNeuronLight = function(options: SetNeuronOptions): void {
   const isSelected = options.isSelected || null;
   const isDisabled = options.isDisabled || null;
 
-  const {
-    neuronIndex,
-    layerIndex,
-  } = networkState.getNeuronAndLayerIndexes(index);
-  const note = this.grid[layerIndex][neuronIndex - 1];
-
   let color;
   if (isSelected) {
     color = this.settings.colorByState.neuronSelected;
@@ -220,6 +214,21 @@ selectorDevice.setNeuronLight = function(options: SetNeuronOptions): void {
   else {
     color = this.settings.colorByState.neuronOn;
   }
+
+  const {
+    neuronIndex,
+    layerIndex,
+  } = networkState.getNeuronAndLayerIndexes(index);
+
+  if (networkState.isOutputNode(options.index)) {
+    this.playNote({
+      note: this.settings.functionKeys.lastColumn[0],
+      color,
+    });
+    return;
+  }
+
+  const note = this.grid[layerIndex][neuronIndex - 1];
 
   this.playNote({
     note,
@@ -288,6 +297,7 @@ selectorDevice.getGridFlatIndex = function(note: number): number {
  */
 selectorDevice.attachNavigation = function(): void {
   this.attachPlayPauseButton();
+  this.attachOutputButton();
 };
 
 selectorDevice.attachPlayPauseButton = function() {
@@ -321,6 +331,27 @@ selectorDevice.attachPlayPauseButton = function() {
     callback: (e) => {
       handlePlayPause(e.note.number);
     },
+  });
+};
+
+selectorDevice.attachOutputButton = function() {
+  const note = this.settings.functionKeys.lastColumn[0];
+  const color = this.settings.colorByState.neuronOn;
+  const outputNode = networkState.getOutputNode();
+  const id = parseInt(outputNode.id);
+  const callback = () => {
+    if (playgroundFacade.selectedNodes.indexOf(id) === -1) {
+      networkUi.toggleNodeSelection(id, true);
+    }
+    else {
+      networkUi.toggleNodeSelection(id, false);
+    }
+  };
+
+  this.addNoteListener_NEW({
+    note,
+    color,
+    callback,
   });
 };
 

@@ -71,9 +71,21 @@ networkUi.toggleNodeSelection = function(nodeIndex: number, isSelected: boolean)
     playgroundFacade.unselectNode(nodeIndex);
   }
 
-  // class
-  const canvas = d3.select(`#canvas-${nodeIndex}`);
-  canvas.classed('selected', isSelected);
+  // styling
+  if (networkState.isOutputNode(nodeIndex)) {
+    const canvas = document.querySelector('#heatmap').children[0].children[0] as HTMLCanvasElement;
+
+    if (isSelected) {
+      canvas.style.border = '2px solid cyan';
+    }
+    else {
+      canvas.style.border = null;
+    }
+  }
+  else {
+    const canvas = d3.select(`#canvas-${nodeIndex}`);
+    canvas.classed('selected', isSelected);
+  }
 
   selectCardUi.updateCard();
 

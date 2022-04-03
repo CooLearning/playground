@@ -444,3 +444,11 @@ networkState.setLayer = function(index: number) {
 networkState.resetLayerSelection = function() {
   this.selectedLayerIndex = null;
 };
+
+networkState.getOutputNode = function() {
+  return this.nodes[this.nodes.length - 1][0];
+};
+
+networkState.isOutputNode = function(index) {
+  return index === parseInt(networkState.nodes[networkState.nodes.length - 1][0].id);
+};

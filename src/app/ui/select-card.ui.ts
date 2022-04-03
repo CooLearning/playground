@@ -97,7 +97,14 @@ selectCardUi.updateCard = function() {
   this.rows.forEach((row, index) => {
     // single selection
     if (selectedNodes.length === 1) {
-      const link = networkState.getNeuron(selectedNodes[0]).neuron.inputLinks[index];
+      let link;
+
+      if (networkState.isOutputNode(selectedNodes[0])) {
+        link = networkState.getOutputNode().inputLinks[index];
+      }
+      else {
+        link = networkState.getNeuron(selectedNodes[0]).neuron.inputLinks[index];
+      }
 
       if (typeof link === 'undefined') {
         this.updateSourceWeight(index);
