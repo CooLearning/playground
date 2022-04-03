@@ -1,12 +1,12 @@
-import { devicePrototype } from './device/device.prototype';
-import { playgroundFacade } from '../facades/playground.facade';
-import { networkState } from '../state/network.state';
-import { networkUi } from '../ui/network.ui';
-import { layerCardUi } from '../ui/layer-card.ui';
-import { controllerDevice } from './controller.device';
-import { playgroundUi } from '../ui/playground.ui';
+import {devicePrototype} from './device/device.prototype';
+import {playgroundFacade} from '../facades/playground.facade';
+import {networkState} from '../state/network.state';
+import {networkUi} from '../ui/network.ui';
+import {layerCardUi} from '../ui/layer-card.ui';
+import {controllerDevice} from './controller.device';
+import {playgroundUi} from '../ui/playground.ui';
 
-export const selectorDevice = Object.create (devicePrototype);
+export const selectorDevice = Object.create(devicePrototype);
 
 selectorDevice.grid = null as number[][];
 
@@ -15,9 +15,9 @@ selectorDevice.grid = null as number[][];
  *
  * @param {*} device - The device to initialize
  */
-selectorDevice.init = async function (device: any): Promise<void> {
+selectorDevice.init = async function(device: any): Promise<void> {
   if (this.isInitialized) {
-    this.reset ();
+    this.reset();
   }
 
   this.isInitialized = false;
@@ -26,9 +26,9 @@ selectorDevice.init = async function (device: any): Promise<void> {
   this.settings = device.settings;
   this.grid = this.settings.grid;
 
-  await this.runBootSequence ();
-  this.drawGrid ();
-  this.attachEvents ();
+  await this.runBootSequence();
+  this.drawGrid();
+  this.attachEvents();
 
   this.isInitialized = true;
 };
@@ -36,30 +36,30 @@ selectorDevice.init = async function (device: any): Promise<void> {
 /**
  * First draw of the neural network
  */
-selectorDevice.drawGrid = function (): void {
-  this.drawInputs ();
-  this.drawNeurons ();
-  this.drawOutputWeights ();
+selectorDevice.drawGrid = function(): void {
+  this.drawInputs();
+  this.drawNeurons();
+  this.drawOutputWeights();
 };
 
 /**
  * Attach events to the grid
  */
-selectorDevice.attachEvents = function (): void {
-  this.removeListeners ();
-  this.attachInputs ();
-  this.attachNeurons ();
-  this.attachOutputWeights ();
-  this.attachNavigation ();
-  this.attachLayers ();
+selectorDevice.attachEvents = function(): void {
+  this.removeListeners();
+  this.attachInputs();
+  this.attachNeurons();
+  this.attachOutputWeights();
+  this.attachNavigation();
+  this.attachLayers();
 };
 
 /**
  * Draw the inputs
  */
-selectorDevice.drawInputs = function (): void {
+selectorDevice.drawInputs = function(): void {
   for (let i = 0; i < networkState.inputs.length; ++i) {
-    this.playNote ({
+    this.playNote({
       note: this.grid[0][i],
       color: this.settings.colorByState.inputOn,
     });
@@ -69,20 +69,20 @@ selectorDevice.drawInputs = function (): void {
 /**
  * Attach events to the inputs
  */
-selectorDevice.attachInputs = function (): void {
-  this.addNoteListener ('on', (e) => {
+selectorDevice.attachInputs = function(): void {
+  this.addNoteListener('on', (e) => {
     if (networkState.isLayerMode) {
       return;
     }
 
-    const flatIndex = this.getGridFlatIndex (e.note.number);
+    const flatIndex = this.getGridFlatIndex(e.note.number);
 
     if (!(flatIndex >= 0 && flatIndex <= 6)) {
       return;
     }
 
-    const { id } = networkState.getInputByIndex (flatIndex);
-    networkUi.toggleInput (id);
+    const {id} = networkState.getInputByIndex(flatIndex);
+    networkUi.toggleInput(id);
   });
 };
 
@@ -92,7 +92,7 @@ selectorDevice.attachInputs = function (): void {
  * @param {string} inputName - The name of the input
  * @param {boolean} isEnabled - The state of the input
  */
-selectorDevice.setInputLight = function (inputName: string, isEnabled: boolean): void {
+selectorDevice.setInputLight = function(inputName: string, isEnabled: boolean): void {
   if (!this.isInitialized) {
     return;
   }
@@ -109,7 +109,7 @@ selectorDevice.setInputLight = function (inputName: string, isEnabled: boolean):
 
   const note = this.grid[0][map[inputName] - 1];
 
-  this.playNote ({
+  this.playNote({
     note,
     color: isEnabled ? this.settings.colorByState.inputOn : this.settings.colorByState.inputOff,
   });
@@ -118,18 +118,18 @@ selectorDevice.setInputLight = function (inputName: string, isEnabled: boolean):
 /**
  * Draw the neurons
  */
-selectorDevice.drawNeurons = function (): void {
-  const neuronsLength = networkState.neurons.flat ().length;
+selectorDevice.drawNeurons = function(): void {
+  const neuronsLength = networkState.neurons.flat().length;
   for (let i = 1; i <= neuronsLength; ++i) {
     const {
       neuronIndex,
       layerIndex,
-    } = networkState.getNeuronAndLayerIndexes (i);
+    } = networkState.getNeuronAndLayerIndexes(i);
     const shiftedIndex = (layerIndex - 1) + 1; // reset, then move to the right
     const note = this.grid[shiftedIndex][neuronIndex - 1];
-    const { isEnabled } = networkState.getNeuron (i);
+    const {isEnabled} = networkState.getNeuron(i);
 
-    this.playNote ({
+    this.playNote({
       note,
       color: isEnabled ? this.settings.colorByState.neuronOn : this.settings.colorByState.neuronOff,
     });
@@ -139,47 +139,47 @@ selectorDevice.drawNeurons = function (): void {
 /**
  * Attach events to the neurons
  */
-selectorDevice.attachNeurons = function (): void {
-  this.addNoteListener ('on', (e) => {
+selectorDevice.attachNeurons = function(): void {
+  this.addNoteListener('on', (e) => {
     if (networkState.isLayerMode) {
       return;
     }
 
-    const flatIndex = this.getGridFlatIndex (e.note.number);
+    const flatIndex = this.getGridFlatIndex(e.note.number);
     if (!(flatIndex >= 8 && flatIndex <= 55)) {
       return;
     }
 
-    const nodeIndex = this.getGridFlatIndex (e.note.number) - 8 + 1;
-    const { isEnabled } = networkState.getNeuron (nodeIndex);
+    const nodeIndex = this.getGridFlatIndex(e.note.number) - 8 + 1;
+    const {isEnabled} = networkState.getNeuron(nodeIndex);
 
     // short click only if enabled
     if (isEnabled) {
-      if (playgroundFacade.selectedNodes.indexOf (nodeIndex) === -1) {
-        networkUi.toggleNodeSelection (nodeIndex, true);
+      if (playgroundFacade.selectedNodes.indexOf(nodeIndex) === -1) {
+        networkUi.toggleNodeSelection(nodeIndex, true);
       }
       else {
-        networkUi.toggleNodeSelection (nodeIndex, false);
+        networkUi.toggleNodeSelection(nodeIndex, false);
       }
     }
 
     // long click
-    let clickTimer = setTimeout (() => {
+    let clickTimer = setTimeout(() => {
       // clear
-      clearTimeout (clickTimer);
+      clearTimeout(clickTimer);
       clickTimer = null;
       // payload
-      networkUi.toggleNodeSelection (nodeIndex, false);
-      networkUi.toggleNeuron (nodeIndex);
+      networkUi.toggleNodeSelection(nodeIndex, false);
+      networkUi.toggleNeuron(nodeIndex);
     }, this.settings.time.longClick);
 
-    this.addNoteListener ('off', () => {
+    this.addNoteListener('off', () => {
       if (clickTimer === null) {
         return;
       }
-      clearTimeout (clickTimer);
+      clearTimeout(clickTimer);
       clickTimer = null;
-      this.removeNoteListeners ('off');
+      this.removeNoteListeners('off');
     });
   });
 };
@@ -195,19 +195,19 @@ type SetNeuronOptions = {
  *
  * @param {SetNeuronOptions} options - The options
  */
-selectorDevice.setNeuronLight = function (options: SetNeuronOptions): void {
+selectorDevice.setNeuronLight = function(options: SetNeuronOptions): void {
   if (!this.isInitialized) {
     return;
   }
 
-  const { index } = options;
+  const {index} = options;
   const isSelected = options.isSelected || null;
   const isDisabled = options.isDisabled || null;
 
   const {
     neuronIndex,
     layerIndex,
-  } = networkState.getNeuronAndLayerIndexes (index);
+  } = networkState.getNeuronAndLayerIndexes(index);
   const note = this.grid[layerIndex][neuronIndex - 1];
 
   let color;
@@ -221,7 +221,7 @@ selectorDevice.setNeuronLight = function (options: SetNeuronOptions): void {
     color = this.settings.colorByState.neuronOn;
   }
 
-  this.playNote ({
+  this.playNote({
     note,
     color,
   });
@@ -230,13 +230,13 @@ selectorDevice.setNeuronLight = function (options: SetNeuronOptions): void {
 /**
  * Draw the output weights
  */
-selectorDevice.drawOutputWeights = function (): void {
+selectorDevice.drawOutputWeights = function(): void {
   const outputWeights = networkState.output.inputLinks;
   for (let i = 0; i < outputWeights.length; ++i) {
     const note = this.grid[this.grid.length - 1][i];
     const isEnabled = !outputWeights[i].isDead && outputWeights[i].weight !== 0;
 
-    this.playNote ({
+    this.playNote({
       note,
       color: isEnabled ? this.settings.colorByState.outputWeightOn : this.settings.colorByState.outputWeightOff,
     });
@@ -246,30 +246,30 @@ selectorDevice.drawOutputWeights = function (): void {
 /**
  * Attach events to the output weights
  */
-selectorDevice.attachOutputWeights = function (): void {
-  this.addNoteListener ('on', (e) => {
+selectorDevice.attachOutputWeights = function(): void {
+  this.addNoteListener('on', (e) => {
     if (networkState.isLayerMode) {
       return;
     }
 
-    const flatIndex = this.getGridFlatIndex (e.note.number);
+    const flatIndex = this.getGridFlatIndex(e.note.number);
     if (!(flatIndex >= 56 && flatIndex <= 63)) {
       return;
     }
 
     const weights = networkState.output.inputLinks;
     const index = flatIndex - 56;
-    networkState.toggleOutput (index);
+    networkState.toggleOutput(index);
 
     const isEnabled = !weights[index].isDead
       && weights[index].weight !== 0;
 
-    this.playNote ({
+    this.playNote({
       note: e.note.number,
       color: isEnabled ? this.settings.colorByState.outputWeightOn : this.settings.colorByState.outputWeightOff,
     });
 
-    playgroundFacade.updateWeightsUI ();
+    playgroundFacade.updateWeightsUI();
   });
 };
 
@@ -279,18 +279,18 @@ selectorDevice.attachOutputWeights = function (): void {
  * @param {number} note - The note to get the flat index of
  * @returns {number} The flat index of the note
  */
-selectorDevice.getGridFlatIndex = function (note: number): number {
-  return this.grid.flat ().indexOf (note);
+selectorDevice.getGridFlatIndex = function(note: number): number {
+  return this.grid.flat().indexOf(note);
 };
 
 /**
  * Attach navigation button
  */
-selectorDevice.attachNavigation = function (): void {
+selectorDevice.attachNavigation = function(): void {
   const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
 
   // first draw
-  this.playNote ({
+  this.playNote({
     note: playbackPad,
     color: playgroundFacade.isPlaying
       ? this.settings.colorByState.playbackOn
@@ -298,11 +298,11 @@ selectorDevice.attachNavigation = function (): void {
   });
 
   // listen for changes
-  this.addControlListener ((e) => {
+  this.addControlListener((e) => {
     const inputNote = e.controller.number;
     if (inputNote === playbackPad) {
-      const isPlaying = playgroundFacade.togglePlayback ();
-      this.playNote ({
+      const isPlaying = playgroundFacade.togglePlayback();
+      this.playNote({
         note: inputNote,
         color: isPlaying
           ? this.settings.colorByState.playbackOn
@@ -315,40 +315,40 @@ selectorDevice.attachNavigation = function (): void {
 /**
  * Attach layer buttons
  */
-selectorDevice.attachLayers = function (): void {
-  const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
+selectorDevice.attachLayers = function(): void {
+  const layerPads = this.settings.functionKeys.firstRow.slice(1, -1);
 
   // first draw
-  this.renderLayers ();
+  this.renderLayers();
 
   let clickTimer;
   // listen for changes
-  this.addControlListener ((e) => {
+  this.addControlListener((e) => {
     const inputNote = e.controller.number;
     const inputOn = e.value !== 0;
     const inputOff = e.value === 0;
-    if (layerPads.indexOf (inputNote) !== -1) {
+    if (layerPads.indexOf(inputNote) !== -1) {
       if (inputOn) {
         // short click
-        const index = layerPads.indexOf (inputNote);
-        networkState.setLayer (index);
-        this.renderLayers ();
-        controllerDevice.updateMode ();
-        layerCardUi.updateCard ();
-        playgroundUi.renderLayers ();
+        const index = layerPads.indexOf(inputNote);
+        networkState.setLayer(index);
+        this.renderLayers();
+        controllerDevice.updateMode();
+        layerCardUi.updateCard();
+        playgroundUi.renderLayers();
 
         // long click
-        clickTimer = setTimeout (() => {
+        clickTimer = setTimeout(() => {
           // clear
-          clearTimeout (clickTimer);
+          clearTimeout(clickTimer);
           clickTimer = null;
-          networkState.toggleLayer (index);
+          networkState.toggleLayer(index);
           if (networkState.selectedLayerIndex !== null) {
-            networkState.resetLayerSelection ();
-            this.renderLayers ();
-            controllerDevice.updateMode ();
-            layerCardUi.updateCard ();
-            playgroundUi.renderLayers ();
+            networkState.resetLayerSelection();
+            this.renderLayers();
+            controllerDevice.updateMode();
+            layerCardUi.updateCard();
+            playgroundUi.renderLayers();
           }
         }, this.settings.time.longClick);
       }
@@ -357,9 +357,9 @@ selectorDevice.attachLayers = function (): void {
         if (clickTimer === null) {
           return;
         }
-        clearTimeout (clickTimer);
+        clearTimeout(clickTimer);
         clickTimer = null;
-        this.removeNoteListeners ('off');
+        this.removeNoteListeners('off');
       }
     }
   });
@@ -368,14 +368,14 @@ selectorDevice.attachLayers = function (): void {
 /**
  * Update the light for playback button
  */
-selectorDevice.updateLightPlayback = function (): void {
+selectorDevice.updateLightPlayback = function(): void {
   if (!this.isInitialized) {
     return;
   }
 
   const isPlaying = playgroundFacade.isPlaying;
   const playbackPad = this.settings.functionKeys.lastColumn[this.settings.functionKeys.lastColumn.length - 1];
-  this.playNote ({
+  this.playNote({
     note: playbackPad,
     color: isPlaying
       ? this.settings.colorByState.playbackOn
@@ -386,23 +386,23 @@ selectorDevice.updateLightPlayback = function (): void {
 /**
  * Render the layer buttons
  */
-selectorDevice.renderLayers = function (): void {
+selectorDevice.renderLayers = function(): void {
   if (!this.isInitialized) {
     return;
   }
 
-  const layerPads = this.settings.functionKeys.firstRow.slice (1, -1);
+  const layerPads = this.settings.functionKeys.firstRow.slice(1, -1);
   const index = networkState.selectedLayerIndex;
 
-  layerPads.forEach ((_pad, pad) => {
+  layerPads.forEach((_pad, pad) => {
     if (index === pad) {
-      this.playNote ({
+      this.playNote({
         note: _pad,
         color: this.settings.colorByState.layerOn,
       });
     }
     else {
-      this.playNote ({
+      this.playNote({
         note: _pad,
         color: this.settings.colorByState.layerOff,
       });

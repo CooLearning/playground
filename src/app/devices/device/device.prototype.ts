@@ -1,7 +1,7 @@
-import { InputEventNoteoff, InputEventNoteon } from 'webmidi';
-import { Device, DeviceSettings } from './device.types';
+import {InputEventNoteoff, InputEventNoteon} from 'webmidi';
+import {Device, DeviceSettings} from './device.types';
 
-export const devicePrototype = Object.create (null);
+export const devicePrototype = Object.create(null);
 
 devicePrototype.isInitialized = false as boolean;
 devicePrototype.device = null as Device;
@@ -9,8 +9,8 @@ devicePrototype.settings = null as DeviceSettings;
 devicePrototype.network = null as any;
 devicePrototype.blinkingNotes = {};
 
-devicePrototype.reset = function () {
-  this.removeListeners ();
+devicePrototype.reset = function() {
+  this.removeListeners();
   this.isInitialized = false as boolean;
   this.device = null as Device;
   this.settings = null as DeviceSettings;
@@ -21,20 +21,20 @@ devicePrototype.reset = function () {
 /**
  * Run the boot sequence
  */
-devicePrototype.runBootSequence = async function (): Promise<void> {
-  return new Promise ((resolve) => {
-    this.removeListeners ();
+devicePrototype.runBootSequence = async function(): Promise<void> {
+  return new Promise((resolve) => {
+    this.removeListeners();
 
-    const { color, sysex } = this.settings.bootSequence;
+    const {color, sysex} = this.settings.bootSequence;
     if (sysex) {
-      const { manufacturer, data } = sysex;
+      const {manufacturer, data} = sysex;
       if (typeof manufacturer !== 'undefined' && typeof data !== 'undefined') {
-        this.device.output.sendSysex (manufacturer, data);
+        this.device.output.sendSysex(manufacturer, data);
       }
     }
 
     // flash the lights
-    this.playNotes ({
+    this.playNotes({
       firstNote: this.settings.lights.first,
       lastNote: this.settings.lights.last,
       color,
@@ -42,8 +42,8 @@ devicePrototype.runBootSequence = async function (): Promise<void> {
     });
 
     // resolve
-    setTimeout (() => {
-      resolve ();
+    setTimeout(() => {
+      resolve();
     },
     this.settings.time.defaultDuration
       + this.settings.time.wait,
@@ -65,14 +65,14 @@ type PlayNoteOptions = {
  * @param {number} options.color - The color of the note (velocity)
  * @param {number} [options.duration] - The duration of the note
  */
-devicePrototype.playNote = function (
+devicePrototype.playNote = function(
   {
     note,
     color,
     duration = 3600000,
   }: PlayNoteOptions,
 ): void {
-  this.device.output.playNote (note, this.settings.channels.output, {
+  this.device.output.playNote(note, this.settings.channels.output, {
     duration,
     rawVelocity: true,
     velocity: color,
@@ -95,7 +95,7 @@ type PlayNotesOptions = {
  * @param {number} options.color - The color of the note (velocity)
  * @param {number} options.duration - The duration of the note
  */
-devicePrototype.playNotes = function (
+devicePrototype.playNotes = function(
   {
     firstNote,
     lastNote,
@@ -104,7 +104,7 @@ devicePrototype.playNotes = function (
   }: PlayNotesOptions,
 ): void {
   for (let i = firstNote; i <= lastNote; ++i) {
-    this.playNote ({
+    this.playNote({
       note: i,
       duration,
       color,
@@ -117,9 +117,9 @@ devicePrototype.playNotes = function (
  *
  * @param {number} note - The blinking note to clear
  */
-devicePrototype.clearBlinkingNote = function (note): void {
+devicePrototype.clearBlinkingNote = function(note): void {
   if (typeof this.blinkingNotes?.[note] === 'number') {
-    clearTimeout (this.blinkingNotes[note]);
+    clearTimeout(this.blinkingNotes[note]);
     this.blinkingNotes[note] = null;
   }
 };
@@ -138,14 +138,14 @@ type BlinkNoteOptions = {
  * @param {number} options.color - The color of the note (velocity)
  * @param {number} [options.interval=400] - The blinking interval
  */
-devicePrototype.blinkNote = function ({
+devicePrototype.blinkNote = function({
   note,
   color,
   interval = 400,
 }: BlinkNoteOptions): void {
-  this.clearBlinkingNote (note);
-  this.blinkingNotes[note] = setInterval (() => {
-    this.playNote ({
+  this.clearBlinkingNote(note);
+  this.blinkingNotes[note] = setInterval(() => {
+    this.playNote({
       note,
       color,
       duration: interval / 2,
@@ -169,7 +169,7 @@ type PlayOrBlinkNoteOptions = {
  * @param {number} options.interval - The blinking interval
  * @param {number} options.duration - The duration of the note
  */
-devicePrototype.playOrBlinkNote = function ({
+devicePrototype.playOrBlinkNote = function({
   note,
   color,
   interval = 400,
@@ -178,7 +178,7 @@ devicePrototype.playOrBlinkNote = function ({
   if (typeof this.blinkingNotes?.[note] === 'undefined') {
     // first time
     this.blinkingNotes[note] = null;
-    this.playNote ({
+    this.playNote({
       note,
       color,
       duration,
@@ -186,7 +186,7 @@ devicePrototype.playOrBlinkNote = function ({
   }
   else if (this.blinkingNotes?.[note] === null) {
     // not blinking
-    this.blinkNote ({
+    this.blinkNote({
       note,
       color,
       interval,
@@ -194,9 +194,9 @@ devicePrototype.playOrBlinkNote = function ({
   }
   else {
     // already blinking
-    this.clearBlinkingNote (note);
-    setTimeout (() => {
-      this.playNote ({
+    this.clearBlinkingNote(note);
+    setTimeout(() => {
+      this.playNote({
         note,
         color,
         duration,
@@ -208,8 +208,8 @@ devicePrototype.playOrBlinkNote = function ({
 /**
  * Clear listeners.
  */
-devicePrototype.removeListeners = function (): void {
-  this.device.input.removeListener ();
+devicePrototype.removeListeners = function(): void {
+  this.device.input.removeListener();
 };
 
 /**
@@ -218,18 +218,18 @@ devicePrototype.removeListeners = function (): void {
  * @param {string} noteState - The state of the note to listen to
  * @param {Function} listener - The listener function
  */
-devicePrototype.addNoteListener = function (
+devicePrototype.addNoteListener = function(
   noteState = 'on',
   listener: (e: InputEventNoteon | InputEventNoteoff) => any,
 ): void {
   if (noteState !== 'on' && noteState !== 'off') {
-    throw new Error ('note should be either "on" or "off"');
+    throw new Error('note should be either "on" or "off"');
   }
 
-  this.device.input.addListener (
+  this.device.input.addListener(
     `note${noteState}`,
     this.settings.channels.input,
-    (e) => listener (e),
+    (e) => listener(e),
   );
 };
 
@@ -238,12 +238,12 @@ devicePrototype.addNoteListener = function (
  *
  * @param {string} noteState - The state of the note to remove the listener from
  */
-devicePrototype.removeNoteListeners = function (noteState: string): void {
+devicePrototype.removeNoteListeners = function(noteState: string): void {
   if (noteState !== 'on' && noteState !== 'off') {
-    throw new Error ('note should be either "on" or "off"');
+    throw new Error('note should be either "on" or "off"');
   }
 
-  this.device.input.removeListener (`note${noteState}`);
+  this.device.input.removeListener(`note${noteState}`);
 };
 
 /**
@@ -252,15 +252,15 @@ devicePrototype.removeNoteListeners = function (noteState: string): void {
  * @param {*} listener - The listener function
  * @param {boolean} isToggle - Set true to simulate button toggle
  */
-devicePrototype.addControlListener = function (listener, isToggle = false): void {
-  this.device.input.addListener (
+devicePrototype.addControlListener = function(listener, isToggle = false): void {
+  this.device.input.addListener(
     'controlchange',
     this.settings.channels.input,
     (e) => {
       if (isToggle && e.value !== 127) {
         return;
       }
-      listener (e);
+      listener(e);
     },
   );
 };
@@ -268,6 +268,6 @@ devicePrototype.addControlListener = function (listener, isToggle = false): void
 /**
  * Utility function to remove an input event from the device
  */
-devicePrototype.removeControlListeners = function () {
-  this.device.input.removeListener ('controlchange');
+devicePrototype.removeControlListeners = function() {
+  this.device.input.removeListener('controlchange');
 };
