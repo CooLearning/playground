@@ -294,6 +294,34 @@ devicePrototype.addControlListener = function(listener, isToggle = false): void 
   );
 };
 
+interface AddControlListenerNewOptions {
+  note: number;
+  callback;
+  isToggle: boolean;
+}
+
+devicePrototype.addControlListener_NEW = function({
+  note,
+  callback,
+  isToggle = false,
+}: AddControlListenerNewOptions) {
+  const message = 'controlchange';
+  const channel = this.settings.channels.input;
+  const handler = (e) => {
+    if (note !== e.controller.number) {
+      return;
+    }
+
+    if (isToggle && e.value !== 127) {
+      return;
+    }
+
+    callback(e);
+  };
+
+  this.device.input.addListener(message, channel, handler);
+};
+
 /**
  * Utility function to remove an input event from the device
  */
