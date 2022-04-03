@@ -1,35 +1,35 @@
-import { playgroundFacade } from '../facades/playground.facade';
-import { Link } from './network.state.types';
-import { activations, regularizations } from '../../playground/state';
-import { selectorDevice } from '../devices/selector.device';
+import {playgroundFacade} from '../facades/playground.facade';
+import {Link} from './network.state.types';
+import {activations, regularizations} from '../../playground/state';
+import {selectorDevice} from '../devices/selector.device';
 
 /**
  * State object for the network.
  * It contains nodes.
  * Nodes are either inputs, neurons or output.
  */
-export const networkState = Object.create (null);
+export const networkState = Object.create(null);
 
-Object.defineProperty (networkState, 'nodes', {
-  get () {
+Object.defineProperty(networkState, 'nodes', {
+  get() {
     return playgroundFacade.network;
   },
 });
 
-Object.defineProperty (networkState, 'inputs', {
-  get () {
+Object.defineProperty(networkState, 'inputs', {
+  get() {
     return this.nodes[0];
   },
 });
 
-Object.defineProperty (networkState, 'neurons', {
-  get () {
-    return this.nodes.slice (1, -1);
+Object.defineProperty(networkState, 'neurons', {
+  get() {
+    return this.nodes.slice(1, -1);
   },
 });
 
-Object.defineProperty (networkState, 'output', {
-  get () {
+Object.defineProperty(networkState, 'output', {
+  get() {
     return this.nodes[this.nodes.length - 1][0];
   },
 });
@@ -45,13 +45,13 @@ type GetNeuronAndLayerIndexes = {
  * @param {number} nodeIndex - The node index.
  * @returns {GetNeuronAndLayerIndexes} - The neuron and layer indexes.
  */
-networkState.getNeuronAndLayerIndexes = function (nodeIndex: number): GetNeuronAndLayerIndexes {
+networkState.getNeuronAndLayerIndexes = function(nodeIndex: number): GetNeuronAndLayerIndexes {
   if (typeof nodeIndex !== 'number') {
-    throw new Error ('nodeIndex is not a number');
+    throw new Error('nodeIndex is not a number');
   }
 
   const neuronsPerLayer = 8;
-  const layerIndex = Math.trunc ((nodeIndex - 1) / neuronsPerLayer) + 1;
+  const layerIndex = Math.trunc((nodeIndex - 1) / neuronsPerLayer) + 1;
 
   let neuronIndex;
   if (nodeIndex % neuronsPerLayer === 0) {
@@ -78,17 +78,17 @@ type GetNeuron = {
  * @param {number} nodeIndex - The node index.
  * @returns {GetNeuron} - The neuron object and whether it is enabled.
  */
-networkState.getNeuron = function (nodeIndex: number): GetNeuron {
-  const { neuronIndex, layerIndex } = this.getNeuronAndLayerIndexes (nodeIndex);
+networkState.getNeuron = function(nodeIndex: number): GetNeuron {
+  const {neuronIndex, layerIndex} = this.getNeuronAndLayerIndexes(nodeIndex);
   const neuron = this.neurons[layerIndex - 1][neuronIndex - 1];
-  const { isEnabled } = neuron;
+  const {isEnabled} = neuron;
   return {
     neuron,
     isEnabled,
   };
 };
 
-networkState.toggleOutput = function (outputIndex: number): void {
+networkState.toggleOutput = function(outputIndex: number): void {
   const link = this.output.inputLinks[outputIndex];
   const willDie = !link.isDead;
 
@@ -101,25 +101,25 @@ networkState.toggleOutput = function (outputIndex: number): void {
     }
     else {
       link.isDead = false;
-      link.weight = link.savedWeight || Math.random () - 0.5;
+      link.weight = link.savedWeight || Math.random() - 0.5;
     }
   }
 };
 
-networkState.toggleNeuron = function (nodeIndex: number): void {
-  const { neuron, isEnabled } = this.getNeuron (nodeIndex);
+networkState.toggleNeuron = function(nodeIndex: number): void {
+  const {neuron, isEnabled} = this.getNeuron(nodeIndex);
 
   neuron.isEnabled = !isEnabled;
 
   // input weights
-  neuron.inputLinks.forEach ((link: Link) => {
+  neuron.inputLinks.forEach((link: Link) => {
     if (link.source.isEnabled === false) {
       return;
     }
 
     if (neuron.isEnabled) {
       link.isDead = false;
-      link.weight = link.savedWeight || Math.random () - 0.5;
+      link.weight = link.savedWeight || Math.random() - 0.5;
     }
     else {
       link.isDead = true;
@@ -129,14 +129,14 @@ networkState.toggleNeuron = function (nodeIndex: number): void {
   });
 
   // output weights
-  neuron.outputs.forEach ((link: Link) => {
+  neuron.outputs.forEach((link: Link) => {
     if (link.dest.isEnabled === false) {
       return;
     }
 
     if (neuron.isEnabled) {
       link.isDead = false;
-      link.weight = link.savedWeight || Math.random () - 0.5;
+      link.weight = link.savedWeight || Math.random() - 0.5;
     }
     else {
       link.isDead = true;
@@ -146,28 +146,28 @@ networkState.toggleNeuron = function (nodeIndex: number): void {
   });
 };
 
-networkState.toggleLayer = function (index: number): void {
+networkState.toggleLayer = function(index: number): void {
   const neurons = this.neurons[index];
-  neurons.forEach ((neuron) => {
-    const nodeIndex = parseInt (neuron.id);
-    this.toggleNeuron (nodeIndex);
-    selectorDevice.setNeuronLight ({
+  neurons.forEach((neuron) => {
+    const nodeIndex = parseInt(neuron.id);
+    this.toggleNeuron(nodeIndex);
+    selectorDevice.setNeuronLight({
       index: nodeIndex,
       isDisabled: !neuron.isEnabled,
     });
-    playgroundFacade.updateUI ();
+    playgroundFacade.updateUI();
   });
 };
 
-networkState.getInputByIndex = function (index: number) {
+networkState.getInputByIndex = function(index: number) {
   return this.inputs[index];
 };
 
-networkState.toggleInput = function (slug: string): any {
-  const input = this.inputs.filter ((input) => input.id === slug)[0];
+networkState.toggleInput = function(slug: string): any {
+  const input = this.inputs.filter((input) => input.id === slug)[0];
   input.isEnabled = !input.isEnabled;
 
-  input.outputs.forEach ((outputLink) => {
+  input.outputs.forEach((outputLink) => {
     if (!outputLink.dest.isEnabled) {
       outputLink.isDead = true;
       outputLink.weight = 0;
@@ -176,14 +176,14 @@ networkState.toggleInput = function (slug: string): any {
 
     outputLink.isDead = !input.isEnabled;
     outputLink.weight = input.isEnabled
-      ? Math.random () - 0.5
+      ? Math.random() - 0.5
       : 0;
   });
   return input;
 };
 
-networkState.getSelectedNeurons = function () {
-  const { selectedNodes } = playgroundFacade;
+networkState.getSelectedNeurons = function() {
+  const {selectedNodes} = playgroundFacade;
 
   let targets; // neuron or neurons
 
@@ -191,19 +191,19 @@ networkState.getSelectedNeurons = function () {
     return;
   }
   else if (selectedNodes.length === 1) {
-    targets = [this.getNeuron (selectedNodes[0]).neuron];
+    targets = [this.getNeuron(selectedNodes[0]).neuron];
   }
   else {
-    targets = selectedNodes.map ((i) => this.getNeuron (i).neuron);
+    targets = selectedNodes.map((i) => this.getNeuron(i).neuron);
   }
   return targets;
 };
 
-networkState.setSourceWeight = function (index, value): boolean {
+networkState.setSourceWeight = function(index, value): boolean {
   let hasChanged = false;
 
-  const selectedNeurons = this.getSelectedNeurons ();
-  selectedNeurons.forEach ((neuron) => {
+  const selectedNeurons = this.getSelectedNeurons();
+  selectedNeurons.forEach((neuron) => {
     const link = neuron.inputLinks?.[index];
     if (
       typeof link === 'undefined'
@@ -220,11 +220,11 @@ networkState.setSourceWeight = function (index, value): boolean {
   return hasChanged;
 };
 
-networkState.setSourceBias = function (index, value): boolean {
+networkState.setSourceBias = function(index, value): boolean {
   let hasChanged = false;
 
-  const selectedNeurons = this.getSelectedNeurons ();
-  selectedNeurons.forEach ((neuron) => {
+  const selectedNeurons = this.getSelectedNeurons();
+  selectedNeurons.forEach((neuron) => {
     const link = neuron.inputLinks?.[index];
     if (
       typeof link === 'undefined'
@@ -241,11 +241,11 @@ networkState.setSourceBias = function (index, value): boolean {
   return hasChanged;
 };
 
-networkState.setSourceLearningRate = function (index, value): boolean {
+networkState.setSourceLearningRate = function(index, value): boolean {
   let hasChanged = false;
 
-  const selectedNeurons = this.getSelectedNeurons ();
-  selectedNeurons.forEach ((neuron) => {
+  const selectedNeurons = this.getSelectedNeurons();
+  selectedNeurons.forEach((neuron) => {
     const link = neuron.inputLinks?.[index];
     if (
       typeof link === 'undefined'
@@ -262,11 +262,11 @@ networkState.setSourceLearningRate = function (index, value): boolean {
   return hasChanged;
 };
 
-networkState.setSourceActivation = function (index, name): boolean {
+networkState.setSourceActivation = function(index, name): boolean {
   let hasChanged = false;
 
-  const selectedNeurons = this.getSelectedNeurons ();
-  selectedNeurons.forEach ((neuron) => {
+  const selectedNeurons = this.getSelectedNeurons();
+  selectedNeurons.forEach((neuron) => {
     const link = neuron.inputLinks?.[index];
     if (
       typeof link === 'undefined'
@@ -283,11 +283,11 @@ networkState.setSourceActivation = function (index, name): boolean {
   return hasChanged;
 };
 
-networkState.setSourceRegularizationType = function (index, name): boolean {
+networkState.setSourceRegularizationType = function(index, name): boolean {
   let hasChanged = false;
 
-  const selectedNeurons = this.getSelectedNeurons ();
-  selectedNeurons.forEach ((neuron) => {
+  const selectedNeurons = this.getSelectedNeurons();
+  selectedNeurons.forEach((neuron) => {
     const link = neuron.inputLinks?.[index];
     if (
       typeof link === 'undefined'
@@ -304,11 +304,11 @@ networkState.setSourceRegularizationType = function (index, name): boolean {
   return hasChanged;
 };
 
-networkState.setSourceRegularizationRate = function (index, value): boolean {
+networkState.setSourceRegularizationRate = function(index, value): boolean {
   let hasChanged = false;
 
-  const selectedNeurons = this.getSelectedNeurons ();
-  selectedNeurons.forEach ((neuron) => {
+  const selectedNeurons = this.getSelectedNeurons();
+  selectedNeurons.forEach((neuron) => {
     const link = neuron.inputLinks?.[index];
     if (
       typeof link === 'undefined'
@@ -325,7 +325,7 @@ networkState.setSourceRegularizationRate = function (index, value): boolean {
   return hasChanged;
 };
 
-networkState.setBias = function (index: number, value: number): boolean {
+networkState.setBias = function(index: number, value: number): boolean {
   let hasChanged = false;
   const neurons = this.neurons[this.selectedLayerIndex];
   const neuron = neurons[index];
@@ -344,7 +344,7 @@ networkState.setBias = function (index: number, value: number): boolean {
   return hasChanged;
 };
 
-networkState.setLearningRate = function (index: number, value: number): boolean {
+networkState.setLearningRate = function(index: number, value: number): boolean {
   let hasChanged = false;
   const neurons = this.neurons[this.selectedLayerIndex];
   const neuron = neurons[index];
@@ -362,7 +362,7 @@ networkState.setLearningRate = function (index: number, value: number): boolean 
   return hasChanged;
 };
 
-networkState.setActivation = function (index: number, name: string): boolean {
+networkState.setActivation = function(index: number, name: string): boolean {
   let hasChanged = false;
   const neurons = this.neurons[this.selectedLayerIndex];
   const neuron = neurons[index];
@@ -380,7 +380,7 @@ networkState.setActivation = function (index: number, name: string): boolean {
   return hasChanged;
 };
 
-networkState.setRegularizationType = function (index: number, name: string): boolean {
+networkState.setRegularizationType = function(index: number, name: string): boolean {
   let hasChanged = false;
   const neurons = this.neurons[this.selectedLayerIndex];
   const neuron = neurons[index];
@@ -398,7 +398,7 @@ networkState.setRegularizationType = function (index: number, name: string): boo
   return hasChanged;
 };
 
-networkState.setRegularizationRate = function (index: number, value: number): boolean {
+networkState.setRegularizationRate = function(index: number, value: number): boolean {
   let hasChanged = false;
   const neurons = this.neurons[this.selectedLayerIndex];
   const neuron = neurons[index];
@@ -419,13 +419,13 @@ networkState.setRegularizationRate = function (index: number, value: number): bo
 
 networkState.selectedLayerIndex = null;
 
-Object.defineProperty (networkState, 'isLayerMode', {
-  get () {
+Object.defineProperty(networkState, 'isLayerMode', {
+  get() {
     return this.selectedLayerIndex !== null;
   },
 });
 
-networkState.setLayer = function (index: number) {
+networkState.setLayer = function(index: number) {
   if (this.selectedLayerIndex === null) {
     // no layer selected
     this.selectedLayerIndex = index;
@@ -441,6 +441,6 @@ networkState.setLayer = function (index: number) {
   return this.selectedLayerIndex;
 };
 
-networkState.resetLayerSelection = function () {
+networkState.resetLayerSelection = function() {
   this.selectedLayerIndex = null;
 };
