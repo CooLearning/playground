@@ -348,6 +348,12 @@ selectorDevice.attachOutputButton = function() {
     }
   };
 
+  this.addControlListener_NEW({
+    note,
+    callback,
+    isToggle: true,
+  });
+
   this.addNoteListener_NEW({
     note,
     color,
