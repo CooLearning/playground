@@ -245,7 +245,15 @@ controllerDevice.attachButtonsToNeuron = function(): void {
  * @param {number} selectedNode - The selected node.
  */
 controllerDevice.attachControlsToNeuron = function(selectedNode: number): void {
-  const {neuron} = networkState.getNeuron(selectedNode);
+  let neuron;
+
+  if (networkState.isOutputNode(selectedNode)) {
+    neuron = networkState.getOutputNode();
+  }
+  else {
+    neuron = networkState.getNeuron(selectedNode).neuron;
+  }
+
   const links = neuron.inputLinks;
 
   // first draw

@@ -191,7 +191,12 @@ networkState.getSelectedNeurons = function() {
     return;
   }
   else if (selectedNodes.length === 1) {
-    targets = [this.getNeuron(selectedNodes[0]).neuron];
+    if (this.isOutputNode(selectedNodes[0])) {
+      targets = [this.getOutputNode()];
+    }
+    else {
+      targets = [this.getNeuron(selectedNodes[0]).neuron];
+    }
   }
   else {
     targets = selectedNodes.map((i) => this.getNeuron(i).neuron);
