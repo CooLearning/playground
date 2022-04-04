@@ -1,3 +1,21 @@
+# [1.15.0](https://github.com/CooLearning/playground/compare/v1.14.4...v1.15.0) (2022-04-04)
+
+
+### Bug Fixes
+
+* **networkState:** Target output node when present in multiple selection ([7f846da](https://github.com/CooLearning/playground/commit/7f846da111b29a4d62d8d02a51a4c2b6757d9fd1))
+* **NPM:** Rename package + Add license and description to package.json ([82362f7](https://github.com/CooLearning/playground/commit/82362f75908aef21d3f12e27a19087d5be287273))
+* **selectorDevice:** Attach additional `note` event to play pause button handler + Split before adding new navigation features ([1a00c50](https://github.com/CooLearning/playground/commit/1a00c504d0e8f5cd5c2a7d5a06c95baabdc2f113))
+
+
+### Features
+
+* **Controller:** Allow controlling for output node ([7d9db58](https://github.com/CooLearning/playground/commit/7d9db58956a3f9d9e0bc9a149db4a427be45532c))
+* **devicePrototype:** Add new `addNodeListener_NEW` method to avoid repetition in client code, also preparing for later refactoring ([ddf377e](https://github.com/CooLearning/playground/commit/ddf377e8752a1d6036356b7028f7b7b8bd4b15cf))
+* **devicePrototype:** Add new control listener generator with embedded filtering ([30675bb](https://github.com/CooLearning/playground/commit/30675bbacfec127761c164ef2fd44c02cfc9800d))
+* **Output Node:** Add selection from device + Add display in select card + Add styling in view ([8b98f8f](https://github.com/CooLearning/playground/commit/8b98f8ff2688472b3b7a07df028bbe3378bebb81))
+* **selectorDevice:** Allow function keys sending control events to handle output node ([d78c0c0](https://github.com/CooLearning/playground/commit/d78c0c08b8cb1d367ecbeb43e623d4ab58ea3053))
+
 ## [1.14.4](https://github.com/CooLearning/playground/compare/v1.14.3...v1.14.4) (2021-11-18)
 
 
