@@ -1,3 +1,10 @@
+# [1.16.0](https://github.com/CooLearning/playground/compare/v1.15.0...v1.16.0) (2022-04-04)
+
+
+### Features
+
+* **HeatmapUi:** Add view interactions ([af749f8](https://github.com/CooLearning/playground/commit/af749f88d2612283b2c1ff12792a4250da16ce6e))
+
 # [1.15.0](https://github.com/CooLearning/playground/compare/v1.14.4...v1.15.0) (2022-04-04)
 
 
