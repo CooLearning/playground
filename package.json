@@ -1,11 +1,12 @@
 {
-  "name": "deep-playground-prototype",
+  "name": "coolearning-playground",
   "version": "1.14.4",
-  "description": "",
-  "private": true,
+  "description": "Bringing MIDI interactivity to `tensorflow/playground`",
+  "license": "Apache-2.0",
   "scripts": {
     "clean": "rimraf dist",
     "start": "yarn serve-watch",
+    "dev": "yarn start",
     "prep": "yarn clean && yarn prep:default && yarn prep:assets",
     "prep:default": "copyfiles analytics.js dist && concat node_modules/material-design-lite/material.min.js node_modules/seedrandom/seedrandom.min.js > dist/lib.js",
     "prep:assets": "copyfiles ./assets/**/*.svg dist",
@@ -17,13 +18,14 @@
     "watch-js": "watchify src/playground/playground.ts -p [tsify] -v --debug -o dist/bundle.js",
     "build": "yarn prep && yarn build-js && yarn build-css && yarn build-html",
     "watch": "yarn prep && concurrently 'yarn watch-js' 'yarn watch-css' 'yarn watch-html'",
-    "serve": "npx serve dist/",
-    "serve-watch": "concurrently \"npx serve dist/\" \"yarn watch\"",
+    "serve:old": "npx serve dist/",
+    "serve": "npx browser-sync start --server dist/ --files 'dist/bundle.js' --no-open",
+    "serve-watch": "concurrently \"yarn serve\" \"yarn watch\"",
     "build:archive": "./bin/archive-release.sh",
     "build:prepare": "./bin/prepare-release.sh"
   },
   "devDependencies": {
-    "@bamdadsabbagh/eslint-config": "^1.18.0",
+    "@bamdadsabbagh/eslint-config": "^2.0.21",
     "@types/d3": "^3.5.34",
     "concat": "^1.0.3",
     "concurrently": "6.3.0",

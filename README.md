@@ -33,8 +33,8 @@ the [Angular Conventions](https://github.com/angular/angular.js/blob/master/DEVE
 git clone https://github.com/coolearning/playground.git
 cd playground
 yarn
-yarn start
-# navigate to http://localhost:5000
+yarn dev
+# navigate to http://localhost:3000
 ```
 
 ## 💫 Features
