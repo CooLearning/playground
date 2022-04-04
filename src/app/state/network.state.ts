@@ -199,7 +199,12 @@ networkState.getSelectedNeurons = function() {
     }
   }
   else {
-    targets = selectedNodes.map((i) => this.getNeuron(i).neuron);
+    targets = selectedNodes.map((i) => {
+      if (this.isOutputNode(i)) {
+        return this.getOutputNode();
+      }
+      return this.getNeuron(i).neuron;
+    });
   }
   return targets;
 };
