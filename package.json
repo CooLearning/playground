@@ -1,6 +1,6 @@
 {
   "name": "coolearning-playground",
-  "version": "1.16.0",
+  "version": "1.16.1",
   "description": "Bringing MIDI interactivity to `tensorflow/playground`",
   "license": "Apache-2.0",
   "scripts": {

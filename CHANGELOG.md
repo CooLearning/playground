@@ -1,3 +1,10 @@
+## [1.16.1](https://github.com/CooLearning/playground/compare/v1.16.0...v1.16.1) (2022-04-06)
+
+
+### Bug Fixes
+
+* **Heatmap:** Apply negative margins to keep the heatmap centered ([f282385](https://github.com/CooLearning/playground/commit/f2823851e8ec2741793c11a89d68440f64060385))
+
 # [1.16.0](https://github.com/CooLearning/playground/compare/v1.15.0...v1.16.0) (2022-04-04)
 
 
