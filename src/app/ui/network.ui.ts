@@ -77,9 +77,11 @@ networkUi.toggleNodeSelection = function(nodeIndex: number, isSelected: boolean)
 
     if (isSelected) {
       canvas.style.border = '2px solid cyan';
+      canvas.style.margin = '-2px';
     }
     else {
       canvas.style.border = null;
+      canvas.style.margin = null;
     }
   }
   else {
