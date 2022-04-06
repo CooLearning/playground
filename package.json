@@ -22,7 +22,8 @@
     "serve": "npx browser-sync start --server dist/ --files 'dist/bundle.js' --no-open",
     "serve-watch": "concurrently \"yarn serve\" \"yarn watch\"",
     "build:archive": "./bin/archive-release.sh",
-    "build:prepare": "./bin/prepare-release.sh"
+    "build:prepare": "./bin/prepare-release.sh",
+    "package:reinstall": "npx rimraf node_modules && yarn"
   },
   "devDependencies": {
     "@bamdadsabbagh/eslint-config": "^2.0.21",
