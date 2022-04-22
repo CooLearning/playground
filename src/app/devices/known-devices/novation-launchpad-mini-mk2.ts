@@ -1,14 +1,14 @@
 import { Selector, DeviceCategory } from '../device/device.types';
 
 /**
- * Novation Launchpad Mini
+ * Novation Launchpad Mini Mk2
  *
  * @see http://leemans.ch/latex/doc_launchpad-programmers-reference.pdf
  */
-export const novationLaunchpadMini: Selector = {
+export const novationLaunchpadMiniMk2: Selector = {
   category: DeviceCategory.selector,
   manufacturer: 'Focusrite A.E. Ltd',
-  name: 'Launchpad Mini',
+  name: 'Launchpad Mini MK2',
   channels: {
     input: 'all',
     output: 1,
