@@ -1,7 +1,8 @@
 import { Controller, Selector } from '../device/device.types';
 import { novationLaunchpadX } from './novation-launchpad-x';
 import { novationLaunchControlXl } from './novation-launch-control-xl';
-import { novationLaunchpadMini } from './novation-launchpad-mini';
+import { novationLaunchpadMiniMk2 } from './novation-launchpad-mini-mk2';
+import { novationLaunchpadMiniMk3 } from './novation-launchpad-mini-mk3';
 
 /**
  * List of known devices.
@@ -9,5 +10,6 @@ import { novationLaunchpadMini } from './novation-launchpad-mini';
 export const knownDevices: (Selector | Controller)[] = [
   novationLaunchpadX,
   novationLaunchControlXl,
-  novationLaunchpadMini,
+  novationLaunchpadMiniMk2,
+  novationLaunchpadMiniMk3,
 ];
