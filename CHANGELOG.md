@@ -1,3 +1,15 @@
+# [1.17.0](https://github.com/CooLearning/playground/compare/v1.16.1...v1.17.0) (2022-04-23)
+
+
+### Bug Fixes
+
+* **novationLaunchpadMiniMk2:** Set narrower name to catch device ([f7593d5](https://github.com/CooLearning/playground/commit/f7593d5a1e14a403901a60a83354ed6fd7339506))
+
+
+### Features
+
+* add support for launchpad mini mk3 (pretty much like X but smaller) ([8a15c6a](https://github.com/CooLearning/playground/commit/8a15c6ae4f2a6179e24a59c003aff6474228ad6c))
+
 ## [1.16.1](https://github.com/CooLearning/playground/compare/v1.16.0...v1.16.1) (2022-04-06)
 
 
