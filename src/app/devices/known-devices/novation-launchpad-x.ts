@@ -1,4 +1,4 @@
-import { Selector, DeviceCategory } from '../device/device.types';
+import {DeviceCategory, SelectorSettings} from '../device/device.types';
 
 /**
  * Novation Launchpad X
@@ -6,7 +6,7 @@ import { Selector, DeviceCategory } from '../device/device.types';
  * @see Programmer's Reference https://fael-downloads-prod.focusrite.com/customer/prod/s3fs-public/downloads/Launchpad%20X%20-%20Programmers%20Reference%20Manual.pdf
  * @see User Guide https://www.kraftmusic.com/media/ownersmanual/Novation_Launchpad_X_User_Guide.pdf
  */
-export const novationLaunchpadX: Selector = {
+export const novationLaunchpadX: SelectorSettings = {
   category: DeviceCategory.selector,
   manufacturer: 'Focusrite - Novation',
   name: 'Launchpad X',
@@ -53,7 +53,7 @@ export const novationLaunchpadX: Selector = {
     turquoise: 38,
     aqua: 37,
   },
-  get colorByState () {
+  get colorByState() {
     return {
       inputOn: this.colors.blue,
       inputOff: this.colors.gray,
@@ -73,7 +73,7 @@ export const novationLaunchpadX: Selector = {
     defaultDuration: 500,
     longClick: 400,
   },
-  get bootSequence () {
+  get bootSequence() {
     return {
       color: this.colors.red,
       sysex: {

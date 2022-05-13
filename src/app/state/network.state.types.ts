@@ -1,5 +1,5 @@
-import { Link as ImportedLink } from '../../playground/nn';
+import {Link as ImportedLink} from '../../playground/nn';
 
-export type Link = ImportedLink & {
+export interface Link extends ImportedLink {
   savedWeight: number;
 }

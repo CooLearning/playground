@@ -3,6 +3,6 @@
  *
  * @returns {boolean} Is localhost?
  */
-export function isLocalhost (): boolean {
-  return window.location.href.includes ('localhost');
+export function isLocalhost(): boolean {
+  return window.location.href.includes('localhost');
 }

@@ -1,11 +1,11 @@
-import { Selector, DeviceCategory } from '../device/device.types';
+import {DeviceCategory, SelectorSettings} from '../device/device.types';
 
 /**
  * Novation Launchpad Mini
  *
  * @see http://leemans.ch/latex/doc_launchpad-programmers-reference.pdf
  */
-export const novationLaunchpadMini: Selector = {
+export const novationLaunchpadMini: SelectorSettings = {
   category: DeviceCategory.selector,
   manufacturer: 'Focusrite A.E. Ltd',
   name: 'Launchpad Mini',
@@ -41,7 +41,7 @@ export const novationLaunchpadMini: Selector = {
     yellow: 62,
     green: 60,
   },
-  get colorByState () {
+  get colorByState() {
     return {
       inputOn: this.colors.red,
       inputOff: this.colors.black,
@@ -61,7 +61,7 @@ export const novationLaunchpadMini: Selector = {
     defaultDuration: 500,
     longClick: 400,
   },
-  get bootSequence () {
+  get bootSequence() {
     return {
       color: this.colors.red,
       sysex: {
