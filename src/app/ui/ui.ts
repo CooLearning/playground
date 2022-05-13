@@ -9,6 +9,7 @@ import {importsExportsUi} from './imports-exports.ui';
 import {playgroundUi} from './playground.ui';
 import {PresetsView} from './presets.view';
 import {HeatmapUi} from './heatmap.ui';
+import {MetricsUi} from './metrics.ui';
 
 export const ui = Object.create(null);
 
@@ -28,6 +29,7 @@ ui.init = async function() {
   importsExportsUi.init();
   playgroundUi.init();
   HeatmapUi.init();
+  MetricsUi.init();
   this.presetsView = new PresetsView();
 };
 
