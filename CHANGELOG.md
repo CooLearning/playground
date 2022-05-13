@@ -1,3 +1,10 @@
+# [1.18.0](https://github.com/CooLearning/playground/compare/v1.17.0...v1.18.0) (2022-05-13)
+
+
+### Features
+
+* **UI:** Add metrics ui handler to show output node's bias ([b78b7b6](https://github.com/CooLearning/playground/commit/b78b7b653201434c3702c3cb51499eee7b0cd0bc))
+
 # [1.17.0](https://github.com/CooLearning/playground/compare/v1.16.1...v1.17.0) (2022-04-23)
 
 
